@@ -1,3 +1,8 @@
+#ifdef DATABASEPROJECT_EXPORTS
+#define DBDLL_API __declspec(dllexport) 
+#else
+#define DBDLL_API __declspec(dllimport) 
+#endif
 #include <stdio.h>
 #include <string>
 #include <iterator>
@@ -17,7 +22,7 @@ class Attribute {
 	std::string attributeName;
 	std::string attributeType;
 };
-
+	
 class Table {
 	std::string tableName;
 
