@@ -3,52 +3,50 @@
 #include <iterator>
 #include <vector>
 
-using namespace std;
+namespace DatabaseAPI {
+
+class Record {
+	std::vector<std::string> recordData;
+public:	
+	Record (int);
+	std::string accessRecord (int);
+	int modifyRecord (int, std::string);
+};
+
+class Attribute {
+	std::string attributeName;
+	std::string attributeType;
+};
+
+class Table {
+	std::string tableName;
+
+public:
+	Table ();
+	Table (std::vector<Attribute>);
+	int addAttribute (Attribute);
+	int delAttribute (std::string);
+	int insertAttribute (Record);
+	std::vector<Attribute> getAttributes ();
+	int getSize ();
+	int renameAttribute (std::string, std::string);
+	static Table crossJoin (Table, Table);
+	int sumAttribute (std::string);
+	int countAttribute (std::string);
+	int minAttribute (std::string);
+	int maxAttribute (std::string);
+	std::vector<Record>::iterator iterate;
+};
 
 class Database {
 public:
 	Database ();
-	int addTable (Table, string);
-	int dropTable (string);
-	vector<string> listTables ();
-	vector<Table> getTables ();
-	//Query
-	Table queryTable (
-	//Delete
+	int addTable (Table, std::string);
+	int dropTable (std::string);
+	std::vector<std::string> listTables ();
+	std::vector<Table> getTables ();
+	Table queryTable (std::vector<std::string>, std::string, std::string);
+	Table deleteTable (std::vector<std::string>, std::string, std::string);
 };
 
-class Table {
-	string tableName;
-
-public:
-	Table ();
-	Table (vector<Attribute>);
-	int addAttribute (Attribute);
-	int delAttribute (string);
-	int insertAttribute (Record);
-	vector<Attribute> getAttributes ();
-	int getSize ();
-	int renameAttribute (string, string);
-	static Table crossJoin (Table, Table);
-	int sumAttribute (string);
-	int countAttribute (string);
-	int minAttribute (string);
-	int maxAttribute (string);
-	//Iterator
-
-};
-
-class Attribute {
-	string attributeName;
-	string attributeType;
-};
-
-class Record {
-	vector<string> recordData;
-public:	
-	Record (int);
-	string accessRecord (int);
-	int modifyRecord (int, string);
-	//Access to individual entry
-	//Routine that retrives an entry in the record
-};
+}
