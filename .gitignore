@@ -5,10 +5,10 @@
 *.suo
 *.user
 *.sln.docstates
+Database/Debug/
 
 # Build results
 
-[Dd]ebug/
 [Rr]elease/
 x64/
 build/
@@ -21,11 +21,9 @@ build/
 
 *_i.c
 *_p.c
-*.ilk
 *.meta
 *.obj
 *.pch
-*.pdb
 *.pgc
 *.pgd
 *.rsp
