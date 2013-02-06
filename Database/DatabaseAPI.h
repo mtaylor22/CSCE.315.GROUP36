@@ -32,7 +32,7 @@ public:
 	Table (std::vector<Attribute>);
 	int addAttribute (Attribute);
 	int delAttribute (std::string);
-	int insertAttribute (Record);
+	int insertRecord (Record);
 	std::vector<Attribute> getAttributes ();
 	int getSize ();
 	int renameAttribute (std::string, std::string);
@@ -52,7 +52,7 @@ public:
 	std::vector<std::string> listTables ();
 	std::vector<Table> getTables ();
 	Table queryTable (std::vector<std::string>, std::string, std::string);
-	Table deleteTable (std::vector<std::string>, std::string, std::string);
+	int deleteTable (std::vector<std::string>, std::string, std::string);
 };
 
 }
