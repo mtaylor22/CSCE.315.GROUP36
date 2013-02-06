@@ -37,10 +37,10 @@ public:
 	int getSize ();
 	int renameAttribute (std::string, std::string);
 	static Table crossJoin (Table, Table);
-	int sumAttribute (std::string);
-	int countAttribute (std::string);
-	int minAttribute (std::string);
-	int maxAttribute (std::string);
+	float sumAttribute (std::string);
+	float countAttribute (std::string);
+	float minAttribute (std::string);
+	float maxAttribute (std::string);
 	std::vector<Record>::iterator iterate;
 };
 
