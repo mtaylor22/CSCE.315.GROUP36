@@ -20,6 +20,8 @@ public:
 };
 
 class DBDLL_API Attribute {
+	//added late 
+	Attribute(std::string, std::string);
 	std::string attributeName;
 	std::string attributeType;
 };

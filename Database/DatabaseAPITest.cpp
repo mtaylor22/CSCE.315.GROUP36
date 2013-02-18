@@ -270,7 +270,7 @@ BOOST_AUTO_TEST_CASE( AddTest )
 	t4.insertRecord(r2);	//add record for Bill
 	t4.insertRecord(r3);	//adds records for Tom
 	t4.insertRecord(r4);	//adds records for Mary
-	BOOST_CHECK(d.qdeleteTable(v6,"Test Table2","Age<21") == ); //deletes the records of Bob, Bill, and Tom
+	BOOST_CHECK(d.deleteTable(v6,"Test Table2","Age<21") == 0); //deletes the records of Bob, Bill, and Tom //this line had errors
 	BOOST_CHECK(t4.getSize() == 1);	//to check that only 1 record remains, Marys record
 	t4.insertRecord(r);	//add record for Bob
 	t4.insertRecord(r2);	//add record for Bill
