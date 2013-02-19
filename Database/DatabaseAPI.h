@@ -9,7 +9,6 @@
 #include <vector>
 
 namespace DatabaseAPI {
-
 class DBDLL_API Record {
 	std::vector<std::string> recordData;
 public:	
@@ -21,6 +20,7 @@ public:
 
 class DBDLL_API Attribute {
 	//added late 
+	public:
 	Attribute(std::string, std::string);
 	std::string attributeName;
 	std::string attributeType;
@@ -28,6 +28,8 @@ class DBDLL_API Attribute {
 	
 class DBDLL_API Table {
 	std::string tableName;
+	std::vector<Record> recordVec;
+	std::vector<Attribute> attributeVec;
 
 public:
 	Table ();
@@ -41,12 +43,15 @@ public:
 	static Table crossJoin (Table, Table);
 	float sumAttribute (std::string);
 	float countAttribute (std::string);
-	float minAttribute (std::string);
+	float minAttribute (std::string );
+
 	float maxAttribute (std::string);
 	std::vector<Record>::iterator iterate;
 };
 
 class DBDLL_API Database {
+	std::vector<Table> tableVec;
+	std::vector<std::string> tableNames;
 public:
 	Database ();
 	int addTable (Table, std::string);
