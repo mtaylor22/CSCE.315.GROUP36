@@ -1,5 +1,10 @@
-#include <stdio.h>
-int main( int argc, const char* argv[] )
+
+#include <boost/test/unit_test.hpp>
+#include "DatabaseAPI.h"
+using namespace DatabaseAPI;
+
+BOOST_AUTO_TEST_CASE( AddTest )
 {
-	printf( "\nHello World\n\n" );
+	BOOST_CHECK(1==1);	
+
 }

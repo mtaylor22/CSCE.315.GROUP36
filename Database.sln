@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Database", "Database\Database.vcxproj", "{8C1385E0-ED7D-4A12-BC9D-D74E74A39567}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DatabaseTest", "DatabaseTest\DatabaseTest.vcxproj", "{28C061F7-C41E-47F8-B4E8-D1342D8EC7EE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -16,6 +18,12 @@ Global
 		{8C1385E0-ED7D-4A12-BC9D-D74E74A39567}.Release|Win32.Build.0 = Release|Win32
 		{8C1385E0-ED7D-4A12-BC9D-D74E74A39567}.Test|Win32.ActiveCfg = Test|Win32
 		{8C1385E0-ED7D-4A12-BC9D-D74E74A39567}.Test|Win32.Build.0 = Test|Win32
+		{28C061F7-C41E-47F8-B4E8-D1342D8EC7EE}.Debug|Win32.ActiveCfg = Debug|Win32
+		{28C061F7-C41E-47F8-B4E8-D1342D8EC7EE}.Debug|Win32.Build.0 = Debug|Win32
+		{28C061F7-C41E-47F8-B4E8-D1342D8EC7EE}.Release|Win32.ActiveCfg = Release|Win32
+		{28C061F7-C41E-47F8-B4E8-D1342D8EC7EE}.Release|Win32.Build.0 = Release|Win32
+		{28C061F7-C41E-47F8-B4E8-D1342D8EC7EE}.Test|Win32.ActiveCfg = Release|Win32
+		{28C061F7-C41E-47F8-B4E8-D1342D8EC7EE}.Test|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
