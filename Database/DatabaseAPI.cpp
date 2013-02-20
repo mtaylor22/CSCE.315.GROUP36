@@ -10,12 +10,31 @@ namespace DatabaseAPI {
 			float attMin = atof(recordVec.front().accessRecord(index).c_str());
 			for(std::vector<Record>::iterator recIt = recordVec.begin(); recIt != recordVec.end(); ++recIt) {
 				if (recIt->accessRecord(index) != "NULL"){
-					if (atof(recIt->accessRecord(index).c_str()) > attMin){
+					if (atof(recIt->accessRecord(index).c_str()) < attMin){
 						attMin = atof(recIt->accessRecord(index).c_str());
 					}
 				}
 			}
 			return attMin;
+		}
+	}
+	return -1;
+};
+		float Table::maxAttribute (std::string attToMax){
+	for(std::vector<Attribute>::iterator attIt = attributeVec.begin(); attIt != attributeVec.end(); ++attIt) {
+		if (attIt->attributeName == attToMax){
+			std::string attType = attIt->attributeType;
+			if (attType != "float" && attType != "int") return -1;
+			int index = attIt - attributeVec.begin();
+			float attMax = atof(recordVec.front().accessRecord(index).c_str());
+			for(std::vector<Record>::iterator recIt = recordVec.begin(); recIt != recordVec.end(); ++recIt) {
+				if (recIt->accessRecord(index) != "NULL"){
+					if (atof(recIt->accessRecord(index).c_str()) > attMax){
+						attMax = atof(recIt->accessRecord(index).c_str());
+					}
+				}
+			}
+			return attMax;
 		}
 	}
 	return -1;
@@ -67,13 +86,55 @@ int Table::delAttribute(std::string attToDel){
 	}
 	return -1;
 };
+
+bool isInt(std::string potentialInt){
+	//must contain only numbers, assumes NULL is acceptable
+	std::string::const_iterator it = potentialInt.begin();
+    while (it != potentialInt.end() && isdigit(*it)) ++it;
+    return ((!potentialInt.empty() && it == potentialInt.end()) || potentialInt == "NULL");
+};
+
+bool isFloat(std::string potentialFloat){
+	//must contain only numbers or '.', assumes NULL is acceptable
+	std::string::const_iterator it = potentialFloat.begin();
+    while (it != potentialFloat.end() && (isdigit(*it) || *it == '.')) ++it;
+    return ((!potentialFloat.empty() && it == potentialFloat.end()) || potentialFloat == "NULL");
+};
+
+bool isDate(std::string potentialDate){
+	//yyyy/mm/dd
+	if (isdigit(potentialDate.at(0)) && isdigit(potentialDate.at(1)) && isdigit(potentialDate.at(2)) &&
+		isdigit(potentialDate.at(3)) && potentialDate.at(4) == '/' && isdigit(potentialDate.at(5)) && isdigit(potentialDate.at(6)) &&
+		potentialDate.at(7) == '/' && isdigit(potentialDate.at(8)) && isdigit(potentialDate.at(9))){
+		return true;
+	} else {
+		return false;
+	}
+};
+
 int Table::insertRecord(Record recToIns){
+	for(std::vector<Attribute>::iterator it = attributeVec.begin(); it != attributeVec.end(); ++it) {
+		if (it->attributeType == "int"){
+			if (!isInt(recToIns.accessRecord(it - attributeVec.begin())))
+				return -1;
+		}else if (it->attributeType == "float"){
+			if (!isFloat(recToIns.accessRecord(it - attributeVec.begin())))
+				return -1;
+		}else if (it->attributeType == "date"){
+			if (!isDate(recToIns.accessRecord(it - attributeVec.begin())))
+				return -1;
+		}
+	}
 	recordVec.push_back(recToIns);
 	return 0;
 };
+
+
 std::vector<Attribute> Table::getAttributes(){
 	return attributeVec;
 };
+
+
 int Table::getSize(){
 	return (recordVec.size());
 }
@@ -134,7 +195,7 @@ float Table::countAttribute(std::string attToCount){
 	return -1;
 };
 
-
+Database::Database(){}
 int Database::addTable(Table tabToAdd, std::string tabNameToAdd){
 	tableVec.push_back(tabToAdd);
 	tableNames.push_back(tabNameToAdd);
@@ -142,10 +203,11 @@ int Database::addTable(Table tabToAdd, std::string tabNameToAdd){
 };
 int Database::dropTable(std::string tabToDrop){
 	for(std::vector<std::string>::iterator it = tableNames.begin(); it != tableNames.end(); ++it) {
-		if (*it == tabToDrop)
+		if (*it == tabToDrop){
 			tableVec.erase( (it - tableNames.begin()) + tableVec.begin());
 			tableNames.erase(it);
 			return 0;
+		}
 		}
 	return -1;
 };

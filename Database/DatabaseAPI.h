@@ -16,6 +16,13 @@ public:
 	Record (int);
 	std::string accessRecord (int);
 	int modifyRecord (int, std::string);
+	bool operator== (const Record& other) const {
+		if (this->recordData == other.recordData){
+			return true;
+		} else {
+			return false;
+		}
+	}
 };
 
 class DBDLL_API Attribute {
@@ -24,6 +31,14 @@ class DBDLL_API Attribute {
 	Attribute(std::string, std::string);
 	std::string attributeName;
 	std::string attributeType;
+	 bool operator== (const Attribute& other) const {
+	 // return true if *this == other, otherwise return false
+		 if (this->attributeName == other.attributeName && this->attributeType == other.attributeType){
+			return true;
+		 }else {
+			 return false;
+		 }
+	}
 };
 	
 class DBDLL_API Table {
@@ -47,6 +62,10 @@ public:
 
 	float maxAttribute (std::string);
 	std::vector<Record>::iterator iterate;
+	bool operator== (const Table& other) const {
+	//to be equal, tables must have all the same records and all the same attributes
+		return true;
+	}
 };
 
 class DBDLL_API Database {
