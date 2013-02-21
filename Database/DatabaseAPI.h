@@ -4,6 +4,7 @@
 #define DBDLL_API __declspec(dllimport) 
 #endif
 #include <stdio.h>
+#include <iostream>
 #include <string>
 #include <iterator>
 #include <vector>

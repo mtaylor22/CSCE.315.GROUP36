@@ -1,7 +1,8 @@
 #include "DatabaseAPI.h"
 
 namespace DatabaseAPI {
-	float Table::minAttribute (std::string attToMin){
+
+float Table::minAttribute (std::string attToMin){
 	for(std::vector<Attribute>::iterator attIt = attributeVec.begin(); attIt != attributeVec.end(); ++attIt) {
 		if (attIt->attributeName == attToMin){
 			std::string attType = attIt->attributeType;
@@ -20,7 +21,8 @@ namespace DatabaseAPI {
 	}
 	return -1;
 };
-		float Table::maxAttribute (std::string attToMax){
+
+float Table::maxAttribute (std::string attToMax){
 	for(std::vector<Attribute>::iterator attIt = attributeVec.begin(); attIt != attributeVec.end(); ++attIt) {
 		if (attIt->attributeName == attToMax){
 			std::string attType = attIt->attributeType;
@@ -39,23 +41,31 @@ namespace DatabaseAPI {
 	}
 	return -1;
 };
+
 Record::Record(int numEntries){
 	for( int i = 0; i < numEntries; i++){
 	std::string jstring = "";
 	recordData.push_back(jstring);
 	}
 };
+
 std::string Record::accessRecord(int numAccess){
-	return (recordData.at(numAccess));
+	try {
+		return (recordData.at(numAccess));
+	}
+	catch (const std::out_of_range& oor) {
+    std::cerr << "Out of Range error: " << oor.what() << '\n';
+	}
 };
+
 int Record::modifyRecord(int numAccess, std::string strReplace){
-	 try {
+	try {
 		recordData.at(numAccess) = strReplace;
 		return 0;
-	 }
-	  catch (const std::out_of_range& oor) {
+	}
+	catch (const std::out_of_range& oor) {
 	    return -1;
-	  }
+	}
 	return -1;
 };
 
@@ -77,6 +87,7 @@ int Table::addAttribute(Attribute attToAdd){
 	attributeVec.push_back(attToAdd);
 	return 0;
 };
+
 int Table::delAttribute(std::string attToDel){
 	for(std::vector<Attribute>::iterator it = attributeVec.begin(); it != attributeVec.end(); ++it) {
 		if (it->attributeName == attToDel){
@@ -129,17 +140,16 @@ int Table::insertRecord(Record recToIns){
 	return 0;
 };
 
-
 std::vector<Attribute> Table::getAttributes(){
 	return attributeVec;
 };
 
-
 int Table::getSize(){
 	return (recordVec.size());
-}
+};
+
 int Table::renameAttribute(std::string prevName, std::string newName){
-		for(std::vector<Attribute>::iterator it = attributeVec.begin(); it != attributeVec.end(); ++it) {
+	for(std::vector<Attribute>::iterator it = attributeVec.begin(); it != attributeVec.end(); ++it) {
 		if (it->attributeName == prevName){
 			it->attributeName = newName;
 			return 0;
@@ -147,6 +157,7 @@ int Table::renameAttribute(std::string prevName, std::string newName){
 	}
 	return -1;
 };
+
 Table Table::crossJoin(Table tableA, Table tableB){
 	//ignore intelleSense right now
 	Table tableC;
@@ -163,6 +174,7 @@ Table Table::crossJoin(Table tableA, Table tableB){
 	}
 	return tableC;
 };
+
 float Table::sumAttribute(std::string attToSum){
 //types will be int, float, string, date
 	for(std::vector<Attribute>::iterator attIt = attributeVec.begin(); attIt != attributeVec.end(); ++attIt) {
@@ -195,12 +207,14 @@ float Table::countAttribute(std::string attToCount){
 	return -1;
 };
 
-Database::Database(){}
+Database::Database(){};
+
 int Database::addTable(Table tabToAdd, std::string tabNameToAdd){
 	tableVec.push_back(tabToAdd);
 	tableNames.push_back(tabNameToAdd);
 	return 0;
 };
+
 int Database::dropTable(std::string tabToDrop){
 	for(std::vector<std::string>::iterator it = tableNames.begin(); it != tableNames.end(); ++it) {
 		if (*it == tabToDrop){
@@ -211,6 +225,7 @@ int Database::dropTable(std::string tabToDrop){
 		}
 	return -1;
 };
+
 std::vector<std::string> Database::listTables(){
 	return tableNames;
 };
@@ -219,9 +234,7 @@ std::vector<Table> Database::getTables(){
 	return tableVec;
 };
 
-Record::Record(){
-
-}
+Record::Record(){};
 
 //unfinished/started
 
@@ -232,6 +245,7 @@ bool isAnOperator(char j){
 		return false;
 
 };
+
 std::string formatWhere(std::string strToFormat){
 	int limit = strlen(strToFormat.c_str());
 	for (int i = 0; i < limit; i++){
@@ -265,17 +279,17 @@ int Database::deleteTable (std::vector<std::string> selectClause, std::string fr
 
 	return -1;
 };
-	Connector::Connector(){
+	
+Connector::Connector(){
 		connType="";
 		propLeft=NULL;
 		propRight=NULL;
-	};
-	Connector::Connector(std::string connTy, Proposition* propL, Proposition* propR){
+};
+	
+Connector::Connector(std::string connTy, Proposition* propL, Proposition* propR){
 		connType = connTy;
 		propLeft = propL;
 		propRight = propR;
-	};
-
-
+};
 
 }
