@@ -258,15 +258,23 @@ Table Database::queryTable (std::vector<std::string> selectClause, std::string f
 
 	
 
-
+	return Table();
 };
 
 int Database::deleteTable (std::vector<std::string> selectClause, std::string fromClause, std::string whereClause){
 
 	return -1;
 };
-
-
+	Connector::Connector(){
+		connType="";
+		propLeft=NULL;
+		propRight=NULL;
+	};
+	Connector::Connector(std::string connTy, Proposition* propL, Proposition* propR){
+		connType = connTy;
+		propLeft = propL;
+		propRight = propR;
+	};
 
 
 

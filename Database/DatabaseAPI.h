@@ -98,22 +98,8 @@ head.connType="AND";
 
 
 */
-class DBDLL_API Connector {
-	Connector(){
-		connType="";
-		propLeft=NULL;
-		propRight=NULL;
-	};
-	Connector(std::string connTy, Proposition* propL, Proposition* propR){
-		connType = connTy;
-		propLeft = propL;
-		propRight = propR;
-	}
-	std::string connType;
-	Proposition* propLeft;
-	Proposition* propRight;
-};
 class DBDLL_API Proposition {
+public:
 	Proposition(){};
 	Proposition(std::string propAttr, std::string propOp, std::string propVal, bool not){
 		propAttribute=propAttr;
@@ -128,6 +114,15 @@ class DBDLL_API Proposition {
 	bool propNot;
 	bool evaluation;
 };
+class DBDLL_API Connector {
+public:
+	Connector();
+	Connector(std::string , Proposition*, Proposition* );
+	std::string connType;
+	Proposition* propLeft;
+	Proposition* propRight;
+};
+
 
 
 }
