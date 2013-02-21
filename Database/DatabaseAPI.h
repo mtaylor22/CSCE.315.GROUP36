@@ -81,4 +81,53 @@ public:
 	int deleteTable (std::vector<std::string>, std::string, std::string);
 };
 
+/* the following is necessary to implement query
+connector and proposition can logically construct any "while" statement (in theory)
+for example
+
+((NOT Gender=female) AND (Age < 21))
+
+would be something like
+
+Connector head = Connector();
+Proposition a = Proposition("Gender", "=", "Female", true);
+Proposition b = Proposition("Age", "<", "21", true);
+head.propLeft = a;
+head.propRight = b;
+head.connType="AND";
+
+
+*/
+class DBDLL_API Connector {
+	Connector(){
+		connType="";
+		propLeft=NULL;
+		propRight=NULL;
+	};
+	Connector(std::string connTy, Proposition* propL, Proposition* propR){
+		connType = connTy;
+		propLeft = propL;
+		propRight = propR;
+	}
+	std::string connType;
+	Proposition* propLeft;
+	Proposition* propRight;
+};
+class DBDLL_API Proposition {
+	Proposition(){};
+	Proposition(std::string propAttr, std::string propOp, std::string propVal, bool not){
+		propAttribute=propAttr;
+		propOperator=propOp;
+		propAttribute=propAttr;
+		propValue=propVal;
+		propNot = not;
+	};
+	std::string propAttribute;
+	std::string propOperator;
+	std::string propValue;
+	bool propNot;
+	bool evaluation;
+};
+
+
 }

@@ -225,10 +225,42 @@ Record::Record(){
 
 //unfinished/started
 
-Table Database::queryTable (std::vector<std::string> selectClause, std::string fromClause, std::string whereClause){
-	Table j;
-	return j;
+bool isAnOperator(char j){
+	if (j == '>' || j == '<' || j == '!' || j == '=') 
+		return true;
+	else
+		return false;
+
 };
+std::string formatWhere(std::string strToFormat){
+	int limit = strlen(strToFormat.c_str());
+	for (int i = 0; i < limit; i++){
+		if (isAnOperator(strToFormat[i]) && (strToFormat[i-1] == ' ')){
+			strToFormat.erase((i-1), 1);
+			i--;
+			limit--;
+			
+		}
+		if (isAnOperator(strToFormat[i]) && (strToFormat[i+1] == ' ')){
+			strToFormat.erase((i+1), 1);
+			limit--;
+		}
+	}
+	return strToFormat;
+};
+
+Table Database::queryTable (std::vector<std::string> selectClause, std::string fromClause, std::string whereClause){
+	//empty vector indicates all 
+	//input -> list of attributes to keep in table, singular table, condition to meet
+
+	//1. check if table exists in database!!
+	whereClause = formatWhere(whereClause);		//makes spaces more meaningful
+
+	
+
+
+};
+
 int Database::deleteTable (std::vector<std::string> selectClause, std::string fromClause, std::string whereClause){
 
 	return -1;
