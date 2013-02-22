@@ -60,6 +60,7 @@ std::string Record::accessRecord(int numAccess){
 
 int Record::modifyRecord(int numAccess, std::string strReplace){
 	try {
+		if (this->recordData.size() == 0) return -1; //Handles empty vectors being modified without throwing oor exception
 		recordData.at(numAccess) = strReplace;
 		return 0;
 	}
@@ -243,7 +244,6 @@ bool isAnOperator(char j){
 		return true;
 	else
 		return false;
-
 };
 
 std::string formatWhere(std::string strToFormat){

@@ -208,7 +208,7 @@ BOOST_AUTO_TEST_CASE( AddTest )
 	std::vector<Attribute> vt;
 	//vt.push_back(Attribute("Name","string"));
 	Record rt = Record(1);
-	rt.modifyRecord(1,"Mary");
+	rt.modifyRecord(0,"Mary");
 	t3= Table(vt);
 	t3.insertRecord(rt);
 	BOOST_CHECK(d.queryTable(v5,"Test Table","Age>=20").getAttributes() == t3.getAttributes() && 
@@ -216,8 +216,8 @@ BOOST_AUTO_TEST_CASE( AddTest )
 	v5.push_back("Age");
 	//vt.push_back(Attribute("Age", "int"));
 	rt = Record(2);
-	rt.modifyRecord(1,"Mary");
-	rt.modifyRecord(2,"21");
+	rt.modifyRecord(0,"Mary");
+	rt.modifyRecord(1,"21");
 	t3= Table(vt);
 	t3.insertRecord(rt);
 	BOOST_CHECK(d.queryTable(v5,"Test Table","Age>=20").getAttributes() == t3.getAttributes() && 
