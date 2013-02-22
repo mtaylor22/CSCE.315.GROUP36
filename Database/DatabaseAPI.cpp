@@ -264,6 +264,21 @@ std::string formatWhere(std::string strToFormat){
 };
 
 Table Database::queryTable (std::vector<std::string> selectClause, std::string fromClause, std::string whereClause){
+	Table tableResults;
+	for(std::vector<std::string>::iterator tabIt = tableNames.begin(); tabIt != tableNames.end(); ++tabIt) {
+		if (*tabIt == fromClause){
+			tableResults = Table(tableVec.at(std::distance(tableNames.begin(), tabIt)));
+			if (selectClause.size() != 0){
+					std::vector<Attribute> atts = tableResults.getAttributes();
+					for(std::vector<Attribute>::iterator attIt = atts.begin(); attIt != atts.end(); ++attIt){
+						if(std::find(selectClause.begin(), selectClause.end(), attIt->attributeName) != selectClause.end()){
+							//select contains attribute
+							tableResults.delAttribute(attIt->attributeName);
+						}
+					}
+			}
+		}
+	}
 	//empty vector indicates all 
 	//input -> list of attributes to keep in table, singular table, condition to meet
 
@@ -272,7 +287,7 @@ Table Database::queryTable (std::vector<std::string> selectClause, std::string f
 
 	
 
-	return Table();
+	return tableResults;
 };
 
 int Database::deleteTable (std::vector<std::string> selectClause, std::string fromClause, std::string whereClause){
