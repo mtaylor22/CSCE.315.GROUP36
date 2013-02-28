@@ -10,43 +10,27 @@
 
 vector<vector<string>> generateAttributes(){
 		vector<vector<string>> attributes;
-		vector<string> userpaymentAttributes;
-		userpaymentAttributes.push_back("userID");
-		userpaymentAttributes.push_back("Upayment");
-		attributes.push_back(userpaymentAttributes);
+		
+		vector<string> chefmozacceptsAttributes;
+		chefmozacceptsAttributes.push_back("placeID");
+		chefmozacceptsAttributes.push_back("Rpayment");
+		attributes.push_back(chefmozacceptsAttributes);
 
-		vector<string> userprofileAttributes;
-		userprofileAttributes.push_back("userID");
-		userprofileAttributes.push_back("latitude");
-		userprofileAttributes.push_back("longitude");
-		userprofileAttributes.push_back("smoker");
-		userprofileAttributes.push_back("drink_level");
-		userprofileAttributes.push_back("dress_preference");
-		userprofileAttributes.push_back("ambience");
-		userprofileAttributes.push_back("transport");
-		userprofileAttributes.push_back("marital_status");
-		userprofileAttributes.push_back("hijos");
-		userprofileAttributes.push_back("birth_year");
-		userprofileAttributes.push_back("interest");
-		userprofileAttributes.push_back("personality");
-		userprofileAttributes.push_back("religion");
-		userprofileAttributes.push_back("activity");
-		userprofileAttributes.push_back("color");
-		userprofileAttributes.push_back("weight");
-		userprofileAttributes.push_back("budget");
-		userprofileAttributes.push_back("height");
-		attributes.push_back(userprofileAttributes);
-				
+		vector<string> chefmozcuizineAttributes;
+		chefmozcuizineAttributes.push_back("placeID");
+		chefmozcuizineAttributes.push_back("Rcuisine");
+		attributes.push_back(chefmozcuizineAttributes);
+		
 		vector<string> chefmozhours4Attributes;
 		chefmozhours4Attributes.push_back("placeID");
 		chefmozhours4Attributes.push_back("hours");
 		chefmozhours4Attributes.push_back("days");
 		attributes.push_back(chefmozhours4Attributes);
 		
-		vector<string> chefmozAttributes;
-		chefmozAttributes.push_back("placeID");
-		chefmozAttributes.push_back("parking_lot");
-		attributes.push_back(chefmozAttributes);
+		vector<string> chefmozparkingAttributes;
+		chefmozparkingAttributes.push_back("placeID");
+		chefmozparkingAttributes.push_back("parking_lot");
+		attributes.push_back(chefmozparkingAttributes);
 
 		vector<string> geoplaces2Attributes;
 		geoplaces2Attributes.push_back("placeID");
@@ -70,7 +54,8 @@ vector<vector<string>> generateAttributes(){
 		geoplaces2Attributes.push_back("area");
 		geoplaces2Attributes.push_back("other_services");
 		attributes.push_back(geoplaces2Attributes);
-				
+
+		
 		vector<string> rating_finalAttributes;
 		rating_finalAttributes.push_back("userID");
 		rating_finalAttributes.push_back("placeID");
@@ -78,117 +63,145 @@ vector<vector<string>> generateAttributes(){
 		rating_finalAttributes.push_back("food_rating");
 		rating_finalAttributes.push_back("service_rating");
 		attributes.push_back(rating_finalAttributes);
-
+		
 		vector<string> usercuisineAttributes;
 		usercuisineAttributes.push_back("userID");
 		usercuisineAttributes.push_back("Rcuisine");
 		attributes.push_back(usercuisineAttributes);
+
+		vector<string> userpaymentAttributes;
+		userpaymentAttributes.push_back("userID");
+		userpaymentAttributes.push_back("Upayment");
+		attributes.push_back(userpaymentAttributes);
 		
-		vector<string> chefmozacceptsAttributes;
-		chefmozacceptsAttributes.push_back("placeID");
-		chefmozacceptsAttributes.push_back("Rpayment");
-		attributes.push_back(chefmozacceptsAttributes);
-			
-		vector<string> chefmozcuizineAttributes;
-		chefmozcuizineAttributes.push_back("placeID");
-		chefmozcuizineAttributes.push_back("Rcuisine");
-		attributes.push_back(chefmozcuizineAttributes);
+		vector<string> userprofileAttributes;
+		userprofileAttributes.push_back("userID");
+		userprofileAttributes.push_back("latitude");
+		userprofileAttributes.push_back("longitude");
+		userprofileAttributes.push_back("smoker");
+		userprofileAttributes.push_back("drink_level");
+		userprofileAttributes.push_back("dress_preference");
+		userprofileAttributes.push_back("ambience");
+		userprofileAttributes.push_back("transport");
+		userprofileAttributes.push_back("marital_status");
+		userprofileAttributes.push_back("hijos");
+		userprofileAttributes.push_back("birth_year");
+		userprofileAttributes.push_back("interest");
+		userprofileAttributes.push_back("personality");
+		userprofileAttributes.push_back("religion");
+		userprofileAttributes.push_back("activity");
+		userprofileAttributes.push_back("color");
+		userprofileAttributes.push_back("weight");
+		userprofileAttributes.push_back("budget");
+		userprofileAttributes.push_back("height");
+		attributes.push_back(userprofileAttributes);	
+		
 		return attributes;
 }
+vector<vector<Table::RecordType>> generateTypes(){
+	
+		vector<vector<Table::RecordType>> types;
+		vector<Table::RecordType> chefmozacceptsTypes;
+		chefmozacceptsTypes.push_back(Table::integer);
+		chefmozacceptsTypes.push_back(Table::varchar);
+		types.push_back(chefmozacceptsTypes);
 
-vector<vector<string>> generateTypes(){
-		vector<vector<string>> types;
-		vector<string> userpaymentTypes;
-		userpaymentTypes.push_back("string");
-		userpaymentTypes.push_back("string");
+		vector<Table::RecordType> chefmozcuizineTypes;
+		chefmozcuizineTypes.push_back(Table::integer);
+		chefmozcuizineTypes.push_back(Table::varchar);
+		types.push_back(chefmozcuizineTypes);
+		
+		vector<Table::RecordType> chefmozhours4Types;
+		chefmozhours4Types.push_back(Table::integer);
+		chefmozhours4Types.push_back(Table::varchar);		
+		chefmozhours4Types.push_back(Table::varchar);
+		types.push_back(chefmozhours4Types);
+		
+		vector<Table::RecordType> chefmozparkingTypes;
+		chefmozparkingTypes.push_back(Table::integer);
+		chefmozparkingTypes.push_back(Table::varchar);
+		types.push_back(chefmozparkingTypes);
+		
+		vector<Table::RecordType> geoplaces2Types;
+		geoplaces2Types.push_back(Table::integer);
+		geoplaces2Types.push_back(Table::floating);
+		geoplaces2Types.push_back(Table::floating);
+		geoplaces2Types.push_back(Table::varchar);
+		geoplaces2Types.push_back(Table::varchar);
+		geoplaces2Types.push_back(Table::varchar);
+		geoplaces2Types.push_back(Table::varchar);
+		geoplaces2Types.push_back(Table::varchar);
+		geoplaces2Types.push_back(Table::varchar);
+		geoplaces2Types.push_back(Table::floating);
+		geoplaces2Types.push_back(Table::varchar);
+		geoplaces2Types.push_back(Table::varchar);
+		geoplaces2Types.push_back(Table::varchar);
+		geoplaces2Types.push_back(Table::varchar);
+		geoplaces2Types.push_back(Table::varchar);
+		geoplaces2Types.push_back(Table::varchar);
+		geoplaces2Types.push_back(Table::varchar);
+		geoplaces2Types.push_back(Table::varchar);
+		geoplaces2Types.push_back(Table::varchar);
+		geoplaces2Types.push_back(Table::varchar);
+		types.push_back(geoplaces2Types);
+		
+		vector<Table::RecordType> rating_finalTypes;
+		rating_finalTypes.push_back(Table::varchar);
+		rating_finalTypes.push_back(Table::integer);
+		rating_finalTypes.push_back(Table::integer);
+		rating_finalTypes.push_back(Table::integer);
+		rating_finalTypes.push_back(Table::integer);
+		types.push_back(rating_finalTypes);
+		
+		vector<Table::RecordType> usercuisineTypes;
+		usercuisineTypes.push_back(Table::varchar);
+		usercuisineTypes.push_back(Table::varchar);
+		types.push_back(usercuisineTypes);
+		
+		vector<Table::RecordType> userpaymentTypes;
+		userpaymentTypes.push_back(Table::varchar);
+		userpaymentTypes.push_back(Table::varchar);
 		types.push_back(userpaymentTypes);
 
-		vector<string> userprofileTypes;
-		userprofileTypes.push_back("string");
-		userprofileTypes.push_back("long");
-		userprofileTypes.push_back("long");
-		userprofileTypes.push_back("bool");
-		userprofileTypes.push_back("string");
-		userprofileTypes.push_back("string");
-		userprofileTypes.push_back("string");
-		userprofileTypes.push_back("string");
-		userprofileTypes.push_back("string");
-		userprofileTypes.push_back("string");
-		userprofileTypes.push_back("int");
-		userprofileTypes.push_back("string");
-		userprofileTypes.push_back("string");
-		userprofileTypes.push_back("string");
-		userprofileTypes.push_back("string");
-		userprofileTypes.push_back("string");
-		userprofileTypes.push_back("int");
-		userprofileTypes.push_back("string");
-		userprofileTypes.push_back("long");
+		vector<Table::RecordType> userprofileTypes;
+		userprofileTypes.push_back(Table::varchar);
+		userprofileTypes.push_back(Table::floating);
+		userprofileTypes.push_back(Table::floating);
+		userprofileTypes.push_back(Table::varchar);
+		userprofileTypes.push_back(Table::varchar);
+		userprofileTypes.push_back(Table::varchar);
+		userprofileTypes.push_back(Table::varchar);
+		userprofileTypes.push_back(Table::varchar);
+		userprofileTypes.push_back(Table::varchar);
+		userprofileTypes.push_back(Table::varchar);
+		userprofileTypes.push_back(Table::integer);
+		userprofileTypes.push_back(Table::varchar);
+		userprofileTypes.push_back(Table::varchar);
+		userprofileTypes.push_back(Table::varchar);
+		userprofileTypes.push_back(Table::varchar);
+		userprofileTypes.push_back(Table::varchar);
+		userprofileTypes.push_back(Table::integer);
+		userprofileTypes.push_back(Table::varchar);
+		userprofileTypes.push_back(Table::floating);
 		types.push_back(userprofileTypes);
 
-
-		vector<string> chefmozhours4Types;
-		chefmozhours4Types.push_back("long");
-		chefmozhours4Types.push_back("string");		
-		chefmozhours4Types.push_back("string");
-		types.push_back(chefmozhours4Types);
-
-		vector<string> chefmozTypes;
-		chefmozTypes.push_back("long");
-		chefmozTypes.push_back("string");
-		types.push_back(chefmozTypes);
-	
-		vector<string> geoplaces2Types;
-		geoplaces2Types.push_back("long");
-		geoplaces2Types.push_back("long");
-		geoplaces2Types.push_back("long");
-		geoplaces2Types.push_back("string");
-		geoplaces2Types.push_back("string");
-		geoplaces2Types.push_back("string");
-		geoplaces2Types.push_back("string");
-		geoplaces2Types.push_back("string");
-		geoplaces2Types.push_back("string");
-		geoplaces2Types.push_back("float");
-		geoplaces2Types.push_back("string");
-		geoplaces2Types.push_back("string");
-		geoplaces2Types.push_back("string");
-		geoplaces2Types.push_back("string");
-		geoplaces2Types.push_back("string");
-		geoplaces2Types.push_back("string");
-		geoplaces2Types.push_back("string");
-		geoplaces2Types.push_back("bool");
-		geoplaces2Types.push_back("string");
-		geoplaces2Types.push_back("string");
-		types.push_back(geoplaces2Types);
-
-
-		vector<string> rating_finalTypes;
-		rating_finalTypes.push_back("string");
-		rating_finalTypes.push_back("long");
-		rating_finalTypes.push_back("int");
-		rating_finalTypes.push_back("int");
-		rating_finalTypes.push_back("int");
-		types.push_back(rating_finalTypes);
-	
-		vector<string> usercuisineTypes;
-		usercuisineTypes.push_back("string");
-		usercuisineTypes.push_back("string");
-		types.push_back(usercuisineTypes);
-
-		vector<string> chefmozacceptsTypes;
-		chefmozacceptsTypes.push_back("long");
-		chefmozacceptsTypes.push_back("string");
-		types.push_back(chefmozacceptsTypes);
-	
-		vector<string> chefmozcuizineTypes;
-		chefmozcuizineTypes.push_back("long");
-		chefmozcuizineTypes.push_back("string");
-		types.push_back(chefmozcuizineTypes);
 		return types;
 }
+vector<string> generatePaths(){
+	vector<string> paths;
+	paths.push_back("../RCdata/chefmozaccepts.csv");
+	paths.push_back("../RCdata/chefmozcuisine.csv");
+	paths.push_back("../RCdata/chefmozhours4.csv");
+	paths.push_back("../RCdata/chefmozparking.csv");
+	paths.push_back("../RCdata/geoplaces2.csv");
+	paths.push_back("../RCdata/rating_final.csv");
+	paths.push_back("../RCdata/usercuisine.csv");
+	paths.push_back("../RCdata/userpayment.csv");
+	paths.push_back("../RCdata/userprofile.csv");
+	return paths;
+}
 
-
-
-void readIn(string path, vector<string> types, vector<string> attributes, Database* inputDB){
+void readIn(string path, vector<Table::RecordType> types, vector<string> attributes, Database &inputDB){
 		
 	/*
 		"../RCdata/userpayment.txt"
@@ -353,34 +366,53 @@ void readIn(string path, vector<string> types, vector<string> attributes, Databa
 		chefmozcuizineTypes.push_back("string");
 			
 	*/
+	Table::ColumnList columns;
 
-	string NumberOfAccounts;
-
-    ifstream File("../RCdata/userpayment.txt");
+	for(std::vector<Table::RecordType>::iterator it = types.begin(); it != types.end(); ++it){
+		columns.push_back(make_pair(attributes.at(std::distance(types.begin(), it)), *it));
+	}
+	Table currentTable(columns);
+	
+	ifstream File(path);
     string line;
-
+	bool switchb=false;
     if(File)
     {
         while(getline(File,line))
         {
-            cout<<line<<"\n";
+			if (switchb!=false){
 			//reading line
+			vector<string> propVect;
 
-
-
-        }
-
+			std::istringstream ss(line);
+			std::string token;
+			int i = 0;
+			vector<pair<string, string>> pears;
+			while(std::getline(ss, token, ',')) {
+				pair<string, string> pear (attributes.at(i), token); 
+				pears.push_back(pear);
+				i++;
+			}
+			Record pearRecord (pears);
+			currentTable.insert(pearRecord);
+			//vect filled with csv
+			} else { switchb=true;}
+		}
     File.close();
     }
-
-    cout<<NumberOfAccounts;
+	inputDB.add_table(path.substr(path.find_last_of('/')+1), &currentTable);
 
 }
 
 int _tmain(int argc, _TCHAR* argv[]) {
+	vector<vector<string>> allAttributes = generateAttributes();
+	vector<vector<Table::RecordType>> allTypes = generateTypes();
+	vector<string> allPaths = generatePaths();
+	Database mainDB = Database();
+	readIn(allPaths.at(0), allTypes.at(0), allAttributes.at(0), mainDB);
+	vector<string> j = mainDB.table_names();
 	
     system("pause");
-
-    return 0;
+	return 0;
 }
 
