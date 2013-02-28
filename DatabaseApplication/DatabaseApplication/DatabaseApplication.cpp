@@ -371,7 +371,8 @@ void readIn(string path, vector<Table::RecordType> types, vector<string> attribu
 	for(std::vector<Table::RecordType>::iterator it = types.begin(); it != types.end(); ++it){
 		columns.push_back(make_pair(attributes.at(std::distance(types.begin(), it)), *it));
 	}
-	Table currentTable(columns);
+	// According to API, table must be made with new as the destructor is handled in implementation
+	Table* currentTable = new Table(columns);
 	
 	ifstream File(path);
     string line;
@@ -394,13 +395,13 @@ void readIn(string path, vector<Table::RecordType> types, vector<string> attribu
 				i++;
 			}
 			Record pearRecord (pears);
-			currentTable.insert(pearRecord);
+			currentTable->insert(pearRecord);
 			//vect filled with csv
 			} else { switchb=true;}
 		}
     File.close();
     }
-	inputDB.add_table(path.substr(path.find_last_of('/')+1), &currentTable);
+	inputDB.add_table(path.substr(path.find_last_of('/')+1), currentTable);
 
 }
 
@@ -411,6 +412,12 @@ int _tmain(int argc, _TCHAR* argv[]) {
 	Database mainDB = Database();
 	readIn(allPaths.at(0), allTypes.at(0), allAttributes.at(0), mainDB);
 	vector<string> j = mainDB.table_names();
+	for(std::vector<string>::iterator it = j.begin(); it != j.end(); ++it){
+		cout << *it << ' ';
+		Table a = *mainDB.table(*it);
+		cout << a.size() << '\n';
+	}
+
 	
     system("pause");
 	return 0;
