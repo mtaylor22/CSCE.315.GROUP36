@@ -1,5 +1,6 @@
 #include "DatabaseAPI.h"
 
+
 namespace DatabaseAPI {
 
 float Table::minAttribute (std::string attToMin){
@@ -245,7 +246,6 @@ bool isAnOperator(char j){
 	else
 		return false;
 };
-
 std::string formatWhere(std::string strToFormat){
 	int limit = strlen(strToFormat.c_str());
 	for (int i = 0; i < limit; i++){
@@ -262,7 +262,6 @@ std::string formatWhere(std::string strToFormat){
 	}
 	return strToFormat;
 };
-
 Table Database::queryTable (std::vector<std::string> selectClause, std::string fromClause, std::string whereClause){
 	Table tableResults;
 	for(std::vector<std::string>::iterator tabIt = tableNames.begin(); tabIt != tableNames.end(); ++tabIt) {
@@ -289,22 +288,190 @@ Table Database::queryTable (std::vector<std::string> selectClause, std::string f
 
 	return tableResults;
 };
-
 int Database::deleteTable (std::vector<std::string> selectClause, std::string fromClause, std::string whereClause){
 
 	return -1;
 };
+
+
+bool keyChar( char j){
+	if (j == '(' || j == ')' || j == ' ' || j == '>' || j == '<' || j == '=') 
+		return true;
+	return false;
+}
+int getParen(std::string j){
+	int buffer = 0;
+	std::string currstring = "";
+	currstring+=j[1];
+	for (int i = 1; i++; i<j.length()){
+		if (j[i] ==  ')' && buffer == 0) {
+			if ((std::string::npos != currstring.find("AND")) || (std::string::npos != currstring.find("OR"))){
+				return -1;
+			}else{
+				return i;
+			}	
+		}
+		if (j[i] == ')' && buffer>0) buffer--;
+		if (j[i] == '(') buffer++;
+		if (buffer == 0) currstring+=j[i];
+	}
+	//currstring == a singular expression minimized to one level
+	//find and||or
 	
-Connector::Connector(){
-		connType="";
-		propLeft=NULL;
-		propRight=NULL;
 };
-	
-Connector::Connector(std::string connTy, Proposition* propL, Proposition* propR){
-		connType = connTy;
-		propLeft = propL;
-		propRight = propR;
-};
+std::string removeParens(std::string j){
+	for (int i = 0;i<j.length(); i++){
+			if (j[i] == '('){
+				int k = getParen(j.substr(i));
+				if (k > 0 && j[i] == '(' && j[k+i] == ')'){
+					j.erase(i, 1);
+					j.erase(k+i-1, 1);
+				}
+			}
+		}
+		return(j);
+}
+std::string readToken(std::string partialStr){
+	int i = 0;
+	if (partialStr.empty()) return "";
+	std::string token = "";
+	while (!keyChar(partialStr.at(i)) && i<partialStr.length()-1){
+		token+=partialStr.at(i);
+		i++;
+	}
+	if (partialStr.length() > i+2 ){
+	if ((partialStr.at(i) == '<' || partialStr.at(i) == '>') && partialStr.at(i+1) == '='){
+		return token+partialStr.at(i)+partialStr.at(i+1);
+	} else return token+partialStr.at(i);
+	} else return token+partialStr.at(i);
+}
+std::vector<std::string> buildStrVec(std::string queryStr){
+	std::string bkQueryStr = queryStr;
+	std::string token = readToken(queryStr);
+	std::vector<std::string> strVec;
+	while (!token.empty()){
+		
+		queryStr.erase(0, token.length());
+		if (*token.rbegin() == ')' && token != ")"){
+			strVec.push_back(token.substr(0, token.length()-1));
+			strVec.push_back(")");
+		} else if (token != " " && !token.empty())
+		
+			strVec.push_back(token);
+		token = readToken(queryStr);
+	}
+	strVec.push_back("");
+	return strVec;
+}
+std::string remSpaces(std::string fullStr){
+	for(int i = 3; i < fullStr.length(); i++){
+		if(fullStr.at(i) == ' ' && !(readToken(fullStr.substr(i+1)) == "AND " || readToken(fullStr.substr(i+1)) == "OR " || readToken(fullStr.substr(i-3)) == "NOT " || readToken(fullStr.substr(i-3)) == "AND " || readToken(fullStr.substr(i-2)) == "OR "|| readToken(fullStr.substr(i-3)) == "OR "))
+			fullStr.erase(i, 1);
+	}
+	return fullStr;
+}
+std::vector< std::vector< Proposition > > generateProps(std::vector<std::string> strVec){
+	std::vector< std::vector< Proposition > > propVec;
+	std::vector< Proposition> emptypVec;
+	propVec.push_back(emptypVec);
+	propVec.push_back(emptypVec);
+	propVec.push_back(emptypVec);
+	std::reverse(strVec.begin(), strVec.end());
+	int currentLevel=0;
+	while (strVec.back()!=""){
+		if (strVec.back() == "(") {
+			
+			currentLevel++;
+			strVec.pop_back();
+		} else if (strVec.back() == ")") {
+			currentLevel--;
+			strVec.pop_back();
+		} else if (strVec.back() == "NOT "){
+			//adding element
+			Proposition j;
+			j.propNot=true;
+			strVec.pop_back();
+			j.propOperator=strVec.back().substr(strVec.back().length()-1, 1);
+			if (j.propOperator == "=" && (strVec.back().substr(strVec.back().length()-2, 1)== "<" || strVec.back().substr(strVec.back().length()-2, 1)== ">")){
+				j.propOperator = strVec.back().substr(strVec.back().length()-2, 1)+j.propOperator;
+				j.propAttribute = strVec.back().substr(0, strVec.back().length()-2);
+			}else
+			j.propAttribute=strVec.back().substr(0, strVec.back().length()-1);
+			strVec.pop_back();
+			j.propValue=strVec.back();
+			strVec.pop_back();
+			j.connType="prop";
+			propVec.at(currentLevel).push_back(j);
+			
+		
+			
+		
+		}else if (strVec.back() == "AND " || strVec.back() == "OR "){
+		strVec.pop_back();
+		}else{
+		Proposition j;
+			j.propNot=false;
+			j.propOperator=strVec.back().substr(strVec.back().length()-1, 1);
+			if (j.propOperator == "=" && (strVec.back().substr(strVec.back().length()-2, 1)== "<" || strVec.back().substr(strVec.back().length()-2, 1)== ">")){
+				j.propOperator = strVec.back().substr(strVec.back().length()-2, 1)+j.propOperator;
+				j.propAttribute = strVec.back().substr(0, strVec.back().length()-2);
+			}else
+			j.propAttribute=strVec.back().substr(0, strVec.back().length()-1);
+			strVec.pop_back();
+			j.propValue=strVec.back();
+			strVec.pop_back();
+			j.connType="prop";
+			propVec.at(currentLevel).push_back(j);
+		}
+	}
+	return propVec;
+}
+std::vector< std::vector< std::string > > generatecVec(std::vector<std::string> strVec){
+	std::vector< std::vector<string> > cVec;
+	std::vector< std::string > emptyVec;
+	cVec.push_back(emptyVec);
+	cVec.push_back(emptyVec);
+	cVec.push_back(emptyVec);
+	std::reverse(strVec.begin(), strVec.end());
+	int currentLevel=0;
+	while (strVec.back()!=""){
+		if (strVec.back() == "(") {
+			cVec.at(currentLevel).push_back(strVec.back());		
+			//cout<<"pushed to cVec["<<currentLevel<<"] "<< strVec.back()<<"\n";	
+			currentLevel++;
+			strVec.pop_back();
+		} else if (strVec.back() == ")") {
+			cVec.at(currentLevel).push_back(strVec.back());
+			//cout<<"pushed to cVec["<<currentLevel<<"] "<< strVec.back()<<"\n";
+			currentLevel--;
+			strVec.pop_back();
+		} else if (strVec.back() == "AND " ||strVec.back() == "OR " ){
+			cVec.at(currentLevel).push_back(strVec.back());
+			//cout<<"pushed to cVec["<<currentLevel<<"] "<< strVec.back()<<"\n";
+			strVec.pop_back();			
+		} else strVec.pop_back();
+	}
+	return cVec;
+}
+void pVecPrintout(std::vector< std::vector< Proposition > > pVec){
+	for (int i=0; i<3; i++){
+		cout<<"pVec["<<i<<"]\n";
+		for(std::vector<Proposition>::iterator it = pVec.at(i).begin(); it != pVec.at(i).end(); ++it) {
+			 it->printout();
+		}
+	}
+	return;
+}
+void cVecPrintout(std::vector< std::vector< string > > cVec){
+	for (int i=0; i<3; i++){
+		cout<<"cVec["<<i<<"]\n";
+		for(std::vector<string>::iterator it = cVec.at(i).begin(); it != cVec.at(i).end(); ++it) {
+			 std::cout << "'"<<*it<<"'\n"; 
+		}
+	}
+	return;
+}
+
+
 
 }

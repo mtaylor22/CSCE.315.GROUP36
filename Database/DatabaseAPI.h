@@ -4,12 +4,23 @@
 #define DBDLL_API __declspec(dllimport) 
 #endif
 #include <stdio.h>
-#include <iostream>
 #include <string>
+#include <vector>
+#include <iostream>
 #include <iterator>
 #include <vector>
 
 namespace DatabaseAPI {
+bool keyChar(char);
+int getParen(std::string);
+std::string removeParens(std::string);
+std::string readToken(std::string );
+std::vector<std::string> buildStrVec(std::string );
+std::string remSpaces(std::string );
+std::vector< std::vector<Proposition>> generateProps(std::vector<std::string> );
+std::vector< std::vector< std::string > > generatecVec(std::vector<std::string> );
+void pVecPrintout(std::vector< std::vector< Proposition > >);
+void cVecPrintout(std::vector< std::vector< std::string > >);
 class DBDLL_API Record {
 	std::vector<std::string> recordData;
 public:	
@@ -27,6 +38,7 @@ public:
 };
 
 class DBDLL_API Attribute {
+	
 	//added late 
 	public:
 	Attribute(std::string, std::string);
@@ -82,47 +94,50 @@ public:
 	int deleteTable (std::vector<std::string>, std::string, std::string);
 };
 
-/* the following is necessary to implement query
-connector and proposition can logically construct any "while" statement (in theory)
-for example
-
-((NOT Gender=female) AND (Age < 21))
-
-would be something like
-
-Connector head = Connector();
-Proposition a = Proposition("Gender", "=", "Female", true);
-Proposition b = Proposition("Age", "<", "21", true);
-head.propLeft = a;
-head.propRight = b;
-head.connType="AND";
-
-
-*/
-class DBDLL_API Proposition {
-public:
-	Proposition(){};
-	Proposition(std::string propAttr, std::string propOp, std::string propVal, bool not){
+class Proposition {
+  public:
+	Proposition(){
+		connType="";
+		propLeft=NULL;
+		propRight=NULL;
+		propNot=false;
+		};
+	Proposition(std::string propAttr, std::string propOp, std::string propVal, bool notVal){
 		propAttribute=propAttr;
 		propOperator=propOp;
-		propAttribute=propAttr;
 		propValue=propVal;
-		propNot = not;
+		propNot = notVal;
+		connType="";
+		propLeft=NULL;
+		propRight=NULL;
 	};
 	std::string propAttribute;
 	std::string propOperator;
 	std::string propValue;
+	int height;
 	bool propNot;
 	bool evaluation;
-};
-class DBDLL_API Connector {
-public:
-	Connector();
-	Connector(std::string , Proposition*, Proposition* );
+	bool linked;
 	std::string connType;
 	Proposition* propLeft;
 	Proposition* propRight;
+	void printout(){
+		if (connType == "prop"){
+		std::cout<<"Printing: '"<< this->propAttribute<<"' '"<< this->propOperator<<"' '"<<this->propValue<<"' \n";
+		} else {
+		std::cout<<"Printing: '"<< this->connType<<"' LEFT:\n";
+		if (propLeft != NULL) propLeft->printout();
+		std::cout<<"RIGHT:\n";
+		if (propRight != NULL) propRight->printout();
+		
+	}
+		}
 };
+
+
+
+
+
 
 
 

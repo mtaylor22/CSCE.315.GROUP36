@@ -1,0 +1,162 @@
+\hypertarget{class_record}{\section{Record Class Reference}
+\label{class_record}\index{Record@{Record}}
+}
+
+
+{\ttfamily \#include $<$record.\-h$>$}
+
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef vector$<$ pair$<$ string, \\*
+string $>$ $>$\-::const\-\_\-iterator \hyperlink{class_record_ae8a1c90a4d896429d087ccc1f205f9b7}{Record\-Iterator}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_record_ae8ee53ffec6ff4dac9911517d47e86a5}{Record} ()
+\item 
+\hyperlink{class_record_af6b85f753bb8dfea3e29728490b3d2a3}{Record} (vector$<$ pair$<$ string, string $>$ $>$ entries)
+\item 
+\hyperlink{class_record_ae8a1c90a4d896429d087ccc1f205f9b7}{Record\-Iterator} \hyperlink{class_record_a4f65302d712b34e19b8bac9aeff06016}{begin} () const 
+\item 
+\hyperlink{class_record_ae8a1c90a4d896429d087ccc1f205f9b7}{Record\-Iterator} \hyperlink{class_record_a50ab91b0bb46a381cd3e3b297e4b9d9e}{end} () const 
+\item 
+{\footnotesize template$<$typename T $>$ }\\T \hyperlink{class_record_a5b6392211018031e67e4d4c599046061}{get} (string field) const 
+\item 
+{\footnotesize template$<$typename T $>$ }\\void \hyperlink{class_record_ab3efe3a4a4e6a9359bbc82782084c821}{set} (string field, T new\-\_\-value)
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_record_a851228aba42b5cb2516b29cf6632df8b}{void {\bfseries join} (const \hyperlink{class_record}{Record} \&other)}\label{class_record_a851228aba42b5cb2516b29cf6632df8b}
+
+\item 
+\hypertarget{class_record_aba8b5c0a2299a45d068db1ce818051e4}{void {\bfseries erase} (string field)}\label{class_record_aba8b5c0a2299a45d068db1ce818051e4}
+
+\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_record_af888815e80064bc9fa1035c6265da86e}{class {\bfseries Table}}\label{class_record_af888815e80064bc9fa1035c6265da86e}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Allows for read and write access of field values.
+
+In the context of a table, fields are known as columns, but within a record they are called fields. 
+
+\subsection{Member Typedef Documentation}
+\hypertarget{class_record_ae8a1c90a4d896429d087ccc1f205f9b7}{\index{Record@{Record}!Record\-Iterator@{Record\-Iterator}}
+\index{Record\-Iterator@{Record\-Iterator}!Record@{Record}}
+\subsubsection[{Record\-Iterator}]{\setlength{\rightskip}{0pt plus 5cm}typedef vector$<$pair$<$string, string$>$ $>$\-::const\-\_\-iterator {\bf Record\-::\-Record\-Iterator}}}\label{class_record_ae8a1c90a4d896429d087ccc1f205f9b7}
+A const iterator over the fields in a record.
+
+Each element accessed by the iterator is a pair. The first element is the field name, the second is the value (in string form.) \begin{DoxySeeAlso}{See Also}
+\hyperlink{class_record_a4f65302d712b34e19b8bac9aeff06016}{begin()}, \hyperlink{class_record_a50ab91b0bb46a381cd3e3b297e4b9d9e}{end()} 
+\end{DoxySeeAlso}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_record_ae8ee53ffec6ff4dac9911517d47e86a5}{\index{Record@{Record}!Record@{Record}}
+\index{Record@{Record}!Record@{Record}}
+\subsubsection[{Record}]{\setlength{\rightskip}{0pt plus 5cm}Record\-::\-Record (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_record_ae8ee53ffec6ff4dac9911517d47e86a5}
+Create a record with no fields and no data. \hypertarget{class_record_af6b85f753bb8dfea3e29728490b3d2a3}{\index{Record@{Record}!Record@{Record}}
+\index{Record@{Record}!Record@{Record}}
+\subsubsection[{Record}]{\setlength{\rightskip}{0pt plus 5cm}Record\-::\-Record (
+\begin{DoxyParamCaption}
+\item[{vector$<$ pair$<$ string, string $>$ $>$}]{entries}
+\end{DoxyParamCaption}
+)}}\label{class_record_af6b85f753bb8dfea3e29728490b3d2a3}
+Create a record with existing entries 
+\begin{DoxyParams}{Parameters}
+{\em entries} & a std\-::vector of pairs, with the first element in the pair being the field/column name, and the second element being the value. \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_record_a4f65302d712b34e19b8bac9aeff06016}{\index{Record@{Record}!begin@{begin}}
+\index{begin@{begin}!Record@{Record}}
+\subsubsection[{begin}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Record\-Iterator} Record\-::begin (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_record_a4f65302d712b34e19b8bac9aeff06016}
+Returns an iterator to the first field in the record.
+
+Note that the Record\-Iterator gives you values in string form. If you want automatic conversions, use {\itshape get} instead.
+
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{class_record_a5b6392211018031e67e4d4c599046061}{get()}, \hyperlink{class_record_a50ab91b0bb46a381cd3e3b297e4b9d9e}{end()} 
+\end{DoxySeeAlso}
+\hypertarget{class_record_a50ab91b0bb46a381cd3e3b297e4b9d9e}{\index{Record@{Record}!end@{end}}
+\index{end@{end}!Record@{Record}}
+\subsubsection[{end}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Record\-Iterator} Record\-::end (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_record_a50ab91b0bb46a381cd3e3b297e4b9d9e}
+Returns an iterator past the end of the fields in the record. \begin{DoxySeeAlso}{See Also}
+\hyperlink{class_record_a4f65302d712b34e19b8bac9aeff06016}{begin()} 
+\end{DoxySeeAlso}
+\hypertarget{class_record_a5b6392211018031e67e4d4c599046061}{\index{Record@{Record}!get@{get}}
+\index{get@{get}!Record@{Record}}
+\subsubsection[{get}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ T Record\-::get (
+\begin{DoxyParamCaption}
+\item[{string}]{field}
+\end{DoxyParamCaption}
+) const}}\label{class_record_a5b6392211018031e67e4d4c599046061}
+Get the value of a field by column name. The field is converted to the requested C++ type if possible (otherwise, an {\itshape \hyperlink{class_invalid_type_error}{Invalid\-Type\-Error}} is thrown.)
+
+Example\-: 
+\begin{DoxyCode}
+myRecord.get<\textcolor{keywordtype}{int}>(\textcolor{stringliteral}{"age"});
+\textcolor{keywordtype}{string} name = myRecord.get<\textcolor{keywordtype}{string}>(\textcolor{stringliteral}{"name"});
+\end{DoxyCode}
+
+
+Throws a {\itshape \hyperlink{class_column_does_not_exist_error}{Column\-Does\-Not\-Exist\-Error}} if {\itshape field} doesn't exist.
+
+
+\begin{DoxyParams}{Parameters}
+{\em T} & The expected type of the field \\
+\hline
+{\em field} & The name of the field (column) in the record. \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_record_ab3efe3a4a4e6a9359bbc82782084c821}{\index{Record@{Record}!set@{set}}
+\index{set@{set}!Record@{Record}}
+\subsubsection[{set}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ void Record\-::set (
+\begin{DoxyParamCaption}
+\item[{string}]{field, }
+\item[{T}]{new\-\_\-value}
+\end{DoxyParamCaption}
+)}}\label{class_record_ab3efe3a4a4e6a9359bbc82782084c821}
+Set the value of a field by column name. The field is converted from the given C++ type if possible.
+
+Example\-: 
+\begin{DoxyCode}
+myRecord.set(\textcolor{stringliteral}{"age"}, 21);
+myRecord.set(\textcolor{stringliteral}{"name"}, \textcolor{stringliteral}{"Abraham Lincoln"});
+\end{DoxyCode}
+
+
+
+\begin{DoxyParams}{Parameters}
+{\em T} & The type of {\itshape field}; usually inferred by the compiler. \\
+\hline
+{\em field} & The name of the field (column) in the record. \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+record.\-h\end{DoxyCompactItemize}

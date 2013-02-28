@@ -1,0 +1,1038 @@
+diff --git a/test/CrossJoinTest.cpp b/test/CrossJoinTest.cpp
+old mode 100755
+new mode 100644
+index e0230da..f6d8f85
+--- a/test/CrossJoinTest.cpp
++++ b/test/CrossJoinTest.cpp
+@@ -1,4 +1,3 @@
+-#define BOOST_TEST_MODULE DatabaseTest
+ #include <boost/test/unit_test.hpp>
+ #include <iostream>
+ #include "database.h"
+@@ -55,6 +54,9 @@ BOOST_AUTO_TEST_CASE(crossjoins_test2)
+ 	r12.set("V1", "2");
+ 	r12.set("V2", "3");
+ 	r12.set("V3", "B");
++	a->insert(r11);
++	a->insert(r12);
++
+ 	//Create second table
+ 	b->add_column("D1", Table::varchar);
+ 	std::vector<std::string> k2;
+@@ -66,6 +68,10 @@ BOOST_AUTO_TEST_CASE(crossjoins_test2)
+ 	r22.set("D1", "EFGH");
+ 	Record r23;
+ 	r23.set("D1", "IJKL");
++	b->insert(r21);
++	b->insert(r22);
++	b->insert(r23);
++
+ 	Table c = a->cross_join(*b);
+ 	BOOST_CHECK(c.size() == 6);
+ }
+@@ -89,6 +95,9 @@ BOOST_AUTO_TEST_CASE(crossjoins_test3)
+ 	r12.set("V1", "2");
+ 	r12.set("V2", "3");
+ 	r12.set("V3", "B");
++	a->insert(r11);
++	a->insert(r12);
++
+ 	//Create second table
+ 	b->add_column("D1", Table::varchar);
+ 	std::vector<std::string> k2;
+@@ -101,13 +110,21 @@ BOOST_AUTO_TEST_CASE(crossjoins_test3)
+ 	Record r23;
+ 	r23.set("D1", "IJKL");
+ 	Record r24;
+-	r24.set("D1", "IJKL");
++	r24.set("D1", "MNOP");
+ 	Record r25;
+-	r25.set("D1", "IJKL");
++	r25.set("D1", "QRST");
+ 	Record r26;
+-	r26.set("D1", "IJKL");
++	r26.set("D1", "UVWY");
+ 	Record r27;
+-	r27.set("D1", "IJKL");
++	r27.set("D1", "Z123");
++	b->insert(r21);
++	b->insert(r22);
++	b->insert(r23);
++	b->insert(r24);
++	b->insert(r25);
++	b->insert(r26);
++	b->insert(r27);
++
+ 	Table c = a->cross_join(*b);
+ 	BOOST_CHECK(c.size() == 14);
+ }
+@@ -132,7 +149,7 @@ BOOST_AUTO_TEST_CASE(crossjoins_test4)
+ 	r12.set("V2", "3");
+ 	r12.set("V3", "B");
+ 	Record r13;
+-	r13.set("V1", "2");
++	r13.set("V1", "3");
+ 	r13.set("V2", "3");
+ 	r13.set("V3", "B");
+ 	a->insert(r11);
+@@ -142,7 +159,7 @@ BOOST_AUTO_TEST_CASE(crossjoins_test4)
+ 	b->add_column("D1", Table::varchar);
+ 	std::vector<std::string> k2;
+ 	k2.push_back("D1");
+-	b->set_key(k);
++	b->set_key(k2);
+ 	Record r21;
+ 	r21.set("D1", "ABCD");
+ 	Record r22;
+@@ -150,13 +167,13 @@ BOOST_AUTO_TEST_CASE(crossjoins_test4)
+ 	Record r23;
+ 	r23.set("D1", "IJKL");
+ 	Record r24;
+-	r24.set("D1", "IJKL");
++	r24.set("D1", "MNOP");
+ 	Record r25;
+-	r25.set("D1", "IJKL");
++	r25.set("D1", "QRST");
+ 	Record r26;
+-	r26.set("D1", "IJKL");
++	r26.set("D1", "UVWY");
+ 	Record r27;
+-	r27.set("D1", "IJKL");
++	r27.set("D1", "Z123");
+ 	b->insert(r21);
+ 	b->insert(r22);
+ 	b->insert(r23);
+@@ -195,7 +212,7 @@ BOOST_AUTO_TEST_CASE(naturaljoins_except_test)
+ 	b->add_column("key", Table::integer);
+ 	b->add_column("third", Table::varchar);
+ 	std::vector<std::string> k2;
+-	k2.push_back("key");
++	k2.push_back("third");
+ 	b->set_key(k2);
+ 	r21.set("key", "1");
+ 	r21.set("third", "dcb");
+@@ -387,7 +404,7 @@ BOOST_AUTO_TEST_CASE(naturaljoins_test3)
+ 	b->insert(r22);
+ 	b->insert(r23);
+ 	Table c = a->natural_join(*b);
+-	BOOST_CHECK(c.size() == 3);
++	BOOST_CHECK(c.size() == 2);
+ 	/*
+ 		key		second				key		third
+ 		1		a					1		dcb
+diff --git a/test/DatabaseTest.cpp b/test/DatabaseTest.cpp
+old mode 100755
+new mode 100644
+index 42e1f4d..c64c707
+--- a/test/DatabaseTest.cpp
++++ b/test/DatabaseTest.cpp
+@@ -1,4 +1,3 @@
+-#define BOOST_TEST_MODULE DatabaseTest
+ #include <boost/test/unit_test.hpp>
+ #include <iostream>
+ #include "database.h"
+@@ -104,6 +103,7 @@ BOOST_AUTO_TEST_CASE(drop_complex_test)
+ 	Table* test3 = new Table(t);
+ 	a.add_table("T3", test3);
+ 	//Drop one and check for effect on others
++	a.drop_table("Test");
+ 	BOOST_CHECK(a.table("T2") == test2);
+ 	BOOST_CHECK(a.table("T3") == test3);
+ 	//Build vector to test against
+@@ -111,7 +111,7 @@ BOOST_AUTO_TEST_CASE(drop_complex_test)
+ 	comp.push_back("T2");
+ 	comp.push_back("T3");
+ 	BOOST_CHECK(a.table_names() == comp);	//Check to see if table names returns properly
+-	BOOST_CHECK(a.table_if_exists("AAA") == NULL);
++	BOOST_CHECK(a.table_if_exists("Test") == NULL);
+ 	BOOST_CHECK(a.table_if_exists("T2") == test2);
+ }
+ 
+@@ -170,7 +170,7 @@ BOOST_AUTO_TEST_CASE(merge_test)
+ 	a.merge(b);
+ 	BOOST_CHECK(a.table_if_exists("Test2") != NULL);
+ 	BOOST_CHECK(a.table_if_exists("Test3") != NULL);
+-	Database c = a.copy();
+-	BOOST_CHECK(c.table("Test2") == a.table("Test2"));
++	Database *c = a.copy();
++	BOOST_CHECK(c->table("Test2") == a.table("Test2"));
+ }
+ BOOST_AUTO_TEST_SUITE_END()
+\ No newline at end of file
+diff --git a/test/QueryTest.cpp b/test/QueryTest.cpp
+old mode 100755
+new mode 100644
+index e84dc99..078de53
+--- a/test/QueryTest.cpp
++++ b/test/QueryTest.cpp
+@@ -1,8 +1,10 @@
+-#define BOOST_TEST_MODULE DatabaseTest
+ #include <boost/test/unit_test.hpp>
++#include <boost/test/floating_point_comparison.hpp>
+ #include <iostream>
+ #include "database.h"
+ 
++static const double TOL = 0.0001;
++
+ BOOST_AUTO_TEST_CASE( query_test1 )
+ {
+ 	/*
+@@ -74,6 +76,7 @@ BOOST_AUTO_TEST_CASE( query_test1 )
+ 	/*
+ 		now we run a query on the table created by query2 to get the top left hand entry
+ 	*/
++  d.add_table("query2_table", query2_table);
+ 	Table* query3_table = d.query("first_column","query2_table","first_column = 'c1_r1'");
+ 	/* table from query:
+ 		first_column
+@@ -129,10 +132,10 @@ BOOST_AUTO_TEST_CASE( query_test2 )
+ 	columns.push_back(make_pair("column3",Table::date));
+ 
+ 	// make table and set the key
+-	Table t1(columns);
++	Table *t1 = new Table(columns);
+ 	vector<string> the_key;
+ 	the_key.push_back("column2");
+-	t1.set_key(the_key);
++	t1->set_key(the_key);
+ 
+ 	// add records
+ 	vector<pair<string, string>> rec1;
+@@ -140,22 +143,22 @@ BOOST_AUTO_TEST_CASE( query_test2 )
+ 	rec1.push_back(make_pair("column2", "record1"));
+ 	rec1.push_back(make_pair("column3", "2013/01/01"));
+ 	Record r1(rec1);
+-	t1.insert(r1);
++	t1->insert(r1);
+ 
+ 	vector<pair<string, string>> rec2;
+-	rec1.push_back(make_pair("column1", "2"));
+-	rec1.push_back(make_pair("column2", "record2"));
+-	rec1.push_back(make_pair("column3", "2013/01/01"));
++	rec2.push_back(make_pair("column1", "2"));
++	rec2.push_back(make_pair("column2", "record2"));
++	rec2.push_back(make_pair("column3", "2013/01/01"));
+ 	Record r2(rec2);
+-	t1.insert(r2);
++	t1->insert(r2);
+ 
+ 	vector<pair<string, string>> rec3;
+-	rec1.push_back(make_pair("column1", "3"));
+-	rec1.push_back(make_pair("column2", "record3"));
+-	rec1.push_back(make_pair("column3", "2013/01/01"));
++	rec3.push_back(make_pair("column1", "3"));
++	rec3.push_back(make_pair("column2", "record3"));
++	rec3.push_back(make_pair("column3", "2013/01/01"));
+ 	Record r3(rec3);
+-	t1.insert(r3);
+-	d.add_table("table1",&t1);
++	t1->insert(r3);
++	d.add_table("table1", t1);
+ 
+ 	/*table 1 looks like:
+ 			column1	column2	column3
+@@ -241,8 +244,8 @@ BOOST_AUTO_TEST_CASE( query_test2 )
+ 	BOOST_CHECK_THROW(d.update("table", "column1 > 1", "column2 = 'yolo'"), TableDoesNotExistError);
+ 
+ 	BOOST_CHECK_THROW(d.query("column1", "table1", "column1 (>) 1"), QuerySyntaxError);
+-	BOOST_CHECK_THROW(d.delete_from("Table1", "column1 =! 1"), QuerySyntaxError);
+-	BOOST_CHECK_THROW(d.update("table", "column1 > 1", "column2 =< 'yolo'"), QuerySyntaxError);
++	BOOST_CHECK_THROW(d.delete_from("table1", "column1 =! 1"), QuerySyntaxError);
++	BOOST_CHECK_THROW(d.update("table1", "column1 > 1", "column2 =< 'yolo'"), QuerySyntaxError);
+ }
+ 
+ BOOST_AUTO_TEST_CASE( query_test3 )
+@@ -258,10 +261,10 @@ BOOST_AUTO_TEST_CASE( query_test3 )
+ 	columns.push_back(make_pair("weight",Table::floating));
+ 	columns.push_back(make_pair("time_entered",Table::time));
+ 
+-	Table t1(columns);
++	Table *t1 = new Table(columns);
+ 	vector<string> the_key;
+ 	the_key.push_back("first_name");
+-	t1.set_key(the_key);
++	t1->set_key(the_key);
+ 
+ 	// add records
+ 	vector<pair<string, string>> rec1;
+@@ -271,7 +274,7 @@ BOOST_AUTO_TEST_CASE( query_test3 )
+ 	rec1.push_back(make_pair("weight", "148.7"));
+ 	rec1.push_back(make_pair("time_entered","03:59:00"));
+ 	Record r1(rec1);
+-	t1.insert(r1);
++	t1->insert(r1);
+ 
+ 	vector<pair<string, string>> rec2;
+ 	rec2.push_back(make_pair("first_name", "George"));
+@@ -280,7 +283,7 @@ BOOST_AUTO_TEST_CASE( query_test3 )
+ 	rec2.push_back(make_pair("weight", "170.3"));
+ 	rec2.push_back(make_pair("time_entered","04:02:00"));
+ 	Record r2(rec2);
+-	t1.insert(r2);
++	t1->insert(r2);
+ 
+ 	vector<pair<string, string>> rec3;
+ 	rec3.push_back(make_pair("first_name", "Linda"));
+@@ -289,7 +292,7 @@ BOOST_AUTO_TEST_CASE( query_test3 )
+ 	rec3.push_back(make_pair("weight", "133.5"));
+ 	rec3.push_back(make_pair("time_entered","04:03:00"));
+ 	Record r3(rec3);
+-	t1.insert(r3);
++	t1->insert(r3);
+ 
+ 	vector<pair<string, string>> rec4;
+ 	rec4.push_back(make_pair("first_name", "Angela"));
+@@ -298,7 +301,7 @@ BOOST_AUTO_TEST_CASE( query_test3 )
+ 	rec4.push_back(make_pair("weight", "140.1"));
+ 	rec4.push_back(make_pair("time_entered","04:05:00"));
+ 	Record r4(rec4);
+-	t1.insert(r4);
++	t1->insert(r4);
+ 
+ 	vector<pair<string, string>> rec5;
+ 	rec5.push_back(make_pair("first_name", "Mildred"));
+@@ -307,8 +310,8 @@ BOOST_AUTO_TEST_CASE( query_test3 )
+ 	rec5.push_back(make_pair("weight", "137.2"));
+ 	rec5.push_back(make_pair("time_entered","04:06:00"));
+ 	Record r5(rec5);
+-	t1.insert(r5);
+-	d.add_table("table1",&t1);
++	t1->insert(r5);
++	d.add_table("table1", t1);
+ 
+ 	/*table1 looks like:
+ 		first_name	age		birthdate	weight	time_entered
+@@ -337,24 +340,24 @@ BOOST_AUTO_TEST_CASE( query_test3 )
+ 	BOOST_CHECK(q2_table1_r1.get<string>("first_name") == "George");
+ 	BOOST_CHECK(q2_table1_r1.get<int>("age") == 33);
+ 	BOOST_CHECK(q2_table1_r1.get<string>("birthdate") == "1979/10/18");
+-	BOOST_CHECK(q2_table1_r1.get<float>("weight") == 170.3);
++	BOOST_CHECK_CLOSE(q2_table1_r1.get<float>("weight"), 170.3, TOL);
+ 	BOOST_CHECK(q2_table1_r1.get<string>("time_entered") == "04:02:00");
+ 	Record q2_table1_r2 = q2_table1->at(1);
+ 	BOOST_CHECK(q2_table1_r2.get<string>("first_name") == "Linda");
+ 	BOOST_CHECK(q2_table1_r2.get<int>("age") == 59);
+ 	BOOST_CHECK(q2_table1_r2.get<string>("birthdate") == "1954/02/21");
+-	BOOST_CHECK(q2_table1_r2.get<float>("weight") == 133.5);
++	BOOST_CHECK_CLOSE(q2_table1_r2.get<float>("weight"), 133.5, TOL);
+ 	BOOST_CHECK(q2_table1_r2.get<string>("time_entered") == "04:03:00");
+ 	Record q2_table1_r3 = q2_table1->at(2);
+ 	BOOST_CHECK(q2_table1_r3.get<string>("first_name") == "Mildred");
+ 	BOOST_CHECK(q2_table1_r3.get<int>("age") == 79);
+ 	BOOST_CHECK(q2_table1_r3.get<string>("birthdate") == "1933/10/05");
+-	BOOST_CHECK(q2_table1_r3.get<float>("weight") == 137.2);
++	BOOST_CHECK_CLOSE(q2_table1_r3.get<float>("weight"), 137.2, TOL);
+ 	BOOST_CHECK(q2_table1_r3.get<string>("time_entered") == "04:06:00");
+ 
+ 	// the next query we want the name of people who were
+ 	// entered after 04:00:00 AND their bday is before 1960/01/01
+-	Table* q3_table1 = d.query("first_name", "table1", "time_entered > 04:00:00 AND birtdate < 1960/01/01");
++	Table* q3_table1 = d.query("first_name", "table1", "time_entered > 04:00:00 AND birthdate < 1960/01/01");
+ 	// this should produce Linda, Angela, and Mildred
+ 	Record q3_table1_r1 = q3_table1->at(0);
+ 	BOOST_CHECK(q3_table1_r1.get<string>("first_name") == "Linda");
+@@ -379,20 +382,14 @@ BOOST_AUTO_TEST_CASE( query_test3 )
+ 	BOOST_CHECK(q4_table1_r1.get<string>("first_name") == "Pam");
+ 	BOOST_CHECK(q4_table1_r1.get<int>("age") == 64);
+ 	BOOST_CHECK(q4_table1_r1.get<string>("birthdate") == "1948/09/26");
+-	BOOST_CHECK(q4_table1_r1.get<float>("weight") == 148.7);
++	BOOST_CHECK_CLOSE(q4_table1_r1.get<float>("weight"), 148.7, TOL);
+ 	BOOST_CHECK(q4_table1_r1.get<string>("time_entered") == "03:59:00");
+ 	Record q4_table1_r2 = q4_table1->at(1);
+ 	BOOST_CHECK(q4_table1_r2.get<string>("first_name") == "George");
+ 	BOOST_CHECK(q4_table1_r2.get<int>("age") == 33);
+ 	BOOST_CHECK(q4_table1_r2.get<string>("birthdate") == "1979/10/18");
+-	BOOST_CHECK(q4_table1_r2.get<float>("weight") == 170.3);
++	BOOST_CHECK_CLOSE(q4_table1_r2.get<float>("weight"), 170.3, TOL);
+ 	BOOST_CHECK(q4_table1_r2.get<string>("time_entered") == "04:02:00");
+-	Record q4_table1_r3 = q4_table1->at(2);
+-	BOOST_CHECK(q4_table1_r3.get<string>("first_name") == "Angela");
+-	BOOST_CHECK(q4_table1_r3.get<int>("age") == 53);
+-	BOOST_CHECK(q4_table1_r3.get<string>("birthdate") == "1959/06/07");
+-	BOOST_CHECK(q4_table1_r3.get<float>("weight") == 140.1);
+-	BOOST_CHECK(q4_table1_r3.get<string>("time_entered") == "04:05:00");
+ 
+ 	/**********
+ 		now we get to delete and update again, table looks like this for a refresher:
+@@ -411,11 +408,11 @@ BOOST_AUTO_TEST_CASE( query_test3 )
+ 	// now let update weight to just be 130 if it is aleady below 140
+ 	d.update("table1", "weight < 140", "weight = 130.0");
+ 	Record update1_table1_r1 = d.table("table1")->at(0);
+-	BOOST_CHECK(update1_table1_r1.get<float>("weight") == 130.0);
++	BOOST_CHECK_CLOSE(update1_table1_r1.get<float>("weight"), 130.0, TOL);
+ 	Record update1_table1_r2 = d.table("table1")->at(1);
+-	BOOST_CHECK(update1_table1_r2.get<float>("weight") == 140.1);
++	BOOST_CHECK_CLOSE(update1_table1_r2.get<float>("weight"), 140.1, TOL);
+ 	Record update1_table1_r3 = d.table("table1")->at(2);
+-	BOOST_CHECK(update1_table1_r3.get<float>("weight") == 130.0);
++	BOOST_CHECK_CLOSE(update1_table1_r3.get<float>("weight"), 130.0, TOL);
+ 
+ 	// now lets delete if the weight is equal to 130
+ 	d.delete_from("table1", "weight = 130.0");
+@@ -437,13 +434,13 @@ BOOST_AUTO_TEST_CASE( query_test5 )
+ 	t1->add_column("id", Table::integer);
+ 	t1->add_column("gpa", Table::floating);
+ 	vector<string> key;
+-	key.push_back("column2");
++	key.push_back("id");
+ 	t1->set_key(key);
+ 
+ 	vector<pair<string, string>> rec1;
+ 	rec1.push_back(make_pair("student", "Ruth"));
+ 	rec1.push_back(make_pair("id", "335"));
+-	rec1.push_back(make_pair("id", "2.7"));
++	rec1.push_back(make_pair("gpa", "2.7"));
+ 	Record r1(rec1);
+ 	t1->insert(r1);
+ 	vector<pair<string, string>> rec2;
+@@ -613,7 +610,7 @@ BOOST_AUTO_TEST_CASE( query_test5 )
+ 	// now if a student has a gpa of 3.9 or higher we can round them up to 4.0
+ 	d.update("students", "gpa >= 3.9", "gpa = 4.0");
+ 	Record check_update = d.table("students")->at(2); // kenneth should be last entry
+-	BOOST_CHECK(check_update.get<float>("gpa") == 4.0);
++	BOOST_CHECK_CLOSE(check_update.get<float>("gpa"), 4.0, TOL);
+ 
+ 
+ 	// exception testing
+diff --git a/test/RecordTest.cpp b/test/RecordTest.cpp
+old mode 100755
+new mode 100644
+index da6f5c4..292fbf2
+--- a/test/RecordTest.cpp
++++ b/test/RecordTest.cpp
+@@ -1,8 +1,10 @@
+-#define BOOST_TEST_MODULE DatabaseTest
+ #include <boost/test/unit_test.hpp>
++#include <boost/test/floating_point_comparison.hpp>
+ #include <iostream>
+ #include "database.h"
+ 
++static const double TOL = 0.0001;
++
+ 
+ BOOST_AUTO_TEST_CASE( record_test1 )
+ {
+@@ -33,7 +35,7 @@ BOOST_AUTO_TEST_CASE( record_test1 )
+ 	BOOST_CHECK( temp_rec1.get<string>("first_name") == "Pam");
+ 	BOOST_CHECK( temp_rec1.get<int>("age") == 64);
+ 	BOOST_CHECK( temp_rec1.get<string>("birthdate") == "1948/09/26");
+-	BOOST_CHECK( temp_rec1.get<float>("weight") == 148.7);
++	BOOST_CHECK_CLOSE( temp_rec1.get<float>("weight"), 148.7, TOL);
+ 	BOOST_CHECK( temp_rec1.get<string>("time_entered") == "03:59:00");
+ 
+ 	temp_rec1.set("first_name", "Bill");
+@@ -45,13 +47,15 @@ BOOST_AUTO_TEST_CASE( record_test1 )
+ 	BOOST_CHECK( temp_rec1.get<string>("first_name") == "Bill");
+ 	BOOST_CHECK( temp_rec1.get<int>("age") == 21);
+ 	BOOST_CHECK( temp_rec1.get<string>("birthdate") == "1992/01/01");
+-	BOOST_CHECK( temp_rec1.get<float>("weight") == 180.3);
++	BOOST_CHECK_CLOSE( temp_rec1.get<float>("weight"), 180.3, TOL);
+ 	BOOST_CHECK( temp_rec1.get<string>("time_entered") == "06:57:00");
+ 
+ 	// exception testing
+ 	BOOST_CHECK_THROW( temp_rec1.get<string>("last_name"),  ColumnDoesNotExistError);
+-	BOOST_CHECK_THROW( temp_rec1.set("last_name", "What last name?"), ColumnDoesNotExistError);
+-	BOOST_CHECK_THROW( temp_rec1.set("birthdate", 11111), InvalidTypeError);
++  // we removed this from our api
++	// BOOST_CHECK_THROW( temp_rec1.set("last_name", "What last name?"), ColumnDoesNotExistError);
++	// Record::set was not specified to do any type checking
++  // BOOST_CHECK_THROW( temp_rec1.set("birthdate", 11111), InvalidTypeError);
+ 
+ 	// this is really all we need since record is tested so much throughout the testing (especially query)
+ }
+diff --git a/test/TableTest.cpp b/test/TableTest.cpp
+old mode 100755
+new mode 100644
+index fdfea7a..2644007
+--- a/test/TableTest.cpp
++++ b/test/TableTest.cpp
+@@ -1,8 +1,8 @@
+-#define BOOST_TEST_MODULE DatabaseTest
+ #include <boost/test/unit_test.hpp>
+ #include <iostream>
+ #include "database.h"
+ 
++static const double TOL = 0.0001;
+ 
+ //CONSTRUCTOR TESTS
+ //Default
+@@ -99,18 +99,12 @@ BOOST_AUTO_TEST_CASE(add_column_test_nulls)
+ 	v1.push_back(make_pair("aaaa", "1"));
+ 	v1.push_back(make_pair("bbbb", "1"));
+ 	Record r1(v1);
+-	r1.set("ID", Table::integer);
+-	r1.set("aaaa", Table::integer);
+-	r1.set("bbbb", Table::integer);
+ 	t.insert(r1);
+ 	vector<pair<string, string> > v2;
+ 	v2.push_back(make_pair("ID", "2"));
+ 	v2.push_back(make_pair("aaaa", "2"));
+ 	v2.push_back(make_pair("bbbb", "2"));
+ 	Record r2(v2);
+-	r2.set("ID", Table::integer);
+-	r2.set("aaaa", Table::integer);
+-	r2.set("bbbb", Table::integer);
+ 	t.insert(r2);
+ 	t.add_column("cccc", Table::integer);
+ 	for (int i = 0; i < t.size(); i++) {
+@@ -146,18 +140,12 @@ BOOST_AUTO_TEST_CASE(delete_column_check_records)
+ 	v1.push_back(make_pair("aaaa", "1"));
+ 	v1.push_back(make_pair("bbbb", "1"));
+ 	Record r1(v1);
+-	r1.set("ID", Table::integer);
+-	r1.set("aaaa", Table::integer);
+-	r1.set("bbbb", Table::integer);
+ 	t.insert(r1);
+ 	vector<pair<string, string> > v2;
+ 	v2.push_back(make_pair("ID", "2"));
+ 	v2.push_back(make_pair("aaaa", "2"));
+ 	v2.push_back(make_pair("bbbb", "2"));
+ 	Record r2(v2);
+-	r2.set("ID", Table::integer);
+-	r2.set("aaaa", Table::integer);
+-	r2.set("bbbb", Table::integer);
+ 	t.insert(r2);
+ 	t.del_column("bbbb");
+ 	for (int i = 0; i < t.size(); i++) {
+@@ -210,7 +198,7 @@ BOOST_AUTO_TEST_CASE(columns_check_from_add)
+ 	Table t;
+ 	t.add_column("test", Table::date);
+ 	Table::ColumnList c;
+-	c.push_back(make_pair("test", Table::integer));
++	c.push_back(make_pair("test", Table::date));
+ 	BOOST_CHECK(t.columns() == c);
+ }
+ 
+@@ -268,9 +256,6 @@ BOOST_AUTO_TEST_CASE(set_key_invalid_exception)
+ 	v1.push_back(make_pair("aaaa", "1"));
+ 	v1.push_back(make_pair("bbbb", "1"));
+ 	Record r1(v1);
+-	r1.set("ID", Table::integer);
+-	r1.set("aaaa", Table::integer);
+-	r1.set("bbbb", Table::integer);
+ 	t.insert(r1);
+ 	vector<string> keys;
+ 	keys.push_back("aaaa");
+@@ -326,9 +311,6 @@ BOOST_AUTO_TEST_CASE(size_test_one)
+ 	v1.push_back(make_pair("aaaa", "1"));
+ 	v1.push_back(make_pair("bbbb", "1"));
+ 	Record r1(v1);
+-	r1.set("ID", Table::integer);
+-	r1.set("aaaa", Table::integer);
+-	r1.set("bbbb", Table::integer);
+ 	t.insert(r1);
+ 	BOOST_CHECK(t.size() == 1);
+ }
+@@ -347,18 +329,12 @@ BOOST_AUTO_TEST_CASE(size_test_many)
+ 	v1.push_back(make_pair("aaaa", "1"));
+ 	v1.push_back(make_pair("bbbb", "1"));
+ 	Record r1(v1);
+-	r1.set("ID", Table::integer);
+-	r1.set("aaaa", Table::integer);
+-	r1.set("bbbb", Table::integer);
+ 	t.insert(r1);
+ 	vector<pair<string, string> > v2;
+ 	v2.push_back(make_pair("ID", "2"));
+ 	v2.push_back(make_pair("aaaa", "2"));
+ 	v2.push_back(make_pair("bbbb", "2"));
+ 	Record r2(v2);
+-	r2.set("ID", Table::integer);
+-	r2.set("aaaa", Table::integer);
+-	r2.set("bbbb", Table::integer);
+ 	t.insert(r2);
+ 	BOOST_CHECK(t.size() == 2);
+ }
+@@ -374,7 +350,7 @@ BOOST_AUTO_TEST_CASE(insert_all_nulls)
+ 	names.push_back("ID");
+ 	t.set_key(names);
+ 	Record r1;
+-	BOOST_CHECK(t.size() == 1);
++	BOOST_CHECK(t.size() == 0);
+ 	BOOST_CHECK(t.count("ID") == 0);
+ 	BOOST_CHECK(t.count("aaaa") == 0);
+ 	BOOST_CHECK(t.count("bbbb") == 0);
+@@ -382,39 +358,39 @@ BOOST_AUTO_TEST_CASE(insert_all_nulls)
+ 	//BOOST_CHECK(t.last() == r1);
+ }
+ 
+-BOOST_AUTO_TEST_CASE(insert_some_nulls)
+-{
+-	Table t;
+-	t.add_column("ID", Table::integer);
+-	t.add_column("aaaa", Table::integer);
+-	t.add_column("bbbb", Table::integer);
+-	vector<string> names;
+-	names.push_back("ID");
+-	t.set_key(names);				 
+-	vector<pair<string, string> > v1;
+-	v1.push_back(make_pair("ID", "1"));
+-	Record r1(v1);
+-	r1.set("ID", Table::integer);
+-	t.insert(r1);
+-	BOOST_CHECK(t.size() == 1);
+-	BOOST_CHECK(t.count("ID") == 1);
+-	BOOST_CHECK(t.count("aaaa") == 0);
+-	BOOST_CHECK(t.count("bbbb") == 0);
+-	//BOOST_CHECK(t.first() == r1);
+-	//BOOST_CHECK(t.last() == r1);
+-	vector<pair<string, string> > v2;
+-	v2.push_back(make_pair("ID", "1"));
+-	v2.push_back(make_pair("aaaa", "1"));
+-	Record r2(v2);
+-	r2.set("ID", Table::integer);
+-	r2.set("aaaa", Table::integer);
+-	t.insert(r2);
+-	BOOST_CHECK(t.size() == 2);
+-	BOOST_CHECK(t.count("ID") == 2);
+-	BOOST_CHECK(t.count("aaaa") == 1);
+-	BOOST_CHECK(t.count("bbbb") == 0);
+-	//BOOST_CHECK(t.last() == r2);
+-}
++
++// You can't insert records without values for a column according to the api,
++// so these tests don't make sense
++// BOOST_AUTO_TEST_CASE(insert_some_nulls)
++// {
++// 	Table t;
++// 	t.add_column("ID", Table::integer);
++// 	t.add_column("aaaa", Table::integer);
++// 	t.add_column("bbbb", Table::integer);
++// 	vector<string> names;
++// 	names.push_back("ID");
++// 	t.set_key(names);
++// 	vector<pair<string, string> > v1;
++// 	v1.push_back(make_pair("ID", "1"));
++// 	Record r1(v1);
++// 	t.insert(r1);
++// 	BOOST_CHECK(t.size() == 1);
++// 	BOOST_CHECK(t.count("ID") == 1);
++// 	BOOST_CHECK(t.count("aaaa") == 0);
++// 	BOOST_CHECK(t.count("bbbb") == 0);
++// 	//BOOST_CHECK(t.first() == r1);
++// 	//BOOST_CHECK(t.last() == r1);
++// 	vector<pair<string, string> > v2;
++// 	v2.push_back(make_pair("ID", "1"));
++// 	v2.push_back(make_pair("aaaa", "1"));
++// 	Record r2(v2);
++// 	t.insert(r2);
++// 	BOOST_CHECK(t.size() == 2);
++// 	BOOST_CHECK(t.count("ID") == 2);
++// 	BOOST_CHECK(t.count("aaaa") == 1);
++// 	BOOST_CHECK(t.count("bbbb") == 0);
++// 	//BOOST_CHECK(t.last() == r2);
++// }
+ 
+ BOOST_AUTO_TEST_CASE(insert_no_nulls)
+ {
+@@ -430,9 +406,6 @@ BOOST_AUTO_TEST_CASE(insert_no_nulls)
+ 	v1.push_back(make_pair("aaaa", "1"));
+ 	v1.push_back(make_pair("bbbb", "1"));
+ 	Record r1(v1);
+-	r1.set("ID", Table::integer);
+-	r1.set("aaaa", Table::integer);
+-	r1.set("bbbb", Table::integer);
+ 	t.insert(r1);
+ 	BOOST_CHECK(t.size() == 1);
+ 	BOOST_CHECK(t.count("ID") == 1);
+@@ -451,19 +424,17 @@ BOOST_AUTO_TEST_CASE(insert_key_exception)
+ 	vector<string> names;
+ 	names.push_back("ID");
+ 	t.set_key(names);
+-	Record r1;
+-	r1.set("ID", 1);
+-	r1.set("aaaa", 1);
+-	r1.set("bbbb", 1);
++	vector<pair<string, string> > v1;
++	v1.push_back(make_pair("ID", "1"));
++	v1.push_back(make_pair("aaaa", "1"));
++	v1.push_back(make_pair("bbbb", "1"));
++  Record r1(v1);
+ 	t.insert(r1);
+ 	vector<pair<string, string> > v2;
+ 	v2.push_back(make_pair("ID", "1"));
+ 	v2.push_back(make_pair("aaaa", "2"));
+ 	v2.push_back(make_pair("bbbb", "2"));
+ 	Record r2(v2);
+-	r2.set("ID", Table::integer);
+-	r2.set("aaaa", Table::integer);
+-	r2.set("bbbb", Table::integer);
+ 	BOOST_CHECK_THROW(t.insert(r2), KeyConflictError);
+ }
+ 
+@@ -482,9 +453,6 @@ BOOST_AUTO_TEST_CASE(begin_test)
+ 	v1.push_back(make_pair("aaaa", "1"));
+ 	v1.push_back(make_pair("bbbb", "1"));
+ 	Record r1(v1);
+-	r1.set("ID", Table::integer);
+-	r1.set("aaaa", Table::integer);
+-	r1.set("bbbb", Table::integer);
+ 	t.insert(r1);
+ 	Record test = *t.begin();
+ 	BOOST_CHECK(test.get<int>("ID") == 1);
+@@ -495,9 +463,6 @@ BOOST_AUTO_TEST_CASE(begin_test)
+ 	v2.push_back(make_pair("aaaa", "2"));
+ 	v2.push_back(make_pair("bbbb", "2"));
+ 	Record r2(v2);
+-	r2.set("ID", Table::integer);
+-	r2.set("aaaa", Table::integer);
+-	r2.set("bbbb", Table::integer);
+ 	t.insert(r2);
+ 	test = *t.begin();
+ 	BOOST_CHECK(test.get<int>("ID") == 1);
+@@ -520,11 +485,8 @@ BOOST_AUTO_TEST_CASE(end_test)
+ 	v1.push_back(make_pair("aaaa", "1"));
+ 	v1.push_back(make_pair("bbbb", "1"));
+ 	Record r1(v1);
+-	r1.set("ID", Table::integer);
+-	r1.set("aaaa", Table::integer);
+-	r1.set("bbbb", Table::integer);
+ 	t.insert(r1);
+-	Record test = *t.end();
++	Record test = *t.begin();
+ 	BOOST_CHECK(test.get<int>("ID") == 1);
+ 	BOOST_CHECK(test.get<int>("aaaa") == 1);
+ 	BOOST_CHECK(test.get<int>("bbbb") == 1);
+@@ -533,14 +495,12 @@ BOOST_AUTO_TEST_CASE(end_test)
+ 	v2.push_back(make_pair("aaaa", "2"));
+ 	v2.push_back(make_pair("bbbb", "2"));
+ 	Record r2(v2);
+-	r2.set("ID", Table::integer);
+-	r2.set("aaaa", Table::integer);
+-	r2.set("bbbb", Table::integer);
+ 	t.insert(r2);
+-	test = *t.end();
+-	BOOST_CHECK(test.get<int>("ID") == 2);
+-	BOOST_CHECK(test.get<int>("aaaa") == 2);
+-	BOOST_CHECK(test.get<int>("bbbb") == 2); 
++  // you can't derefernece t.end(), t.end() points to the point in memory AFTER the last record
++	// test = *t.end();
++	// BOOST_CHECK(test.get<int>("ID") == 2);
++	// BOOST_CHECK(test.get<int>("aaaa") == 2);
++	// BOOST_CHECK(test.get<int>("bbbb") == 2);
+ }
+ 
+ //FIRST TESTS
+@@ -558,9 +518,6 @@ BOOST_AUTO_TEST_CASE(first_test)
+ 	v1.push_back(make_pair("aaaa", "1"));
+ 	v1.push_back(make_pair("bbbb", "1"));
+ 	Record r1(v1);
+-	r1.set("ID", Table::integer);
+-	r1.set("aaaa", Table::integer);
+-	r1.set("bbbb", Table::integer);
+ 	t.insert(r1);
+ 	Record test = t.first();
+ 	BOOST_CHECK(test.get<int>("ID") == 1);
+@@ -571,9 +528,6 @@ BOOST_AUTO_TEST_CASE(first_test)
+ 	v2.push_back(make_pair("aaaa", "2"));
+ 	v2.push_back(make_pair("bbbb", "2"));
+ 	Record r2(v2);
+-	r2.set("ID", Table::integer);
+-	r2.set("aaaa", Table::integer);
+-	r2.set("bbbb", Table::integer);
+ 	t.insert(r2);
+ 	test = t.first();
+ 	BOOST_CHECK(test.get<int>("ID") == 1);
+@@ -596,9 +550,6 @@ BOOST_AUTO_TEST_CASE(last_test)
+ 	v1.push_back(make_pair("aaaa", "1"));
+ 	v1.push_back(make_pair("bbbb", "1"));
+ 	Record r1(v1);
+-	r1.set("ID", Table::integer);
+-	r1.set("aaaa", Table::integer);
+-	r1.set("bbbb", Table::integer);
+ 	t.insert(r1);
+ 	Record test = t.last();
+ 	BOOST_CHECK(test.get<int>("ID") == 1);
+@@ -609,9 +560,6 @@ BOOST_AUTO_TEST_CASE(last_test)
+ 	v2.push_back(make_pair("aaaa", "2"));
+ 	v2.push_back(make_pair("bbbb", "2"));
+ 	Record r2(v2);
+-	r2.set("ID", Table::integer);
+-	r2.set("aaaa", Table::integer);
+-	r2.set("bbbb", Table::integer);
+ 	t.insert(r2);
+ 	test = t.last();
+ 	BOOST_CHECK(test.get<int>("ID") == 2);
+@@ -634,9 +582,6 @@ BOOST_AUTO_TEST_CASE(at_test)
+ 	v1.push_back(make_pair("aaaa", "1"));
+ 	v1.push_back(make_pair("bbbb", "1"));
+ 	Record r1(v1);
+-	r1.set("ID", Table::integer);
+-	r1.set("aaaa", Table::integer);
+-	r1.set("bbbb", Table::integer);
+ 	t.insert(r1);
+ 	Record test = t.at(0);
+ 	BOOST_CHECK(test.get<int>("ID") == 1);
+@@ -647,9 +592,6 @@ BOOST_AUTO_TEST_CASE(at_test)
+ 	v2.push_back(make_pair("aaaa", "2"));
+ 	v2.push_back(make_pair("bbbb", "2"));
+ 	Record r2(v2);
+-	r2.set("ID", Table::integer);
+-	r2.set("aaaa", Table::integer);
+-	r2.set("bbbb", Table::integer);
+ 	t.insert(r2);
+ 	test = t.at(0);
+ 	BOOST_CHECK(test.get<int>("ID") == 1);
+@@ -675,9 +617,6 @@ BOOST_AUTO_TEST_CASE(at_test_exceptions)
+ 	v1.push_back(make_pair("aaaa", "1"));
+ 	v1.push_back(make_pair("bbbb", "1"));
+ 	Record r1(v1);
+-	r1.set("ID", Table::integer);
+-	r1.set("aaaa", Table::integer);
+-	r1.set("bbbb", Table::integer);
+ 	t.insert(r1);
+ 	BOOST_CHECK_THROW(t.at(t.size()), RowDoesNotExistError);
+ 	BOOST_CHECK_THROW(t.at(-1), RowDoesNotExistError);
+@@ -698,39 +637,38 @@ BOOST_AUTO_TEST_CASE(count_test_none)
+ 	BOOST_CHECK(t.count("bbbb") == 0);
+ }
+ 
+-BOOST_AUTO_TEST_CASE(count_test_nulls)
+-{
+-	Table t;
+-	t.add_column("ID", Table::integer);
+-	t.add_column("aaaa", Table::integer);
+-	t.add_column("bbbb", Table::integer);
+-	vector<string> names;
+-	names.push_back("ID");
+-	t.set_key(names);
+-	Record r1;
+-	t.insert(r1);
+-	BOOST_CHECK(t.count("ID") == 0);
+-	BOOST_CHECK(t.count("aaaa") == 0);
+-	BOOST_CHECK(t.count("bbbb") == 0);
+-	vector<pair<string, string> > v2;
+-	v2.push_back(make_pair("ID", "1"));
+-	Record r2(v2);
+-	r2.set("ID", Table::integer);
+-	t.insert(r2);
+-	BOOST_CHECK(t.count("ID") == 1);
+-	BOOST_CHECK(t.count("aaaa") == 0);
+-	BOOST_CHECK(t.count("bbbb") == 0);
+-	vector<pair<string, string> > v3;
+-	v3.push_back(make_pair("ID", "1"));
+-	v3.push_back(make_pair("aaaa", "1"));
+-	Record r3(v3);
+-	r3.set("ID", Table::integer);
+-	r3.set("aaaa", Table::integer);
+-	t.insert(r3);
+-	BOOST_CHECK(t.count("ID") == 2);
+-	BOOST_CHECK(t.count("aaaa") == 1);
+-	BOOST_CHECK(t.count("bbbb") == 0);
+-}
++// You can't insert records without values for a column according to the api,
++// so these tests don't make sense
++// BOOST_AUTO_TEST_CASE(count_test_nulls)
++// {
++// 	Table t;
++// 	t.add_column("ID", Table::integer);
++// 	t.add_column("aaaa", Table::integer);
++// 	t.add_column("bbbb", Table::integer);
++// 	vector<string> names;
++// 	names.push_back("ID");
++// 	t.set_key(names);
++// 	Record r1;
++// 	t.insert(r1);
++// 	BOOST_CHECK(t.count("ID") == 0);
++// 	BOOST_CHECK(t.count("aaaa") == 0);
++// 	BOOST_CHECK(t.count("bbbb") == 0);
++// 	vector<pair<string, string> > v2;
++// 	v2.push_back(make_pair("ID", "1"));
++// 	Record r2(v2);
++// 	t.insert(r2);
++// 	BOOST_CHECK(t.count("ID") == 1);
++// 	BOOST_CHECK(t.count("aaaa") == 0);
++// 	BOOST_CHECK(t.count("bbbb") == 0);
++// 	vector<pair<string, string> > v3;
++// 	v3.push_back(make_pair("ID", "1"));
++// 	v3.push_back(make_pair("aaaa", "1"));
++// 	Record r3(v3);
++// 	t.insert(r3);
++// 	BOOST_CHECK(t.count("ID") == 2);
++// 	BOOST_CHECK(t.count("aaaa") == 1);
++// 	BOOST_CHECK(t.count("bbbb") == 0);
++// }
+ 
+ BOOST_AUTO_TEST_CASE(count_test_regular)
+ {
+@@ -746,9 +684,6 @@ BOOST_AUTO_TEST_CASE(count_test_regular)
+ 	v1.push_back(make_pair("aaaa", "1"));
+ 	v1.push_back(make_pair("bbbb", "1"));
+ 	Record r1(v1);
+-	r1.set("ID", Table::integer);
+-	r1.set("aaaa", Table::integer);
+-	r1.set("bbbb", Table::integer);
+ 	t.insert(r1);
+ 	BOOST_CHECK(t.count("ID") == 1);
+ 	BOOST_CHECK(t.count("aaaa") == 1);
+@@ -758,9 +693,6 @@ BOOST_AUTO_TEST_CASE(count_test_regular)
+ 	v2.push_back(make_pair("aaaa", "2"));
+ 	v2.push_back(make_pair("bbbb", "2"));
+ 	Record r2(v2);
+-	r2.set("ID", Table::integer);
+-	r2.set("aaaa", Table::integer);
+-	r2.set("bbbb", Table::integer);
+ 	t.insert(r2);
+ 	BOOST_CHECK(t.count("ID") == 2);
+ 	BOOST_CHECK(t.count("aaaa") == 2);
+@@ -794,14 +726,12 @@ BOOST_AUTO_TEST_CASE(sum_works)
+ 	v1.push_back(make_pair("ID", "1"));
+ 	v1.push_back(make_pair("aaaa", "1"));
+ 	v1.push_back(make_pair("bbbb", "2"));
++	v1.push_back(make_pair("cccc", "0"));
+ 	Record r1(v1);
+-	r1.set("ID", Table::integer);
+-	r1.set("aaaa", Table::integer);
+-	r1.set("bbbb", Table::integer);
+ 	t.insert(r1);
+ 	BOOST_CHECK(t.sum<int>("ID") == 1);
+ 	BOOST_CHECK(t.sum<int>("aaaa") == 1);
+-	BOOST_CHECK(t.sum<int>("bbbb") == 1);
++	BOOST_CHECK(t.sum<int>("bbbb") == 2);
+ 	BOOST_CHECK(t.sum<int>("cccc") == 0);
+ 	vector<pair<string, string> > v2;
+ 	v2.push_back(make_pair("ID", "2"));
+@@ -809,10 +739,6 @@ BOOST_AUTO_TEST_CASE(sum_works)
+ 	v2.push_back(make_pair("bbbb", "-1"));
+ 	v2.push_back(make_pair("cccc", "0"));
+ 	Record r2(v2);
+-	r2.set("ID", Table::integer);
+-	r2.set("aaaa", Table::integer);
+-	r2.set("bbbb", Table::integer);
+-	r2.set("cccc", Table::integer);
+ 	t.insert(r2);
+ 	BOOST_CHECK(t.sum<int>("ID") == 3);
+ 	BOOST_CHECK(t.sum<int>("aaaa") == 1);
+@@ -834,9 +760,6 @@ BOOST_AUTO_TEST_CASE(sum_column_exception)
+ 	v1.push_back(make_pair("aaaa", "1"));
+ 	v1.push_back(make_pair("bbbb", "1"));
+ 	Record r1(v1);
+-	r1.set("ID", Table::integer);
+-	r1.set("aaaa", Table::integer);
+-	r1.set("bbbb", Table::integer);
+ 	t.insert(r1);
+ 	BOOST_CHECK_THROW(t.sum<int>("blah"), ColumnDoesNotExistError);
+ }
+@@ -855,9 +778,6 @@ BOOST_AUTO_TEST_CASE(sum_numeric_exception)
+ 	v1.push_back(make_pair("aaaa", "blah"));
+ 	v1.push_back(make_pair("bbbb", "1"));
+ 	Record r1(v1);
+-	r1.set("ID", Table::integer);
+-	r1.set("aaaa", Table::varchar);
+-	r1.set("bbbb", Table::integer);
+ 	t.insert(r1);
+ 	BOOST_CHECK_THROW(t.sum<int>("aaaa"), InvalidOperationError);
+ }
+@@ -876,11 +796,8 @@ BOOST_AUTO_TEST_CASE(sum_type_exception)
+ 	v1.push_back(make_pair("aaaa", "2013/02/01"));
+ 	v1.push_back(make_pair("bbbb", "1"));
+ 	Record r1(v1);
+-	r1.set("ID", Table::integer);
+-	r1.set("aaaa", Table::date);
+-	r1.set("bbbb", Table::integer);
+ 	t.insert(r1);
+-	BOOST_CHECK_THROW(t.sum<char>("aaaa"), InvalidTypeError);
++	BOOST_CHECK_THROW(t.sum<char>("aaaa"), InvalidOperationError);
+ }
+ 
+ //MIN TESTS
+@@ -896,9 +813,10 @@ BOOST_AUTO_TEST_CASE(min_no_entries)
+ 	vector<string> names;
+ 	names.push_back("ID");
+ 	t.set_key(names);
+-	Record r1;
+-	t.insert(r1);
+-	BOOST_CHECK(t.min<int>("ID") == NULL);
++  // you cannot insert records that do not have the same columns as the table
++  // *Record r1;
++	// t.insert(r1);
++	// BOOST_CHECK(t.min<int>("ID") == NULL);
+ }
+ 
+ BOOST_AUTO_TEST_CASE(min_works)
+@@ -919,14 +837,9 @@ BOOST_AUTO_TEST_CASE(min_works)
+ 	v1.push_back(make_pair("date", "2013/02/01"));
+ 	v1.push_back(make_pair("time", "04:20:01"));
+ 	Record r1(v1);
+-	r1.set("ID", Table::integer);
+-	r1.set("float", Table::floating);
+-	r1.set("vchar", Table::varchar);
+-	r1.set("date", Table::date);
+-	r1.set("time", Table::time);
+ 	t.insert(r1);
+ 	BOOST_CHECK(t.min<int>("ID") == 1);
+-	BOOST_CHECK(t.min<float>("float") == 2.5);
++	BOOST_CHECK_CLOSE(t.min<float>("float"), 2.5, TOL);
+ 	BOOST_CHECK(t.min<string>("vchar") == "blah");
+ 	BOOST_CHECK(t.min<string>("date") == "2013/02/01");
+ 	BOOST_CHECK(t.min<string>("time") == "04:20:01");
+@@ -937,14 +850,9 @@ BOOST_AUTO_TEST_CASE(min_works)
+ 	v2.push_back(make_pair("date", "2012/01/02"));
+ 	v2.push_back(make_pair("time", "05:20:01"));
+ 	Record r2(v2);
+-	r2.set("ID", Table::integer);
+-	r2.set("float", Table::floating);
+-	r2.set("vchar", Table::varchar);
+-	r2.set("date", Table::date);
+-	r2.set("time", Table::time);
+ 	t.insert(r2);
+ 	BOOST_CHECK(t.min<int>("ID") == 1);
+-	BOOST_CHECK(t.min<float>("float") == 1.5);
++	BOOST_CHECK_CLOSE(t.min<float>("float"), 1.5, TOL);
+ 	BOOST_CHECK(t.min<string>("vchar") == "all");
+ 	BOOST_CHECK(t.min<string>("date") == "2012/01/02");
+ 	BOOST_CHECK(t.min<string>("time") == "04:20:01");
+@@ -985,9 +893,10 @@ BOOST_AUTO_TEST_CASE(max_no_entries)
+ 	vector<string> names;
+ 	names.push_back("ID");
+ 	t.set_key(names);
+-	Record r1;
+-	t.insert(r1);
+-	BOOST_CHECK(t.max<int>("ID") == NULL);
++  // you cannot insert records that do not have the same columns as the table
++  // *Record r1;
++	// t.insert(r1);
++	// BOOST_CHECK(t.max<int>("ID") == NULL);
+ }
+ 
+ BOOST_AUTO_TEST_CASE(max_works)
+@@ -1008,14 +917,9 @@ BOOST_AUTO_TEST_CASE(max_works)
+ 	v1.push_back(make_pair("date", "2013/02/01"));
+ 	v1.push_back(make_pair("time", "04:20:01"));
+ 	Record r1(v1);
+-	r1.set("ID", Table::integer);
+-	r1.set("float", Table::floating);
+-	r1.set("vchar", Table::varchar);
+-	r1.set("date", Table::date);
+-	r1.set("time", Table::time);
+ 	t.insert(r1);
+ 	BOOST_CHECK(t.max<int>("ID") == 1);
+-	BOOST_CHECK(t.max<float>("float") == 2.5);
++	BOOST_CHECK_CLOSE(t.max<float>("float"), 2.5, TOL);
+ 	BOOST_CHECK(t.max<string>("vchar") == "blah");
+ 	BOOST_CHECK(t.max<string>("date") == "2013/02/01");
+ 	BOOST_CHECK(t.max<string>("time") == "04:20:01");
+@@ -1026,14 +930,9 @@ BOOST_AUTO_TEST_CASE(max_works)
+ 	v2.push_back(make_pair("date", "2012/01/02"));
+ 	v2.push_back(make_pair("time", "05:20:01"));
+ 	Record r2(v2);
+-	r2.set("ID", Table::integer);
+-	r2.set("float", Table::floating);
+-	r2.set("vchar", Table::varchar);
+-	r2.set("date", Table::date);
+-	r2.set("time", Table::time);
+ 	t.insert(r2);
+ 	BOOST_CHECK(t.max<int>("ID") == 2);
+-	BOOST_CHECK(t.max<float>("float") == 2.5);
++	BOOST_CHECK_CLOSE(t.max<float>("float"), 2.5, TOL);
+ 	BOOST_CHECK(t.max<string>("vchar") == "blah");
+ 	BOOST_CHECK(t.max<string>("date") == "2013/02/01");
+ 	BOOST_CHECK(t.max<string>("time") == "05:20:01");
+diff --git a/test/module.cpp b/test/module.cpp
+new file mode 100644
+index 0000000..c7eeb19
+--- /dev/null
++++ b/test/module.cpp
+@@ -0,0 +1,2 @@
++#define BOOST_TEST_MODULE DatabaseTest
++#include <boost/test/unit_test.hpp>
+\ No newline at end of file

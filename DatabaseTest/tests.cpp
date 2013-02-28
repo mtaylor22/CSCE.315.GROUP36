@@ -8,6 +8,27 @@ BOOST_AUTO_TEST_CASE( AddTest )
 {
 	//------Tests for Record------
 	
+	std::string j = "(NOT Gender=female OR NOT Red=Blue AND (Yellow>Green OR Me=Que)) AND Age<21 AND (hi=hello OR (im=youre OR you = me))";
+
+	//(NOT Gender=female) AND Age < 21
+	//NOT Gender=female
+	//Age=18 AND Name=Bob
+	//((NOT Gender=female) AND (Age < 21)
+	//((NOT Gender=female) AND (Age < 21))
+	//(NOT Gender=female) AND Age < 19
+	//(NOT Gender=male) OR (Age <= 18)
+	//((NOT Gender=female) AND (NOT Age = 18))
+	j=DatabaseAPI::remSpaces(removeParens(j));
+	cout<<j<<"\n";
+	vector<string> strVec = buildStrVec(j);
+	vector< vector< Proposition > > pVec = generateProps(strVec);
+	vector< vector< string > > cVec = generatecVec(strVec);
+	cout<<"\n\n";
+	pVecPrintout(pVec);
+	cout<<"\n\n";
+	cVecPrintout(cVec);
+
+
 	Record r = Record();	//blank constructor is pointless
 	Record r2 = Record(3);
 	//check if the constructor gives an error when the argument is not an int.

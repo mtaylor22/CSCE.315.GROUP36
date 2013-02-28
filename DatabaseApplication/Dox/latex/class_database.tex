@@ -1,0 +1,267 @@
+\hypertarget{class_database}{\section{Database Class Reference}
+\label{class_database}\index{Database@{Database}}
+}
+
+
+{\ttfamily \#include $<$database.\-h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_database_a4703c80e6969d33565ea340f768fdadf}{Database} ()
+\item 
+void \hyperlink{class_database_a1f7550b57bc33787114c40078a38e36d}{add\-\_\-table} (string name, \hyperlink{class_table}{Table} $\ast$\hyperlink{class_database_a73027c54c1f7907d48aa31a1196c4238}{table})
+\item 
+void \hyperlink{class_database_abe4f1ffd1e94eddfeff6634b25a8d905}{drop\-\_\-table} (string name)
+\item 
+vector$<$ string $>$ \hyperlink{class_database_a9706507bd920dcea216553b08e995eb7}{table\-\_\-names} ()
+\item 
+\hyperlink{class_table}{Table} $\ast$ \hyperlink{class_database_a73027c54c1f7907d48aa31a1196c4238}{table} (string table\-\_\-name)
+\item 
+\hyperlink{class_table}{Table} $\ast$ \hyperlink{class_database_a15b71527a4147465453e83c9f0cb0852}{table\-\_\-if\-\_\-exists} (string table\-\_\-name)
+\item 
+\hyperlink{class_table}{Table} $\ast$ \hyperlink{class_database_a0520f606f68e207ca972e1c84b625805}{query} (string select, string from, string where)
+\item 
+void \hyperlink{class_database_a12693f5c16b9e8c42cbaee651aa91383}{delete\-\_\-from} (string from, string where)
+\item 
+void \hyperlink{class_database_a16075d5f6abe6faaa9b33fdeb224fb1b}{update} (string table\-\_\-name, string where, string set)
+\item 
+void \hyperlink{class_database_ae6b7167bafabc6fc4227807fb15d4d83}{save} (string filename)
+\item 
+void \hyperlink{class_database_ab246df676fdc5e7a0968f659e819adfa}{load} (string filename)
+\item 
+void \hyperlink{class_database_a50aa2c5fbadfc54f2e098809d8b889ca}{merge} (const \hyperlink{class_database}{Database} \&database)
+\item 
+\hyperlink{class_database}{Database} $\ast$ \hyperlink{class_database_a71182e0a2e0ad7eb5af44af3b91b23fd}{copy} ()
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+The entry point for creating tables, deleting records, and running queries. 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_database_a4703c80e6969d33565ea340f768fdadf}{\index{Database@{Database}!Database@{Database}}
+\index{Database@{Database}!Database@{Database}}
+\subsubsection[{Database}]{\setlength{\rightskip}{0pt plus 5cm}Database\-::\-Database (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_database_a4703c80e6969d33565ea340f768fdadf}
+Creates an empty database 
+
+\subsection{Member Function Documentation}
+\hypertarget{class_database_a1f7550b57bc33787114c40078a38e36d}{\index{Database@{Database}!add\-\_\-table@{add\-\_\-table}}
+\index{add\-\_\-table@{add\-\_\-table}!Database@{Database}}
+\subsubsection[{add\-\_\-table}]{\setlength{\rightskip}{0pt plus 5cm}void Database\-::add\-\_\-table (
+\begin{DoxyParamCaption}
+\item[{string}]{name, }
+\item[{{\bf Table} $\ast$}]{table}
+\end{DoxyParamCaption}
+)}}\label{class_database_a1f7550b57bc33787114c40078a38e36d}
+Add a table to the database.
+
+Ownership of the table is permanently transferred to the database, and it will be destroyed when the database is destroyed. You M\-U\-S\-T allocate the table with {\itshape new}. Do N\-O\-T destroy the table after adding it to the database!
+
+
+\begin{DoxyCode}
+\hyperlink{class_database}{Database} db;
+\hyperlink{class_table}{Table} *table = \textcolor{keyword}{new} \hyperlink{class_table}{Table};
+db.\hyperlink{class_database_a1f7550b57bc33787114c40078a38e36d}{add\_table}(\textcolor{stringliteral}{"my\_table"}, table);
+\end{DoxyCode}
+
+
+Throws an {\itshape \hyperlink{class_invalid_operation_error}{Invalid\-Operation\-Error}} if {\itshape name} already exists in the database.
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & what to call the table in the database \\
+\hline
+{\em table} & the \hyperlink{class_table}{Table} to be inserted into the database \\
+\hline
+\end{DoxyParams}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{class_table}{Table} 
+\end{DoxySeeAlso}
+\hypertarget{class_database_a71182e0a2e0ad7eb5af44af3b91b23fd}{\index{Database@{Database}!copy@{copy}}
+\index{copy@{copy}!Database@{Database}}
+\subsubsection[{copy}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Database}$\ast$ Database\-::copy (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_database_a71182e0a2e0ad7eb5af44af3b91b23fd}
+Make a copy of this database \begin{DoxyReturn}{Returns}
+a one-\/for-\/one copy / clone of this database 
+\end{DoxyReturn}
+\hypertarget{class_database_a12693f5c16b9e8c42cbaee651aa91383}{\index{Database@{Database}!delete\-\_\-from@{delete\-\_\-from}}
+\index{delete\-\_\-from@{delete\-\_\-from}!Database@{Database}}
+\subsubsection[{delete\-\_\-from}]{\setlength{\rightskip}{0pt plus 5cm}void Database\-::delete\-\_\-from (
+\begin{DoxyParamCaption}
+\item[{string}]{from, }
+\item[{string}]{where}
+\end{DoxyParamCaption}
+)}}\label{class_database_a12693f5c16b9e8c42cbaee651aa91383}
+Delete all records that match the query.
+
+Throws a {\itshape \hyperlink{class_table_does_not_exist_error}{Table\-Does\-Not\-Exist\-Error}} if {\itshape from} does not exist. Throws a {\itshape \hyperlink{class_query_syntax_error}{Query\-Syntax\-Error}} if {\itshape where} has a syntax error.
+
+
+\begin{DoxyParams}{Parameters}
+{\em from} & which table to query from \\
+\hline
+{\em where} & the conditions for the query to match \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_database_abe4f1ffd1e94eddfeff6634b25a8d905}{\index{Database@{Database}!drop\-\_\-table@{drop\-\_\-table}}
+\index{drop\-\_\-table@{drop\-\_\-table}!Database@{Database}}
+\subsubsection[{drop\-\_\-table}]{\setlength{\rightskip}{0pt plus 5cm}void Database\-::drop\-\_\-table (
+\begin{DoxyParamCaption}
+\item[{string}]{name}
+\end{DoxyParamCaption}
+)}}\label{class_database_abe4f1ffd1e94eddfeff6634b25a8d905}
+Remove a table from the database.
+
+The table is destroyed with {\itshape delete} when this function is called.
+
+Throws a {\itshape \hyperlink{class_table_does_not_exist_error}{Table\-Does\-Not\-Exist\-Error}} if {\itshape name} does not exist in the database.
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & which table to remove from the database \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A pointer to the \hyperlink{class_table}{Table}, which can now be destroyed. 
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{class_database_a9706507bd920dcea216553b08e995eb7}{table\-\_\-names()} 
+\end{DoxySeeAlso}
+\hypertarget{class_database_ab246df676fdc5e7a0968f659e819adfa}{\index{Database@{Database}!load@{load}}
+\index{load@{load}!Database@{Database}}
+\subsubsection[{load}]{\setlength{\rightskip}{0pt plus 5cm}void Database\-::load (
+\begin{DoxyParamCaption}
+\item[{string}]{filename}
+\end{DoxyParamCaption}
+)}}\label{class_database_ab246df676fdc5e7a0968f659e819adfa}
+Load a database from a file, this will clear any existing records Throws an {\itshape \hyperlink{class_i_o_error}{I\-O\-Error}} on failture. 
+\begin{DoxyParams}{Parameters}
+{\em filename} & the input file \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_database_a50aa2c5fbadfc54f2e098809d8b889ca}{\index{Database@{Database}!merge@{merge}}
+\index{merge@{merge}!Database@{Database}}
+\subsubsection[{merge}]{\setlength{\rightskip}{0pt plus 5cm}void Database\-::merge (
+\begin{DoxyParamCaption}
+\item[{const {\bf Database} \&}]{database}
+\end{DoxyParamCaption}
+)}}\label{class_database_a50aa2c5fbadfc54f2e098809d8b889ca}
+Merge another database into this one. Tables in this database are overwritten by tables in {\itshape database}. 
+\begin{DoxyParams}{Parameters}
+{\em database} & The database that you want to merge into this one. \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_database_a0520f606f68e207ca972e1c84b625805}{\index{Database@{Database}!query@{query}}
+\index{query@{query}!Database@{Database}}
+\subsubsection[{query}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Table}$\ast$ Database\-::query (
+\begin{DoxyParamCaption}
+\item[{string}]{select, }
+\item[{string}]{from, }
+\item[{string}]{where}
+\end{DoxyParamCaption}
+)}}\label{class_database_a0520f606f68e207ca972e1c84b625805}
+Perform a query on the database. Here are some examples of possible queries\-:
+
+
+\begin{DoxyCode}
+myDatabase.query(\textcolor{stringliteral}{"name"}, \textcolor{stringliteral}{"students"}, \textcolor{stringliteral}{"gender = 'male'"});
+myDatabase.query(\textcolor{stringliteral}{"name"}, \textcolor{stringliteral}{"students"}, \textcolor{stringliteral}{"(gender = 'male' AND age > 21) OR age > 65"});
+myDatabase.query(\textcolor{stringliteral}{"name"}, \textcolor{stringliteral}{"students"}, \textcolor{stringliteral}{"gender = 'female' AND id IN good\_students"});
+myDatabase.query(\textcolor{stringliteral}{"*"}, \textcolor{stringliteral}{"students"}, \textcolor{stringliteral}{"gpa >= ALL(good\_student\_gpas)"});
+myDatabase.query(\textcolor{stringliteral}{"id"}, \textcolor{stringliteral}{"students"}, \textcolor{stringliteral}{"gpa >= ANY(good\_student\_gpas) AND NOT (id IN good\_students)"});
+myDatabase.query(\textcolor{stringliteral}{"*"}, \textcolor{stringliteral}{"students"}, \textcolor{stringliteral}{"EXISTS(good\_students)"});
+\end{DoxyCode}
+
+
+Throws a {\itshape \hyperlink{class_table_does_not_exist_error}{Table\-Does\-Not\-Exist\-Error}} if {\itshape from} does not exist. Throws a {\itshape \hyperlink{class_query_syntax_error}{Query\-Syntax\-Error}} if {\itshape select} or {\itshape where} have a syntax error.
+
+
+\begin{DoxyParams}{Parameters}
+{\em select} & which columns to include in the returned \hyperlink{class_table}{Table} \\
+\hline
+{\em from} & which table to query from \\
+\hline
+{\em where} & the conditions for the query to match \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A pointer to \hyperlink{class_table}{Table} with all of the records that match the query 
+\end{DoxyReturn}
+\hypertarget{class_database_ae6b7167bafabc6fc4227807fb15d4d83}{\index{Database@{Database}!save@{save}}
+\index{save@{save}!Database@{Database}}
+\subsubsection[{save}]{\setlength{\rightskip}{0pt plus 5cm}void Database\-::save (
+\begin{DoxyParamCaption}
+\item[{string}]{filename}
+\end{DoxyParamCaption}
+)}}\label{class_database_ae6b7167bafabc6fc4227807fb15d4d83}
+Save the database to a file Throws an {\itshape \hyperlink{class_i_o_error}{I\-O\-Error}} on failture. 
+\begin{DoxyParams}{Parameters}
+{\em filename} & the output file \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_database_a73027c54c1f7907d48aa31a1196c4238}{\index{Database@{Database}!table@{table}}
+\index{table@{table}!Database@{Database}}
+\subsubsection[{table}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Table}$\ast$ Database\-::table (
+\begin{DoxyParamCaption}
+\item[{string}]{table\-\_\-name}
+\end{DoxyParamCaption}
+)}}\label{class_database_a73027c54c1f7907d48aa31a1196c4238}
+Returns the table named {\itshape table\-\_\-name} in the database. Throws a {\itshape \hyperlink{class_table_does_not_exist_error}{Table\-Does\-Not\-Exist\-Error}} if {\itshape table\-\_\-name} does not exist in the database. \hypertarget{class_database_a15b71527a4147465453e83c9f0cb0852}{\index{Database@{Database}!table\-\_\-if\-\_\-exists@{table\-\_\-if\-\_\-exists}}
+\index{table\-\_\-if\-\_\-exists@{table\-\_\-if\-\_\-exists}!Database@{Database}}
+\subsubsection[{table\-\_\-if\-\_\-exists}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Table}$\ast$ Database\-::table\-\_\-if\-\_\-exists (
+\begin{DoxyParamCaption}
+\item[{string}]{table\-\_\-name}
+\end{DoxyParamCaption}
+)}}\label{class_database_a15b71527a4147465453e83c9f0cb0852}
+Returns the table named {\itshape table\-\_\-name} in the database. Returns N\-U\-L\-L if {\itshape table\-\_\-name} does not exist in the database. \hypertarget{class_database_a9706507bd920dcea216553b08e995eb7}{\index{Database@{Database}!table\-\_\-names@{table\-\_\-names}}
+\index{table\-\_\-names@{table\-\_\-names}!Database@{Database}}
+\subsubsection[{table\-\_\-names}]{\setlength{\rightskip}{0pt plus 5cm}vector$<$string$>$ Database\-::table\-\_\-names (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_database_a9706507bd920dcea216553b08e995eb7}
+Returns a list of all the tables currently in the database \hypertarget{class_database_a16075d5f6abe6faaa9b33fdeb224fb1b}{\index{Database@{Database}!update@{update}}
+\index{update@{update}!Database@{Database}}
+\subsubsection[{update}]{\setlength{\rightskip}{0pt plus 5cm}void Database\-::update (
+\begin{DoxyParamCaption}
+\item[{string}]{table\-\_\-name, }
+\item[{string}]{where, }
+\item[{string}]{set}
+\end{DoxyParamCaption}
+)}}\label{class_database_a16075d5f6abe6faaa9b33fdeb224fb1b}
+Mass modify records in table. Examples\-:
+
+
+\begin{DoxyCode}
+myDatabase.update(\textcolor{stringliteral}{"students"}, \textcolor{stringliteral}{"gender = 'male'"}, \textcolor{stringliteral}{"gender = 'm'"});
+
+myDatabase.update(\textcolor{stringliteral}{"students"}, \textcolor{stringliteral}{"gender = 'male'"}, \textcolor{stringliteral}{"gender = 'm', school = 'A&M'"});
+
+myDatabase.update(\textcolor{stringliteral}{"students"}, \textcolor{stringliteral}{"gender = 'female'"}, \textcolor{stringliteral}{"age = age * 2"});
+\end{DoxyCode}
+
+
+Throws a {\itshape \hyperlink{class_table_does_not_exist_error}{Table\-Does\-Not\-Exist\-Error}} if {\itshape table} does not exist. Throws a {\itshape \hyperlink{class_query_syntax_error}{Query\-Syntax\-Error}} if {\itshape where} or {\itshape set} have a syntax error.
+
+
+\begin{DoxyParams}{Parameters}
+{\em table\-\_\-name} & name of the table to update records in \\
+\hline
+{\em where} & a S\-Q\-L where clause to find records in the table \\
+\hline
+{\em set} & a S\-Q\-L set clause \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+database.\-h\end{DoxyCompactItemize}

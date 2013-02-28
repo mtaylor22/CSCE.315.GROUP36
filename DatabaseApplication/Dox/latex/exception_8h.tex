@@ -1,0 +1,35 @@
+\hypertarget{exception_8h}{\section{exception.\-h File Reference}
+\label{exception_8h}\index{exception.\-h@{exception.\-h}}
+}
+{\ttfamily \#include $<$stdexcept$>$}\\*
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{class_column_does_not_exist_error}{Column\-Does\-Not\-Exist\-Error}
+\item 
+class \hyperlink{class_row_does_not_exist_error}{Row\-Does\-Not\-Exist\-Error}
+\item 
+class \hyperlink{class_table_does_not_exist_error}{Table\-Does\-Not\-Exist\-Error}
+\item 
+class \hyperlink{class_invalid_operation_error}{Invalid\-Operation\-Error}
+\item 
+class \hyperlink{class_key_conflict_error}{Key\-Conflict\-Error}
+\item 
+class \hyperlink{class_invalid_type_error}{Invalid\-Type\-Error}
+\item 
+class \hyperlink{class_query_syntax_error}{Query\-Syntax\-Error}
+\item 
+class \hyperlink{class_i_o_error}{I\-O\-Error}
+\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{exception_8h_a3472d8cdbb788d5f1815b3522595bc49}{\#define {\bfseries E\-X\-P\-O\-R\-T}~\-\_\-\-\_\-declspec(dllexport)}\label{exception_8h_a3472d8cdbb788d5f1815b3522595bc49}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Defines the exception classes used by this database.
+
+Every exception inherits from std\-::exception, and a detailed message can be obtained using {\itshape what()}. 

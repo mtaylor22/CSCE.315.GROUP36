@@ -1,0 +1,355 @@
+\hypertarget{class_table}{\section{Table Class Reference}
+\label{class_table}\index{Table@{Table}}
+}
+
+
+{\ttfamily \#include $<$table.\-h$>$}
+
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{class_table_af8f9ec96ecaa35a2e65312b74ddfeae6}{Record\-Type} \{ \\*
+\hyperlink{class_table_af8f9ec96ecaa35a2e65312b74ddfeae6a0e9b8fc48315b1aa6736b0a6d1a5dd5c}{undefined\-\_\-type} = 0, 
+\hyperlink{class_table_af8f9ec96ecaa35a2e65312b74ddfeae6a0739dd940ab69c758e43e1fd594f8500}{integer} = 1, 
+\hyperlink{class_table_af8f9ec96ecaa35a2e65312b74ddfeae6adb56749fe0fd26f3af064ab8b1b695b7}{floating} = 2, 
+\hyperlink{class_table_af8f9ec96ecaa35a2e65312b74ddfeae6aa112e11f34f9be73cb2be2b88f193ddb}{varchar} = 3, 
+\\*
+\hyperlink{class_table_af8f9ec96ecaa35a2e65312b74ddfeae6a31f82673442a5b478c44239c404d921c}{date} = 4, 
+\hyperlink{class_table_af8f9ec96ecaa35a2e65312b74ddfeae6ab7605a19d0f66b3e1d92a8270bdbf34b}{time} = 5
+ \}
+\item 
+typedef deque$<$ \hyperlink{class_record}{Record} $>$\\*
+\-::const\-\_\-iterator \hyperlink{class_table_aa04536c6711fef7696862b4d94c077e9}{Table\-Iterator}
+\item 
+\hypertarget{class_table_a15f34139f21ca44eb608b16e5cc8bd75}{typedef vector$<$ pair$<$ string, \\*
+\hyperlink{class_table_af8f9ec96ecaa35a2e65312b74ddfeae6}{Record\-Type} $>$ $>$ {\bfseries Column\-List}}\label{class_table_a15f34139f21ca44eb608b16e5cc8bd75}
+
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_table_a049f2e06391781ae255c6698869c4ad1}{Table} ()
+\item 
+\hyperlink{class_table_a9d931fcdaa2642148e5bea71dcd824a8}{Table} (const Column\-List \&\hyperlink{class_table_a3185dd0a29eb9fada468a2b42ff9a8a0}{columns})
+\item 
+\hyperlink{class_table}{Table} $\ast$ \hyperlink{class_table_ae0483f56898b052528eed1ae5391e11d}{clone\-\_\-structure} ()
+\item 
+void \hyperlink{class_table_a5eda782285dfd05d311de6905dab4e93}{add\-\_\-column} (string column\-\_\-name, \hyperlink{class_table_af8f9ec96ecaa35a2e65312b74ddfeae6}{Record\-Type} type)
+\item 
+void \hyperlink{class_table_af4c19f81efeece5e7dba4c17d4ee9203}{del\-\_\-column} (string column\-\_\-name)
+\item 
+void \hyperlink{class_table_ac5c19a55c8527ee267360cd1332317bd}{rename\-\_\-column} (string from, string to)
+\item 
+Column\-List \hyperlink{class_table_a3185dd0a29eb9fada468a2b42ff9a8a0}{columns} () const 
+\item 
+unsigned int \hyperlink{class_table_acb9ca5966a6dbae64a4923653031d932}{index\-\_\-for} (string column\-\_\-name) const 
+\item 
+void \hyperlink{class_table_a38aeaab31fddbd256bc702593a4e8792}{set\-\_\-key} (vector$<$ string $>$ column\-\_\-names)
+\item 
+vector$<$ string $>$ \hyperlink{class_table_a411f14354a9eb2b85f07fb2187d25271}{key} () const 
+\item 
+int \hyperlink{class_table_a2c5420361660d9e787487de8d6eb9e44}{size} () const 
+\item 
+void \hyperlink{class_table_aa1f3a42477818299c83c733e4aa82eb2}{insert} (const \hyperlink{class_record}{Record} \&record)
+\item 
+\hyperlink{class_table_aa04536c6711fef7696862b4d94c077e9}{Table\-Iterator} \hyperlink{class_table_a020add8ec0eb6fec40695c605adc9038}{begin} () const 
+\item 
+\hyperlink{class_table_aa04536c6711fef7696862b4d94c077e9}{Table\-Iterator} \hyperlink{class_table_a43c8c8884f3ea7ef66c5de5234e5d93d}{end} () const 
+\item 
+const \hyperlink{class_record}{Record} \& \hyperlink{class_table_a641c5957ec95abc233450a447c34b820}{first} () const 
+\item 
+const \hyperlink{class_record}{Record} \& \hyperlink{class_table_afb08a45913f50106dc16388579897134}{last} () const 
+\item 
+const \hyperlink{class_record}{Record} \& \hyperlink{class_table_a7f27c65febdd226b6973ea082863e0ee}{at} (unsigned int i) const 
+\item 
+\hyperlink{class_table}{Table} \hyperlink{class_table_a85c83b9f8eeba7cfc7373611297f2194}{cross\-\_\-join} (const \hyperlink{class_table}{Table} \&other) const 
+\item 
+\hyperlink{class_table}{Table} \hyperlink{class_table_afc179505ae7fdf06d2ec5564a24817dc}{natural\-\_\-join} (const \hyperlink{class_table}{Table} \&other) const 
+\item 
+int \hyperlink{class_table_a98e0ec7a2a729d9dc5f4de0324e021f5}{count} (string column\-\_\-name) const 
+\item 
+{\footnotesize template$<$typename T $>$ }\\T \hyperlink{class_table_ab00659a94da98ec7bd60a8a711b2ec77}{sum} (string column\-\_\-name) const 
+\item 
+{\footnotesize template$<$typename T $>$ }\\T \hyperlink{class_table_a2a4882f99726fba725314e2625ed37ae}{min} (string column\-\_\-name) const 
+\item 
+{\footnotesize template$<$typename T $>$ }\\T \hyperlink{class_table_abb7aff3403f246965d7557ab592110dd}{max} (string column\-\_\-name) const 
+\item 
+\hypertarget{class_table_ac6934afdb79cdb140098e0b4fa24acf6}{void {\bfseries drop\-\_\-where} (string where)}\label{class_table_ac6934afdb79cdb140098e0b4fa24acf6}
+
+\item 
+\hypertarget{class_table_ad4d6110f8a2d020c4f360cb23554357b}{void {\bfseries update} (string where, string set)}\label{class_table_ad4d6110f8a2d020c4f360cb23554357b}
+
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_table_a9e6d226580485a3eb54ed77dbd09c318}{static bool {\bfseries is\-\_\-valid} (\hyperlink{class_table_af8f9ec96ecaa35a2e65312b74ddfeae6}{Record\-Type} type, string str)}\label{class_table_a9e6d226580485a3eb54ed77dbd09c318}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+A table.
+
+Tables consist of columns (each with a name and a type) and rows (records).
+
+A table may or may not be inside a database. Often it is used for result sets from queries on a larger table. 
+
+\subsection{Member Typedef Documentation}
+\hypertarget{class_table_aa04536c6711fef7696862b4d94c077e9}{\index{Table@{Table}!Table\-Iterator@{Table\-Iterator}}
+\index{Table\-Iterator@{Table\-Iterator}!Table@{Table}}
+\subsubsection[{Table\-Iterator}]{\setlength{\rightskip}{0pt plus 5cm}typedef deque$<${\bf Record}$>$\-::const\-\_\-iterator {\bf Table\-::\-Table\-Iterator}}}\label{class_table_aa04536c6711fef7696862b4d94c077e9}
+A const iterator over the records in a table.
+
+Do not depend on the underlying type of Table\-Iterator in your code, but rather a generic iterator interface. 
+
+\subsection{Member Enumeration Documentation}
+\hypertarget{class_table_af8f9ec96ecaa35a2e65312b74ddfeae6}{\index{Table@{Table}!Record\-Type@{Record\-Type}}
+\index{Record\-Type@{Record\-Type}!Table@{Table}}
+\subsubsection[{Record\-Type}]{\setlength{\rightskip}{0pt plus 5cm}enum {\bf Table\-::\-Record\-Type}}}\label{class_table_af8f9ec96ecaa35a2e65312b74ddfeae6}
+An enum specifying the type of a column. \begin{Desc}
+\item[Enumerator]\par
+\begin{description}
+\index{undefined\-\_\-type@{undefined\-\_\-type}!Table@{Table}}\index{Table@{Table}!undefined\-\_\-type@{undefined\-\_\-type}}\item[{\em 
+\hypertarget{class_table_af8f9ec96ecaa35a2e65312b74ddfeae6a0e9b8fc48315b1aa6736b0a6d1a5dd5c}{undefined\-\_\-type}\label{class_table_af8f9ec96ecaa35a2e65312b74ddfeae6a0e9b8fc48315b1aa6736b0a6d1a5dd5c}
+}]Not for normal use. \index{integer@{integer}!Table@{Table}}\index{Table@{Table}!integer@{integer}}\item[{\em 
+\hypertarget{class_table_af8f9ec96ecaa35a2e65312b74ddfeae6a0739dd940ab69c758e43e1fd594f8500}{integer}\label{class_table_af8f9ec96ecaa35a2e65312b74ddfeae6a0739dd940ab69c758e43e1fd594f8500}
+}]32-\/bit signed integer \index{floating@{floating}!Table@{Table}}\index{Table@{Table}!floating@{floating}}\item[{\em 
+\hypertarget{class_table_af8f9ec96ecaa35a2e65312b74ddfeae6adb56749fe0fd26f3af064ab8b1b695b7}{floating}\label{class_table_af8f9ec96ecaa35a2e65312b74ddfeae6adb56749fe0fd26f3af064ab8b1b695b7}
+}]32-\/bit floating point \index{varchar@{varchar}!Table@{Table}}\index{Table@{Table}!varchar@{varchar}}\item[{\em 
+\hypertarget{class_table_af8f9ec96ecaa35a2e65312b74ddfeae6aa112e11f34f9be73cb2be2b88f193ddb}{varchar}\label{class_table_af8f9ec96ecaa35a2e65312b74ddfeae6aa112e11f34f9be73cb2be2b88f193ddb}
+}]Variable-\/length string. \index{date@{date}!Table@{Table}}\index{Table@{Table}!date@{date}}\item[{\em 
+\hypertarget{class_table_af8f9ec96ecaa35a2e65312b74ddfeae6a31f82673442a5b478c44239c404d921c}{date}\label{class_table_af8f9ec96ecaa35a2e65312b74ddfeae6a31f82673442a5b478c44239c404d921c}
+}]Date with no time. \index{time@{time}!Table@{Table}}\index{Table@{Table}!time@{time}}\item[{\em 
+\hypertarget{class_table_af8f9ec96ecaa35a2e65312b74ddfeae6ab7605a19d0f66b3e1d92a8270bdbf34b}{time}\label{class_table_af8f9ec96ecaa35a2e65312b74ddfeae6ab7605a19d0f66b3e1d92a8270bdbf34b}
+}]Time without time zone. \end{description}
+\end{Desc}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_table_a049f2e06391781ae255c6698869c4ad1}{\index{Table@{Table}!Table@{Table}}
+\index{Table@{Table}!Table@{Table}}
+\subsubsection[{Table}]{\setlength{\rightskip}{0pt plus 5cm}Table\-::\-Table (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_table_a049f2e06391781ae255c6698869c4ad1}
+Creates a table with no rows or columns. \hypertarget{class_table_a9d931fcdaa2642148e5bea71dcd824a8}{\index{Table@{Table}!Table@{Table}}
+\index{Table@{Table}!Table@{Table}}
+\subsubsection[{Table}]{\setlength{\rightskip}{0pt plus 5cm}Table\-::\-Table (
+\begin{DoxyParamCaption}
+\item[{const Column\-List \&}]{columns}
+\end{DoxyParamCaption}
+)}}\label{class_table_a9d931fcdaa2642148e5bea71dcd824a8}
+Creates a table with the given column names and types and no rows.
+
+Example\-: 
+\begin{DoxyCode}
+Table::ColumnList \hyperlink{class_table_a3185dd0a29eb9fada468a2b42ff9a8a0}{columns};
+columns.push\_back(make\_pair(\textcolor{stringliteral}{"id"}, \hyperlink{class_table_af8f9ec96ecaa35a2e65312b74ddfeae6a0739dd940ab69c758e43e1fd594f8500}{Table::integer}));
+columns.push\_back(make\_pair(\textcolor{stringliteral}{"name"}, \hyperlink{class_table_af8f9ec96ecaa35a2e65312b74ddfeae6aa112e11f34f9be73cb2be2b88f193ddb}{Table::varchar}));
+\hyperlink{class_table}{Table} my\_table(columns);
+\end{DoxyCode}
+ 
+
+\subsection{Member Function Documentation}
+\hypertarget{class_table_a5eda782285dfd05d311de6905dab4e93}{\index{Table@{Table}!add\-\_\-column@{add\-\_\-column}}
+\index{add\-\_\-column@{add\-\_\-column}!Table@{Table}}
+\subsubsection[{add\-\_\-column}]{\setlength{\rightskip}{0pt plus 5cm}void Table\-::add\-\_\-column (
+\begin{DoxyParamCaption}
+\item[{string}]{column\-\_\-name, }
+\item[{{\bf Record\-Type}}]{type}
+\end{DoxyParamCaption}
+)}}\label{class_table_a5eda782285dfd05d311de6905dab4e93}
+Adds a column to the end of the table.
+
+Existing entries will be N\-U\-L\-L for this column. \hypertarget{class_table_a7f27c65febdd226b6973ea082863e0ee}{\index{Table@{Table}!at@{at}}
+\index{at@{at}!Table@{Table}}
+\subsubsection[{at}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf Record}\& Table\-::at (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{i}
+\end{DoxyParamCaption}
+) const}}\label{class_table_a7f27c65febdd226b6973ea082863e0ee}
+Returns the $\ast$i$\ast$th record in the table, starting at 0. Throws a {\itshape \hyperlink{class_row_does_not_exist_error}{Row\-Does\-Not\-Exist\-Error}} if {\itshape i} is out of range ($<$ 0 or $>$= \hyperlink{class_table_a2c5420361660d9e787487de8d6eb9e44}{size()}.) \begin{DoxySeeAlso}{See Also}
+\hyperlink{class_table_a641c5957ec95abc233450a447c34b820}{first()}, \hyperlink{class_table_afb08a45913f50106dc16388579897134}{last()}, \hyperlink{class_table_a020add8ec0eb6fec40695c605adc9038}{begin()}, \hyperlink{class_table_a43c8c8884f3ea7ef66c5de5234e5d93d}{end()} 
+\end{DoxySeeAlso}
+\hypertarget{class_table_a020add8ec0eb6fec40695c605adc9038}{\index{Table@{Table}!begin@{begin}}
+\index{begin@{begin}!Table@{Table}}
+\subsubsection[{begin}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Table\-Iterator} Table\-::begin (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_table_a020add8ec0eb6fec40695c605adc9038}
+Returns an iterator to the first record in the table.
+
+A \hyperlink{class_table}{Table} can be treated as a container. The {\itshape begin} and {\itshape end} functions correspond to C++ S\-T\-L container begin and end functions, as do {\itshape first}, {\itshape last}, and {\itshape at}.
+
+\begin{DoxySeeAlso}{See Also}
+\hyperlink{class_table_a43c8c8884f3ea7ef66c5de5234e5d93d}{end()}, \hyperlink{class_table_a641c5957ec95abc233450a447c34b820}{first()}, \hyperlink{class_table_afb08a45913f50106dc16388579897134}{last()}, \hyperlink{class_table_a7f27c65febdd226b6973ea082863e0ee}{at()} 
+\end{DoxySeeAlso}
+\hypertarget{class_table_ae0483f56898b052528eed1ae5391e11d}{\index{Table@{Table}!clone\-\_\-structure@{clone\-\_\-structure}}
+\index{clone\-\_\-structure@{clone\-\_\-structure}!Table@{Table}}
+\subsubsection[{clone\-\_\-structure}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Table}$\ast$ Table\-::clone\-\_\-structure (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_table_ae0483f56898b052528eed1ae5391e11d}
+Returns a pointer to a new table with the same columns and keys \hypertarget{class_table_a3185dd0a29eb9fada468a2b42ff9a8a0}{\index{Table@{Table}!columns@{columns}}
+\index{columns@{columns}!Table@{Table}}
+\subsubsection[{columns}]{\setlength{\rightskip}{0pt plus 5cm}Column\-List Table\-::columns (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_table_a3185dd0a29eb9fada468a2b42ff9a8a0}
+Returns a list of columns and their types. \hypertarget{class_table_a98e0ec7a2a729d9dc5f4de0324e021f5}{\index{Table@{Table}!count@{count}}
+\index{count@{count}!Table@{Table}}
+\subsubsection[{count}]{\setlength{\rightskip}{0pt plus 5cm}int Table\-::count (
+\begin{DoxyParamCaption}
+\item[{string}]{column\-\_\-name}
+\end{DoxyParamCaption}
+) const}}\label{class_table_a98e0ec7a2a729d9dc5f4de0324e021f5}
+Computes the number of non-\/\-N\-U\-L\-L values in the given column in the table. Throws a {\itshape \hyperlink{class_column_does_not_exist_error}{Column\-Does\-Not\-Exist\-Error}} if {\itshape column\-\_\-name} doesn't exist. \hypertarget{class_table_a85c83b9f8eeba7cfc7373611297f2194}{\index{Table@{Table}!cross\-\_\-join@{cross\-\_\-join}}
+\index{cross\-\_\-join@{cross\-\_\-join}!Table@{Table}}
+\subsubsection[{cross\-\_\-join}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Table} Table\-::cross\-\_\-join (
+\begin{DoxyParamCaption}
+\item[{const {\bf Table} \&}]{other}
+\end{DoxyParamCaption}
+) const}}\label{class_table_a85c83b9f8eeba7cfc7373611297f2194}
+Computes a cross join with another table.
+
+A cross join contains every possible combination of rows in the two tables. \hypertarget{class_table_af4c19f81efeece5e7dba4c17d4ee9203}{\index{Table@{Table}!del\-\_\-column@{del\-\_\-column}}
+\index{del\-\_\-column@{del\-\_\-column}!Table@{Table}}
+\subsubsection[{del\-\_\-column}]{\setlength{\rightskip}{0pt plus 5cm}void Table\-::del\-\_\-column (
+\begin{DoxyParamCaption}
+\item[{string}]{column\-\_\-name}
+\end{DoxyParamCaption}
+)}}\label{class_table_af4c19f81efeece5e7dba4c17d4ee9203}
+Deletes a column, erasing any associated data.
+
+Throws a {\itshape \hyperlink{class_column_does_not_exist_error}{Column\-Does\-Not\-Exist\-Error}} if {\itshape column\-\_\-name} doesn't exist. \hypertarget{class_table_a43c8c8884f3ea7ef66c5de5234e5d93d}{\index{Table@{Table}!end@{end}}
+\index{end@{end}!Table@{Table}}
+\subsubsection[{end}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Table\-Iterator} Table\-::end (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_table_a43c8c8884f3ea7ef66c5de5234e5d93d}
+Returns an iterator past the end of the last record in the table. \begin{DoxySeeAlso}{See Also}
+\hyperlink{class_table_a020add8ec0eb6fec40695c605adc9038}{begin()} 
+\end{DoxySeeAlso}
+\hypertarget{class_table_a641c5957ec95abc233450a447c34b820}{\index{Table@{Table}!first@{first}}
+\index{first@{first}!Table@{Table}}
+\subsubsection[{first}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf Record}\& Table\-::first (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_table_a641c5957ec95abc233450a447c34b820}
+Returns the first record in the table. \begin{DoxySeeAlso}{See Also}
+\hyperlink{class_table_afb08a45913f50106dc16388579897134}{last()}, \hyperlink{class_table_a7f27c65febdd226b6973ea082863e0ee}{at()} 
+\end{DoxySeeAlso}
+\hypertarget{class_table_acb9ca5966a6dbae64a4923653031d932}{\index{Table@{Table}!index\-\_\-for@{index\-\_\-for}}
+\index{index\-\_\-for@{index\-\_\-for}!Table@{Table}}
+\subsubsection[{index\-\_\-for}]{\setlength{\rightskip}{0pt plus 5cm}unsigned int Table\-::index\-\_\-for (
+\begin{DoxyParamCaption}
+\item[{string}]{column\-\_\-name}
+\end{DoxyParamCaption}
+) const}}\label{class_table_acb9ca5966a6dbae64a4923653031d932}
+Returns the index of the column specified in column\-\_\-name, i.\-e. for accessing records. Throws a {\itshape \hyperlink{class_column_does_not_exist_error}{Column\-Does\-Not\-Exist\-Error}} if {\itshape from} doesn't exist. \hypertarget{class_table_aa1f3a42477818299c83c733e4aa82eb2}{\index{Table@{Table}!insert@{insert}}
+\index{insert@{insert}!Table@{Table}}
+\subsubsection[{insert}]{\setlength{\rightskip}{0pt plus 5cm}void Table\-::insert (
+\begin{DoxyParamCaption}
+\item[{const {\bf Record} \&}]{record}
+\end{DoxyParamCaption}
+)}}\label{class_table_aa1f3a42477818299c83c733e4aa82eb2}
+Inserts a row at the end of the table. Throws a {\itshape \hyperlink{class_key_conflict_error}{Key\-Conflict\-Error}} if this record would cause a primary key conflict. \hypertarget{class_table_a411f14354a9eb2b85f07fb2187d25271}{\index{Table@{Table}!key@{key}}
+\index{key@{key}!Table@{Table}}
+\subsubsection[{key}]{\setlength{\rightskip}{0pt plus 5cm}vector$<$string$>$ Table\-::key (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_table_a411f14354a9eb2b85f07fb2187d25271}
+Returns the column names that make up the key for this table.
+
+If there is no key, returns an empty vector. \hypertarget{class_table_afb08a45913f50106dc16388579897134}{\index{Table@{Table}!last@{last}}
+\index{last@{last}!Table@{Table}}
+\subsubsection[{last}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf Record}\& Table\-::last (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_table_afb08a45913f50106dc16388579897134}
+Returns the last record in the table. \begin{DoxySeeAlso}{See Also}
+\hyperlink{class_table_a641c5957ec95abc233450a447c34b820}{first()}, \hyperlink{class_table_a7f27c65febdd226b6973ea082863e0ee}{at()} 
+\end{DoxySeeAlso}
+\hypertarget{class_table_abb7aff3403f246965d7557ab592110dd}{\index{Table@{Table}!max@{max}}
+\index{max@{max}!Table@{Table}}
+\subsubsection[{max}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ T Table\-::max (
+\begin{DoxyParamCaption}
+\item[{string}]{column\-\_\-name}
+\end{DoxyParamCaption}
+) const}}\label{class_table_abb7aff3403f246965d7557ab592110dd}
+Computes the largest value of all values in the given column in the table. Works for all column types.
+
+Throws a {\itshape \hyperlink{class_column_does_not_exist_error}{Column\-Does\-Not\-Exist\-Error}} if {\itshape column\-\_\-name} doesn't exist. Throws an {\itshape \hyperlink{class_invalid_type_error}{Invalid\-Type\-Error}} if the column cannot be converted to type T. \hypertarget{class_table_a2a4882f99726fba725314e2625ed37ae}{\index{Table@{Table}!min@{min}}
+\index{min@{min}!Table@{Table}}
+\subsubsection[{min}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ T Table\-::min (
+\begin{DoxyParamCaption}
+\item[{string}]{column\-\_\-name}
+\end{DoxyParamCaption}
+) const}}\label{class_table_a2a4882f99726fba725314e2625ed37ae}
+Computes the smallest value of all values in the given column in the table. Works for all column types.
+
+Throws a {\itshape \hyperlink{class_column_does_not_exist_error}{Column\-Does\-Not\-Exist\-Error}} if {\itshape column\-\_\-name} doesn't exist. Throws an {\itshape \hyperlink{class_invalid_type_error}{Invalid\-Type\-Error}} if the column cannot be converted to type T. \hypertarget{class_table_afc179505ae7fdf06d2ec5564a24817dc}{\index{Table@{Table}!natural\-\_\-join@{natural\-\_\-join}}
+\index{natural\-\_\-join@{natural\-\_\-join}!Table@{Table}}
+\subsubsection[{natural\-\_\-join}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Table} Table\-::natural\-\_\-join (
+\begin{DoxyParamCaption}
+\item[{const {\bf Table} \&}]{other}
+\end{DoxyParamCaption}
+) const}}\label{class_table_afc179505ae7fdf06d2ec5564a24817dc}
+Computes a natural join with another table.
+
+The other table should have a key, and this table should have columns matching that key.
+
+Throws an {\itshape \hyperlink{class_invalid_operation_error}{Invalid\-Operation\-Error}} if the above conditions are not met. \hypertarget{class_table_ac5c19a55c8527ee267360cd1332317bd}{\index{Table@{Table}!rename\-\_\-column@{rename\-\_\-column}}
+\index{rename\-\_\-column@{rename\-\_\-column}!Table@{Table}}
+\subsubsection[{rename\-\_\-column}]{\setlength{\rightskip}{0pt plus 5cm}void Table\-::rename\-\_\-column (
+\begin{DoxyParamCaption}
+\item[{string}]{from, }
+\item[{string}]{to}
+\end{DoxyParamCaption}
+)}}\label{class_table_ac5c19a55c8527ee267360cd1332317bd}
+Renames a column, keeping the existing type and data. Throws a {\itshape \hyperlink{class_column_does_not_exist_error}{Column\-Does\-Not\-Exist\-Error}} if {\itshape from} doesn't exist. \hypertarget{class_table_a38aeaab31fddbd256bc702593a4e8792}{\index{Table@{Table}!set\-\_\-key@{set\-\_\-key}}
+\index{set\-\_\-key@{set\-\_\-key}!Table@{Table}}
+\subsubsection[{set\-\_\-key}]{\setlength{\rightskip}{0pt plus 5cm}void Table\-::set\-\_\-key (
+\begin{DoxyParamCaption}
+\item[{vector$<$ string $>$}]{column\-\_\-names}
+\end{DoxyParamCaption}
+)}}\label{class_table_a38aeaab31fddbd256bc702593a4e8792}
+Defines the tuple of columns used as a key. This function must be called before inserting any rows into the table.
+
+
+\begin{DoxyParams}{Parameters}
+{\em columns} & A list of column names that make up the key.\\
+\hline
+\end{DoxyParams}
+Every row in the table must have a unique key. If a new row is inserted with a key that already exists in the table, insertion will fail.
+
+Throws a {\itshape \hyperlink{class_column_does_not_exist_error}{Column\-Does\-Not\-Exist\-Error}} if any of the {\itshape column\-\_\-names} don't exist. Throws an {\itshape \hyperlink{class_invalid_operation_error}{Invalid\-Operation\-Error}} if called on a table with rows. \hypertarget{class_table_a2c5420361660d9e787487de8d6eb9e44}{\index{Table@{Table}!size@{size}}
+\index{size@{size}!Table@{Table}}
+\subsubsection[{size}]{\setlength{\rightskip}{0pt plus 5cm}int Table\-::size (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_table_a2c5420361660d9e787487de8d6eb9e44}
+Returns the number of rows in the table. \hypertarget{class_table_ab00659a94da98ec7bd60a8a711b2ec77}{\index{Table@{Table}!sum@{sum}}
+\index{sum@{sum}!Table@{Table}}
+\subsubsection[{sum}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ T Table\-::sum (
+\begin{DoxyParamCaption}
+\item[{string}]{column\-\_\-name}
+\end{DoxyParamCaption}
+) const}}\label{class_table_ab00659a94da98ec7bd60a8a711b2ec77}
+Computes the sum of all values in the given column in the table. Works for numeric column types only.
+
+Throws a {\itshape \hyperlink{class_column_does_not_exist_error}{Column\-Does\-Not\-Exist\-Error}} if {\itshape column\-\_\-name} doesn't exist. Throws an {\itshape \hyperlink{class_invalid_operation_error}{Invalid\-Operation\-Error}} if the column is not numeric. 
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+table.\-h\end{DoxyCompactItemize}
