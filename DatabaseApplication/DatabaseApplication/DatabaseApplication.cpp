@@ -2,13 +2,385 @@
 //
 
 #include "stdafx.h"
+#include <iostream>
+#include <fstream>
+#include <string>
 #include "database.h"
 
 
-int _tmain(int argc, _TCHAR* argv[])
-{
-	Database j (); 
+vector<vector<string>> generateAttributes(){
+		vector<vector<string>> attributes;
+		vector<string> userpaymentAttributes;
+		userpaymentAttributes.push_back("userID");
+		userpaymentAttributes.push_back("Upayment");
+		attributes.push_back(userpaymentAttributes);
+
+		vector<string> userprofileAttributes;
+		userprofileAttributes.push_back("userID");
+		userprofileAttributes.push_back("latitude");
+		userprofileAttributes.push_back("longitude");
+		userprofileAttributes.push_back("smoker");
+		userprofileAttributes.push_back("drink_level");
+		userprofileAttributes.push_back("dress_preference");
+		userprofileAttributes.push_back("ambience");
+		userprofileAttributes.push_back("transport");
+		userprofileAttributes.push_back("marital_status");
+		userprofileAttributes.push_back("hijos");
+		userprofileAttributes.push_back("birth_year");
+		userprofileAttributes.push_back("interest");
+		userprofileAttributes.push_back("personality");
+		userprofileAttributes.push_back("religion");
+		userprofileAttributes.push_back("activity");
+		userprofileAttributes.push_back("color");
+		userprofileAttributes.push_back("weight");
+		userprofileAttributes.push_back("budget");
+		userprofileAttributes.push_back("height");
+		attributes.push_back(userprofileAttributes);
+				
+		vector<string> chefmozhours4Attributes;
+		chefmozhours4Attributes.push_back("placeID");
+		chefmozhours4Attributes.push_back("hours");
+		chefmozhours4Attributes.push_back("days");
+		attributes.push_back(chefmozhours4Attributes);
+		
+		vector<string> chefmozAttributes;
+		chefmozAttributes.push_back("placeID");
+		chefmozAttributes.push_back("parking_lot");
+		attributes.push_back(chefmozAttributes);
+
+		vector<string> geoplaces2Attributes;
+		geoplaces2Attributes.push_back("placeID");
+		geoplaces2Attributes.push_back("latitude");
+		geoplaces2Attributes.push_back("longitude");
+		geoplaces2Attributes.push_back("the_geom_meter");
+		geoplaces2Attributes.push_back("address");
+		geoplaces2Attributes.push_back("city");
+		geoplaces2Attributes.push_back("state");
+		geoplaces2Attributes.push_back("country");
+		geoplaces2Attributes.push_back("fax");
+		geoplaces2Attributes.push_back("zip");
+		geoplaces2Attributes.push_back("alcohol");
+		geoplaces2Attributes.push_back("smoking_area");
+		geoplaces2Attributes.push_back("dress_code");
+		geoplaces2Attributes.push_back("accessibility");
+		geoplaces2Attributes.push_back("price");
+		geoplaces2Attributes.push_back("url");
+		geoplaces2Attributes.push_back("Rambience");
+		geoplaces2Attributes.push_back("franchise");
+		geoplaces2Attributes.push_back("area");
+		geoplaces2Attributes.push_back("other_services");
+		attributes.push_back(geoplaces2Attributes);
+				
+		vector<string> rating_finalAttributes;
+		rating_finalAttributes.push_back("userID");
+		rating_finalAttributes.push_back("placeID");
+		rating_finalAttributes.push_back("rating");
+		rating_finalAttributes.push_back("food_rating");
+		rating_finalAttributes.push_back("service_rating");
+		attributes.push_back(rating_finalAttributes);
+
+		vector<string> usercuisineAttributes;
+		usercuisineAttributes.push_back("userID");
+		usercuisineAttributes.push_back("Rcuisine");
+		attributes.push_back(usercuisineAttributes);
+		
+		vector<string> chefmozacceptsAttributes;
+		chefmozacceptsAttributes.push_back("placeID");
+		chefmozacceptsAttributes.push_back("Rpayment");
+		attributes.push_back(chefmozacceptsAttributes);
+			
+		vector<string> chefmozcuizineAttributes;
+		chefmozcuizineAttributes.push_back("placeID");
+		chefmozcuizineAttributes.push_back("Rcuisine");
+		attributes.push_back(chefmozcuizineAttributes);
+		return attributes;
+}
+
+vector<vector<string>> generateTypes(){
+		vector<vector<string>> types;
+		vector<string> userpaymentTypes;
+		userpaymentTypes.push_back("string");
+		userpaymentTypes.push_back("string");
+		types.push_back(userpaymentTypes);
+
+		vector<string> userprofileTypes;
+		userprofileTypes.push_back("string");
+		userprofileTypes.push_back("long");
+		userprofileTypes.push_back("long");
+		userprofileTypes.push_back("bool");
+		userprofileTypes.push_back("string");
+		userprofileTypes.push_back("string");
+		userprofileTypes.push_back("string");
+		userprofileTypes.push_back("string");
+		userprofileTypes.push_back("string");
+		userprofileTypes.push_back("string");
+		userprofileTypes.push_back("int");
+		userprofileTypes.push_back("string");
+		userprofileTypes.push_back("string");
+		userprofileTypes.push_back("string");
+		userprofileTypes.push_back("string");
+		userprofileTypes.push_back("string");
+		userprofileTypes.push_back("int");
+		userprofileTypes.push_back("string");
+		userprofileTypes.push_back("long");
+		types.push_back(userprofileTypes);
+
+
+		vector<string> chefmozhours4Types;
+		chefmozhours4Types.push_back("long");
+		chefmozhours4Types.push_back("string");		
+		chefmozhours4Types.push_back("string");
+		types.push_back(chefmozhours4Types);
+
+		vector<string> chefmozTypes;
+		chefmozTypes.push_back("long");
+		chefmozTypes.push_back("string");
+		types.push_back(chefmozTypes);
 	
-	return 0;
+		vector<string> geoplaces2Types;
+		geoplaces2Types.push_back("long");
+		geoplaces2Types.push_back("long");
+		geoplaces2Types.push_back("long");
+		geoplaces2Types.push_back("string");
+		geoplaces2Types.push_back("string");
+		geoplaces2Types.push_back("string");
+		geoplaces2Types.push_back("string");
+		geoplaces2Types.push_back("string");
+		geoplaces2Types.push_back("string");
+		geoplaces2Types.push_back("float");
+		geoplaces2Types.push_back("string");
+		geoplaces2Types.push_back("string");
+		geoplaces2Types.push_back("string");
+		geoplaces2Types.push_back("string");
+		geoplaces2Types.push_back("string");
+		geoplaces2Types.push_back("string");
+		geoplaces2Types.push_back("string");
+		geoplaces2Types.push_back("bool");
+		geoplaces2Types.push_back("string");
+		geoplaces2Types.push_back("string");
+		types.push_back(geoplaces2Types);
+
+
+		vector<string> rating_finalTypes;
+		rating_finalTypes.push_back("string");
+		rating_finalTypes.push_back("long");
+		rating_finalTypes.push_back("int");
+		rating_finalTypes.push_back("int");
+		rating_finalTypes.push_back("int");
+		types.push_back(rating_finalTypes);
+	
+		vector<string> usercuisineTypes;
+		usercuisineTypes.push_back("string");
+		usercuisineTypes.push_back("string");
+		types.push_back(usercuisineTypes);
+
+		vector<string> chefmozacceptsTypes;
+		chefmozacceptsTypes.push_back("long");
+		chefmozacceptsTypes.push_back("string");
+		types.push_back(chefmozacceptsTypes);
+	
+		vector<string> chefmozcuizineTypes;
+		chefmozcuizineTypes.push_back("long");
+		chefmozcuizineTypes.push_back("string");
+		types.push_back(chefmozcuizineTypes);
+		return types;
+}
+
+
+
+void readIn(string path, vector<string> types, vector<string> attributes, Database* inputDB){
+		
+	/*
+		"../RCdata/userpayment.txt"
+		userID (string) Upayment (string)	
+		vector<string> userpaymentTypes;
+		vector<string> userpaymentAttributes;
+		userpaymentAttributes.push_back("userID");
+		userpaymentTypes.push_back("string");
+		userpaymentAttributes.push_back("Upayment");
+		userpaymentTypes.push_back("string");
+
+		"../RCdata/userprofile.txt"
+		userID (string) latitude (long) longitude (long) smoker (bool) drink_level (string) dress_preference (string) ambience (string) transport (string) marital_status (string) hijos (string) birth_year (year) interest (string) personality (string) religion (string) activity (string) color (string) weight (int) budget (string) height (long)
+		vector<string> userprofileTypes;
+		vector<string> userprofileAttributes;
+		userprofileAttributes.push_back("userID");
+		userprofileTypes.push_back("string");
+		userprofileAttributes.push_back("latitude");
+		userprofileTypes.push_back("long");
+		userprofileAttributes.push_back("longitude");
+		userprofileTypes.push_back("long");
+		userprofileAttributes.push_back("smoker");
+		userprofileTypes.push_back("bool");
+		userprofileAttributes.push_back("drink_level");
+		userprofileTypes.push_back("string");
+		userprofileAttributes.push_back("dress_preference");
+		userprofileTypes.push_back("string");
+		userprofileAttributes.push_back("ambience");
+		userprofileTypes.push_back("string");
+		userprofileAttributes.push_back("transport");
+		userprofileTypes.push_back("string");
+		userprofileAttributes.push_back("marital_status");
+		userprofileTypes.push_back("string");
+		userprofileAttributes.push_back("hijos");
+		userprofileTypes.push_back("string");
+		userprofileAttributes.push_back("birth_year");
+		userprofileTypes.push_back("int");
+		userprofileAttributes.push_back("interest");
+		userprofileTypes.push_back("string");
+		userprofileAttributes.push_back("personality");
+		userprofileTypes.push_back("string");
+		userprofileAttributes.push_back("religion");
+		userprofileTypes.push_back("string");
+		userprofileAttributes.push_back("activity");
+		userprofileTypes.push_back("string");
+		userprofileAttributes.push_back("color");
+		userprofileTypes.push_back("string");
+		userprofileAttributes.push_back("weight");
+		userprofileTypes.push_back("int");
+		userprofileAttributes.push_back("budget");
+		userprofileTypes.push_back("string");
+		userprofileAttributes.push_back("height");
+		userprofileTypes.push_back("long");
+
+
+		"../RCdata/chefmozhours4.txt"
+		placeID (long) hours (time-time or just string) days (string)
+		vector<string> chefmozhours4Types;
+		vector<string> chefmozhours4Attributes;
+		chefmozhours4Attributes.push_back("placeID");
+		chefmozhours4Types.push_back("long");
+		chefmozhours4Attributes.push_back("hours");
+		chefmozhours4Types.push_back("string");		
+		chefmozhours4Attributes.push_back("days");
+		chefmozhours4Types.push_back("string");
+	
+		"../RCdata/chefmozparking.txt"
+		placeID (long) parking_lot (string)
+		vector<string> chefmozTypes;
+		vector<string> chefmozAttributes;
+		chefmozAttributes.push_back("placeID");
+		chefmozTypes.push_back("long");
+		chefmozAttributes.push_back("parking_lot");
+		chefmozTypes.push_back("string");
+	
+		"../RCdata/geoplaces2.txt"
+		placeID (long) latitude (long) longitude (long) the_geom_meter (string) name (string) address (string) city(string) state(string) country(string) fax (long)  zip (long) alcohol (string) smoking_area (string) dress_code (string) accessibility (string) price (string) url (string) Rambience (string) franchise (bool) area (string) other_services (string)
+		vector<string> geoplaces2Types;
+		vector<string> geoplaces2Attributes;
+		geoplaces2Attributes.push_back("placeID");
+		geoplaces2Types.push_back("long");
+		geoplaces2Attributes.push_back("latitude");
+		geoplaces2Types.push_back("long");
+		geoplaces2Attributes.push_back("longitude");
+		geoplaces2Types.push_back("long");
+		geoplaces2Attributes.push_back("the_geom_meter");
+		geoplaces2Types.push_back("string");
+		geoplaces2Attributes.push_back("address");
+		geoplaces2Types.push_back("string");
+		geoplaces2Attributes.push_back("city");
+		geoplaces2Types.push_back("string");
+		geoplaces2Attributes.push_back("state");
+		geoplaces2Types.push_back("string");
+		geoplaces2Attributes.push_back("country");
+		geoplaces2Types.push_back("string");
+		geoplaces2Attributes.push_back("fax");
+		geoplaces2Types.push_back("string");
+		geoplaces2Attributes.push_back("zip");
+		geoplaces2Types.push_back("float");
+		geoplaces2Attributes.push_back("alcohol");
+		geoplaces2Types.push_back("string");
+		geoplaces2Attributes.push_back("smoking_area");
+		geoplaces2Types.push_back("string");
+		geoplaces2Attributes.push_back("dress_code");
+		geoplaces2Types.push_back("string");
+		geoplaces2Attributes.push_back("accessibility");
+		geoplaces2Types.push_back("string");
+		geoplaces2Attributes.push_back("price");
+		geoplaces2Types.push_back("string");
+		geoplaces2Attributes.push_back("url");
+		geoplaces2Types.push_back("string");
+		geoplaces2Attributes.push_back("Rambience");
+		geoplaces2Types.push_back("string");
+		geoplaces2Attributes.push_back("franchise");
+		geoplaces2Types.push_back("bool");
+		geoplaces2Attributes.push_back("area");
+		geoplaces2Types.push_back("string");
+		geoplaces2Attributes.push_back("other_services");
+		geoplaces2Types.push_back("string");
+
+
+		"../RCdata/rating_final.txt"
+		userID (string) placeID(long) rating (int) food_rating (int) service_rating (int)
+		vector<string> rating_finalAttributes;
+		vector<string> rating_finalTypes;
+		rating_finalAttributes.push_back("userID");
+		rating_finalTypes.push_back("string");
+		rating_finalAttributes.push_back("placeID");
+		rating_finalTypes.push_back("long");
+		rating_finalAttributes.push_back("rating");
+		rating_finalTypes.push_back("int");
+		rating_finalAttributes.push_back("food_rating");
+		rating_finalTypes.push_back("int");
+		rating_finalAttributes.push_back("service_rating");
+		rating_finalTypes.push_back("int");
+	
+		"../RCdata/usercuisine.txt"
+		userID (string) Rcuisine (string)
+		vector<string> usercuisineAttributes;
+		vector<string> usercuisineTypes;
+		usercuisineAttributes.push_back("userID");
+		usercuisineTypes.push_back("string");
+		usercuisineAttributes.push_back("Rcuisine");
+		usercuisineTypes.push_back("string");
+	
+		"../RCdata/chefmozaccepts.txt"
+		placeID (long) Rpayment (string)
+		vector<string> chefmozacceptsAttributes;
+		vector<string> chefmozacceptsTypes;
+		chefmozacceptsAttributes.push_back("placeID");
+		chefmozacceptsTypes.push_back("long");
+		chefmozacceptsAttributes.push_back("Rpayment");
+		chefmozacceptsTypes.push_back("string");
+	
+		"../RCdata/chefmozcuizine.txt"
+		placeID (long) Rcuisine (string)
+		vector<string> chefmozcuizineAttributes;
+		vector<string> chefmozcuizineTypes;
+		chefmozcuizineAttributes.push_back("placeID");
+		chefmozcuizineTypes.push_back("long");
+		chefmozcuizineAttributes.push_back("Rcuisine");
+		chefmozcuizineTypes.push_back("string");
+			
+	*/
+
+	string NumberOfAccounts;
+
+    ifstream File("../RCdata/userpayment.txt");
+    string line;
+
+    if(File)
+    {
+        while(getline(File,line))
+        {
+            cout<<line<<"\n";
+			//reading line
+
+
+
+        }
+
+    File.close();
+    }
+
+    cout<<NumberOfAccounts;
+
+}
+
+int _tmain(int argc, _TCHAR* argv[]) {
+	
+    system("pause");
+
+    return 0;
 }
 
