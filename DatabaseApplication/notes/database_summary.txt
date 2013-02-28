@@ -1,0 +1,45 @@
+userprofile-
+	contains information about the user
+	userID	latitude	longitude	smoker	drink_level	dress_preference	ambience	transport	marital_status	hijos		birth_year	interest	personality			religion	activity	color	weight	budget	height
+	U1001	22.139997	-100.978803	FALSE	abstemious	informal			family		on foot		single			independent	1989		variety		thrifty-protector	none		student		black	69		medium	1.77
+	
+chefmozcuisine
+	type of food at a place
+	placeID	Rcuisine
+	135110	Spanish
+
+chefmozaccepts
+	type of payment place accepts
+	placeID	Rpayment
+	135110	cash
+
+chefmozhours4
+	hours/days a place is open
+	placeID	hours			days
+	135111	00:00-23:30;	Mon;Tue;Wed;Thu;Fri;
+
+chefmozparking
+	type of parking at a place
+	placeID	parking_lot
+	135111	public
+
+userpayment
+	how a user pays
+	userID	Upayment
+	U1001	cash
+
+usercuisine
+	what food a user likes
+	userID	Rcuisine
+	U1001	American
+
+rating_final
+	user's ratings of places
+	userID	placeID	rating	food_rating	service_rating
+	U1077	135085	2		2			2
+
+geoplaces2
+	where places are located and what services they offer
+	placeID	latitude	longitude	the_geom_meter										name			address		city		state	country	fax	zip	alcohol				smoking_area	dress_code	accessibility		price	url						Rambience	franchise	area	other_services
+	134999	18.915421	-99.184871	0101000020957F000088568DE356715AC138C0A525FC464A41	Kiku Cuernavaca Revolucion	Cuernavaca	Morelos	Mexico	?	?	No_Alcohol_Served	none			informal	no_accessibility	medium	kikucuernavaca.com.mx	familiar	f			closed	none
+

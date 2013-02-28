@@ -425,7 +425,7 @@ int _tmain(int argc, _TCHAR* argv[]) {
 	}
 	cout<<"Files successfully added to database\n";
 	
-	//query example
+	//query example	
 	Table* query_table1 = mainDB.query("*", "chefmozaccepts", "placeID >= '133000'");
 	Record query_table1_rec = query_table1->at(0);
 	cout << "Size: "<< query_table1->size() <<"\n";

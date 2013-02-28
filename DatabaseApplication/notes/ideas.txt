@@ -1,0 +1,11 @@
+user printout (UID)
+	basic
+	extended
+	
+Restaurant info (name)
+	basic
+	extended
+
+MENU
+	lookup user
+	
