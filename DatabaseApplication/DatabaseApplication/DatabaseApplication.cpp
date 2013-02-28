@@ -373,7 +373,8 @@ void readIn(string path, vector<Table::RecordType> types, vector<string> attribu
 	}
 	// According to API, table must be made with new as the destructor is handled in implementation
 	Table* currentTable = new Table(columns);
-	
+	//Insert table keys with attribute name vector
+	currentTable->set_key(attributes);
 	ifstream File(path);
     string line;
 	bool switchb=false;
@@ -396,11 +397,12 @@ void readIn(string path, vector<Table::RecordType> types, vector<string> attribu
 			}
 			Record pearRecord (pears);
 			currentTable->insert(pearRecord);
-			//vect filled with csv
+			//vector filled with csv data
 			} else { switchb=true;}
 		}
     File.close();
     }
+	//Inserts the "working" table into the mainDB
 	inputDB.add_table(path.substr(path.find_last_of('/')+1), currentTable);
 
 }
@@ -417,8 +419,14 @@ int _tmain(int argc, _TCHAR* argv[]) {
 		Table a = *mainDB.table(*it);
 		cout << a.size() << '\n';
 	}
+	Table* query_table1 = mainDB.query("*", "chefmozaccepts.csv", "placeID >= '133000'");
+	Record query_table1_rec = query_table1->at(0);
+	cout << "Size: "<< query_table1->size() <<"\n";
+	cout << "Column Size: " << query_table1->count("placeID") << "\n";
+	cout << "Entry: " << query_table1_rec.get<string>("Rpayment") << "\n";
 
-	
+
+
     system("pause");
 	return 0;
 }
