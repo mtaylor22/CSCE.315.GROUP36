@@ -374,7 +374,7 @@ void readIn(string path, vector<Table::RecordType> types, vector<string> attribu
 	// According to API, table must be made with new as the destructor is handled in implementation
 	Table* currentTable = new Table(columns);
 	//Insert table keys with attribute name vector
-	currentTable->set_key(attributes);
+	//?currentTable->set_key(attributes);
 	ifstream File(path);
     string line;
 	bool switchb=false;
@@ -391,8 +391,10 @@ void readIn(string path, vector<Table::RecordType> types, vector<string> attribu
 			int i = 0;
 			vector<pair<string, string>> pears;
 			while(std::getline(ss, token, ',')) {
+				if (i < attributes.size()){
 				pair<string, string> pear (attributes.at(i), token); 
 				pears.push_back(pear);
+				}
 				i++;
 			}
 			Record pearRecord (pears);
@@ -403,7 +405,9 @@ void readIn(string path, vector<Table::RecordType> types, vector<string> attribu
     File.close();
     }
 	//Inserts the "working" table into the mainDB
-	inputDB.add_table(path.substr(path.find_last_of('/')+1), currentTable);
+	string shortpath = path.substr(path.find_last_of('/')+1);
+	shortpath = shortpath.substr(0, shortpath.length()-4);
+	inputDB.add_table(shortpath, currentTable);
 
 }
 
@@ -412,14 +416,17 @@ int _tmain(int argc, _TCHAR* argv[]) {
 	vector<vector<Table::RecordType>> allTypes = generateTypes();
 	vector<string> allPaths = generatePaths();
 	Database mainDB = Database();
-	readIn(allPaths.at(0), allTypes.at(0), allAttributes.at(0), mainDB);
-	vector<string> j = mainDB.table_names();
-	for(std::vector<string>::iterator it = j.begin(); it != j.end(); ++it){
-		cout << *it << ' ';
-		Table a = *mainDB.table(*it);
-		cout << a.size() << '\n';
+	cout<<"Adding tables to database: \n";
+	for(std::vector<string>::iterator it = allPaths.begin(); it != allPaths.end(); ++it) {
+		int index = it - allPaths.begin();
+		readIn(allPaths.at(index), allTypes.at(index), allAttributes.at(index), mainDB);
+		vector<string> tablenames = mainDB.table_names();
+		cout<<"\tadded `"<<tablenames.at(index)<<"` with "<< mainDB.table(tablenames.at(index))->size()<<" entries\n";
 	}
-	Table* query_table1 = mainDB.query("*", "chefmozaccepts.csv", "placeID >= '133000'");
+	cout<<"Files successfully added to database\n";
+	
+	//query example
+	Table* query_table1 = mainDB.query("*", "chefmozaccepts", "placeID >= '133000'");
 	Record query_table1_rec = query_table1->at(0);
 	cout << "Size: "<< query_table1->size() <<"\n";
 	cout << "Column Size: " << query_table1->count("placeID") << "\n";
