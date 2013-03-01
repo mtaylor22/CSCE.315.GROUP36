@@ -373,7 +373,7 @@ void readIn(string path, vector<Table::RecordType> types, vector<string> attribu
 	// According to API, table must be made with new as the destructor is handled in implementation
 	Table* currentTable = new Table(columns);
 	//Insert table keys with attribute name vector
-	//?currentTable->set_key(attributes);
+	//currentTable->set_key(attributes);
 	ifstream File(path);
 	string line;
 	bool switchb=false;
@@ -422,6 +422,9 @@ void printTable(Table workBench, Database &db){
 }
 
 void printUserSimple(string username, Database &db){
+	Table* query_table = db.query("*", "userprofile", "userID = '" + username + "'");
+	printTable(*query_table, db);	
+	std::system("pause");
 
 }
 void printUserAdvanced(string username, Database &db){
@@ -433,6 +436,7 @@ string lookupUser(Database &db){
 	std::system("CLS");
 	cout << "Input the user ID you would like to view:\n";
 	cin >> uID;
+	printUserSimple(uID, db);
 	//    printUser(uID);
 	return uID;
 
@@ -447,7 +451,6 @@ string lookupRes(Database &db){
 	return resID;
 }
 string lookupUserAttr(Database &db){
-
 	//returns username
 	string uID;
 	std::system("CLS");
@@ -489,8 +492,6 @@ int _tmain(int argc, _TCHAR* argv[]) {
 	cout << "Entry: " << query_table1_rec.get<string>("Rpayment") << "\n";
 
 	//menu
-	printTable(*query_table1, mainDB);
-	std::system("pause");
 
 
 	bool mainMenu = true;
