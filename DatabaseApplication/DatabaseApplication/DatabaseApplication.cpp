@@ -490,6 +490,40 @@ void printResAdvanced(string resname, Database &db){
 	printTable(*query_table6, db);
 	std::system("pause");
 };
+void printResSimpleID(string resname, Database &db){
+	cout<<"General information on "<<resname<<"\n";
+	Table* query_tableRes = db.query("*", "geoplaces2", "placeID = '" + resname + "'"); 
+	query_tableRes->del_column("placeID");
+	printTable(*query_tableRes, db);
+	std::system("pause");
+};
+void printResAdvancedID(string resname, Database &db){
+	cout<<"General information on "<<resname<<"\n";
+	Table* query_table1 = db.query("*", "geoplaces2", "placeID = '" + resname+ "'"); 
+	query_table1->del_column("placeID");
+	printTable(*query_table1, db);
+	cout<<"Cuisine served at "<<resname<<"\n";
+	Table* query_table2 = db.query("*", "chefmozcuisine", "placeID = '" +  resname + "'"); 
+	query_table2->del_column("placeID");
+	printTable(*query_table2, db);		
+	cout<<resname<<" accepts:\n";
+	Table* query_table3 = db.query("*", "chefmozaccepts", "placeID = '" +  resname + "'"); 
+	query_table3->del_column("placeID");
+	printTable(*query_table3, db);		
+	cout<<"Hours for "<<resname<<"\n";
+	Table* query_table4 = db.query("*", "chefmozhours4", "placeID = '" +  resname + "'"); 
+	query_table4->del_column("placeID");
+	printTable(*query_table4, db);	
+	cout<<"Parking information on "<<resname<<"\n";
+	Table* query_table5 = db.query("*", "chefmozparking", "placeID = '" +  resname + "'"); 
+	query_table5->del_column("placeID");
+	printTable(*query_table5, db);
+	cout<<"Ratings for "<<resname<<"\n";
+	Table* query_table6 = db.query("*", "rating_final", "placeID = '" +  resname + "'"); 
+	query_table6->del_column("placeID");
+	printTable(*query_table6, db);
+	std::system("pause");
+};
 string lookupUser(Database &db){
 	//returns username
 	string uID;
@@ -551,23 +585,35 @@ string lookupRes(Database &db){
 		return "";
 	}
 }
-string lookupUserAttr(Database &db){
-	//returns username
-	string uID;
-	std::system("CLS");
-	cout << "Input the user ID you would like to view:\n";
-	cin >> uID;
-	//  printUser(uID);
-	return uID;
-}
-string lookupResAttr(Database &db){
+string lookupResID(Database &db){
 	//returns resname
-	string resID;
+	std::string resName;
 	std::system("CLS");
-	cout << "Input the restaurant ID you would like to view:\n";
-	cin >> resID;
-	//    printRes(resID);
-	return resID;
+	cout << "Input the Restaurant ID you would like to view:\n";
+	std::getline(cin, resName);
+	std::getline(cin, resName);
+	cout << "Enter 0 for simple information or 1 for advanced: \n";
+	int simAdvSwitch;
+	cin >> simAdvSwitch;
+	switch (simAdvSwitch){
+	case 0:
+		printResSimpleID(resName, db);
+		break;
+	case 1:
+		printResAdvancedID(resName, db);
+		break;
+	default:
+		cout<<"Invalid input\n";
+		break;
+	}
+	cout<<"Enter 1 if you would like to perform more operations on this restaurant, anything else to return\n";
+	cin >> simAdvSwitch;
+	switch (simAdvSwitch){
+	case 1:
+		return resName;
+	default:
+		return "";
+	}
 }
 void findUserPayment(string username, Database &db){
 	Table* query_table = db.query("*", "userpayment", "userID = '" + username + "'");
@@ -575,16 +621,16 @@ void findUserPayment(string username, Database &db){
 	std::system("pause");
 }
 void findUserCuisine(string username, Database &db){
-        Table* query_table = db.query("*", "usercuisine", "userID = '" + username + "'");
-        cout<<"The user prefers to eat "<<query_table->at(0).get<string>("Rcuisine")<<" cuisine\n";
-        std::system("pause");
+	Table* query_table = db.query("*", "usercuisine", "userID = '" + username + "'");
+	cout<<"The user prefers to eat "<<query_table->at(0).get<string>("Rcuisine")<<" cuisine\n";
+	std::system("pause");
 }
 void findUserRating(string username, Database &db){
-        Table* query_table = db.query("*", "rating_final", "userID = '" + username + "'");
-        cout<<"The average overall rating that this user gives is "<<((float)(query_table->sum<int>("rating"))/query_table->count("rating"))<<"\n";
-        cout<<"The average food rating that this user gives is "<<((float)(query_table->sum<int>("food_rating"))/query_table->count("food_rating"))<<"\n";
-        cout<<"The average service rating that this user gives is "<<((float)(query_table->sum<int>("service_rating"))/query_table->count("service_rating"))<<"\n";
-        std::system("pause");
+	Table* query_table = db.query("*", "rating_final", "userID = '" + username + "'");
+	cout<<"The average overall rating that this user gives is "<<((float)(query_table->sum<int>("rating"))/query_table->count("rating"))<<"\n";
+	cout<<"The average food rating that this user gives is "<<((float)(query_table->sum<int>("food_rating"))/query_table->count("food_rating"))<<"\n";
+	cout<<"The average service rating that this user gives is "<<((float)(query_table->sum<int>("service_rating"))/query_table->count("service_rating"))<<"\n";
+	std::system("pause");
 }
 
 int _tmain(int argc, _TCHAR* argv[]) {
@@ -622,9 +668,8 @@ int _tmain(int argc, _TCHAR* argv[]) {
 			cout<<"Select an item from the menu or type '0' to quit.\n";
 
 			cout << "OPTION 1: Look up by User ID\n";
-			cout << "OPTION 2: Look up by Restaurant ID\n";
-			cout << "OPTION 3: Look up User by Attributes\n";
-			cout << "OPTION 4: Look up Location by ID\n";
+			cout << "OPTION 2: Look up by Restaurant name\n";
+			cout << "OPTION 3: Look up by Restaurant ID\n";
 			cin>>option;
 			switch (atoi(option.c_str())){
 
@@ -641,11 +686,9 @@ int _tmain(int argc, _TCHAR* argv[]) {
 				lookupRes(mainDB);
 				break;
 			case 3:
-				lookupUserAttr(mainDB);
+				lookupResID(mainDB);
 				break;
-			case 4:
-				lookupResAttr(mainDB);
-				break;
+
 
 			default:
 				cout<<"Unexpected input\n";
@@ -659,7 +702,41 @@ int _tmain(int argc, _TCHAR* argv[]) {
 			cout << "OPTION 1: Find user's payment method\n";
 			cout << "OPTION 2: Find user's preferred cuisine\n";
 			cout << "OPTION 3: Find user rating information\n";
-			cout << "OPTION 4: \n";
+			cin>>option;
+			switch (atoi(option.c_str())){
+			case 0:
+				mode="main";
+				break;
+			case 1:
+				findUserPayment(lastUser, mainDB);
+				break;
+			case 2:
+				findUserCuisine(lastUser, mainDB);
+				break;
+			case 3:
+				findUserRating(lastUser, mainDB);
+				break;
+
+			default:
+				cout<<"Unexpected input\n";
+				std::system("pause");
+				break;
+
+			}
+
+
+		} else if (mode == "res"){
+			//display options
+			cout<<"Selection an item for '"<<lastUser<<"' or type '0' to return to the main menu\n";
+			cout << "OPTION 1: Find highest rated restaurant\n";
+			cout << "OPTION 2: Find lowest rated restaurant\n";
+			cout << "OPTION 3: Smoking restaurants \n";
+			cout << "OPTION 4: Find restaurants  by city\n";
+			cout << "OPTION 5: Find restaurants  by payment type\n";
+			cout << "OPTION 6: Find restaurants  with parking\n";
+			cout << "OPTION 7: Find informal restaurants \n";
+			cout << "OPTION 8: Find accessable restaurants \n";
+			cout << "OPTION 9: Find restaurants  by price range\n";
 			cin>>option;
 			switch (atoi(option.c_str())){
 			case 0:
@@ -684,11 +761,6 @@ int _tmain(int argc, _TCHAR* argv[]) {
 				break;
 
 			}
-
-
-		} else if (mode == "res"){
-			//display options
-			cin>>option;
 		}
 	}
 
