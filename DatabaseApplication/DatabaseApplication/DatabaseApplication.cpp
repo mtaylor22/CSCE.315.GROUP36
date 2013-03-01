@@ -39,6 +39,7 @@ vector<vector<string>> generateAttributes(){
 	geoplaces2Attributes.push_back("latitude");
 	geoplaces2Attributes.push_back("longitude");
 	geoplaces2Attributes.push_back("the_geom_meter");
+	geoplaces2Attributes.push_back("name");
 	geoplaces2Attributes.push_back("address");
 	geoplaces2Attributes.push_back("city");
 	geoplaces2Attributes.push_back("state");
@@ -128,6 +129,7 @@ vector<vector<Table::RecordType>> generateTypes(){
 	geoplaces2Types.push_back(Table::integer);
 	geoplaces2Types.push_back(Table::floating);
 	geoplaces2Types.push_back(Table::floating);
+	geoplaces2Types.push_back(Table::varchar);
 	geoplaces2Types.push_back(Table::varchar);
 	geoplaces2Types.push_back(Table::varchar);
 	geoplaces2Types.push_back(Table::varchar);
@@ -375,7 +377,8 @@ void readIn(string path, vector<Table::RecordType> types, vector<string> attribu
 	// According to API, table must be made with new as the destructor is handled in implementation
 	Table* currentTable = new Table(columns);
 	//Insert table keys with attribute name vector
-	//currentTable->set_key(attributes);
+	//vector of everything except actual key
+	vector<string> j;
 	ifstream File(path);
 	string line;
 	bool switchb=false;
@@ -411,6 +414,11 @@ void readIn(string path, vector<Table::RecordType> types, vector<string> attribu
 	inputDB.add_table(shortpath, currentTable);
 
 }
+string getResID(string resname, Database &db){
+	Table* query_table = db.query("*", "geoplaces2", "name = '" + resname + "'"); 
+	string resID = query_table->at(0).get<string>("placeID");
+	return resID;
+}
 void printTable(Table workBench, Database &db){
 	for( Table::TableIterator tabit = workBench.begin(); tabit != workBench.end(); ++tabit) {
 		for( Record::RecordIterator recit = tabit->begin(); recit != tabit->end(); ++recit) {
@@ -424,6 +432,7 @@ void printTable(Table workBench, Database &db){
 }
 void printUserSimple(string username, Database &db){
 	Table* query_table = db.query("*", "userprofile", "userID = '" + username + "'");
+	query_table->del_column("userID");
 	printTable(*query_table, db);	
 	std::system("pause");
 
@@ -431,46 +440,56 @@ void printUserSimple(string username, Database &db){
 void printUserAdvanced(string username, Database &db){
 	cout<<"General user information: \n";
 	Table* query_table1 = db.query("*", "userprofile", "userID = '" + username + "'");
+	query_table1->del_column("userID");
 	printTable(*query_table1, db);	
 	cout<<"User payment information: \n";	
 	Table* query_table2 = db.query("*", "userpayment", "userID = '" + username + "'");
+	query_table2->del_column("userID");
 	printTable(*query_table2, db);	
 	cout<<"User cuisine information: \n";	
 	Table* query_table3 = db.query("*", "usercuisine", "userID = '" + username + "'");
+	query_table3->del_column("userID");
 	printTable(*query_table3, db);	
 	cout<<"User rating information: \n";	
 	Table* query_table4 = db.query("*", "rating_final", "userID = '" + username + "'");
+	query_table4->del_column("userID");
 	printTable(*query_table4, db);	
 	std::system("pause");
 }
 void printResSimple(string resname, Database &db){
 	cout<<"General information on "<<resname<<"\n";
-	Table* query_tableRes = db.query("*", "geoplaces2", "placeID = '" + resname + "'"); 
+	Table* query_tableRes = db.query("*", "geoplaces2", "placeID = " + getResID(resname, db) ); 
+	query_tableRes->del_column("placeID");
 	printTable(*query_tableRes, db);
 	std::system("pause");
 };
 void printResAdvanced(string resname, Database &db){
 	cout<<"General information on "<<resname<<"\n";
-	Table* query_table1 = db.query("*", "geoplaces2", "placeID = '" + resname + "'"); 
+	Table* query_table1 = db.query("*", "geoplaces2", "placeID = '" + getResID(resname, db) + "'"); 
+	query_table1->del_column("placeID");
 	printTable(*query_table1, db);
 	cout<<"Cuisine served at "<<resname<<"\n";
-	Table* query_table2 = db.query("*", "chefmozcuisine", "placeID = '" + resname + "'"); 
+	Table* query_table2 = db.query("*", "chefmozcuisine", "placeID = '" +  getResID(resname, db) + "'"); 
+	query_table2->del_column("placeID");
 	printTable(*query_table2, db);		
 	cout<<resname<<" accepts:\n";
-	Table* query_table3 = db.query("*", "chefmozaccepts", "placeID = '" + resname + "'"); 
+	Table* query_table3 = db.query("*", "chefmozaccepts", "placeID = '" +  getResID(resname, db) + "'"); 
+	query_table3->del_column("placeID");
 	printTable(*query_table3, db);		
 	cout<<"Hours for "<<resname<<"\n";
-	Table* query_table4 = db.query("*", "chefmozhours4", "placeID = '" + resname + "'"); 
+	Table* query_table4 = db.query("*", "chefmozhours4", "placeID = '" +  getResID(resname, db) + "'"); 
+	query_table4->del_column("placeID");
 	printTable(*query_table4, db);	
 	cout<<"Parking information on "<<resname<<"\n";
-	Table* query_table5 = db.query("*", "chefmozparking", "placeID = '" + resname + "'"); 
+	Table* query_table5 = db.query("*", "chefmozparking", "placeID = '" +  getResID(resname, db) + "'"); 
+	query_table5->del_column("placeID");
 	printTable(*query_table5, db);
 	cout<<"Ratings for "<<resname<<"\n";
-	Table* query_table6 = db.query("*", "rating_final", "placeID = '" + resname + "'"); 
+	Table* query_table6 = db.query("*", "rating_final", "placeID = '" +  getResID(resname, db) + "'"); 
+	query_table6->del_column("placeID");
 	printTable(*query_table6, db);
 	std::system("pause");
 };
-
 string lookupUser(Database &db){
 	//returns username
 	string uID;
@@ -504,19 +523,20 @@ string lookupUser(Database &db){
 }
 string lookupRes(Database &db){
 	//returns resname
-	string resID;
+	std::string resName;
 	std::system("CLS");
 	cout << "Input the Restaurant name you would like to view:\n";
-	cin >> resID;
+	std::getline(cin, resName);
+	std::getline(cin, resName);
 	cout << "Enter 0 for simple information or 1 for advanced: \n";
 	int simAdvSwitch;
 	cin >> simAdvSwitch;
 	switch (simAdvSwitch){
 	case 0:
-		printResSimple(resID, db);
+		printResSimple(resName, db);
 		break;
 	case 1:
-		printResAdvanced(resID, db);
+		printResAdvanced(resName, db);
 		break;
 	default:
 		cout<<"Invalid input\n";
@@ -526,7 +546,7 @@ string lookupRes(Database &db){
 	cin >> simAdvSwitch;
 	switch (simAdvSwitch){
 	case 1:
-		return resID;
+		return resName;
 	default:
 		return "";
 	}
@@ -549,19 +569,23 @@ string lookupResAttr(Database &db){
 	//    printRes(resID);
 	return resID;
 }
-
 void findUserPayment(string username, Database &db){
 	Table* query_table = db.query("*", "userpayment", "userID = '" + username + "'");
 	cout<<"The user prefers to pay with "<<query_table->at(0).get<string>("Upayment")<<"\n";
 	std::system("pause");
 }
 void findUserCuisine(string username, Database &db){
-
+        Table* query_table = db.query("*", "usercuisine", "userID = '" + username + "'");
+        cout<<"The user prefers to eat "<<query_table->at(0).get<string>("Rcuisine")<<" cuisine\n";
+        std::system("pause");
 }
 void findUserRating(string username, Database &db){
-
+        Table* query_table = db.query("*", "rating_final", "userID = '" + username + "'");
+        cout<<"The average overall rating that this user gives is "<<((float)(query_table->sum<int>("rating"))/query_table->count("rating"))<<"\n";
+        cout<<"The average food rating that this user gives is "<<((float)(query_table->sum<int>("food_rating"))/query_table->count("food_rating"))<<"\n";
+        cout<<"The average service rating that this user gives is "<<((float)(query_table->sum<int>("service_rating"))/query_table->count("service_rating"))<<"\n";
+        std::system("pause");
 }
-
 
 int _tmain(int argc, _TCHAR* argv[]) {
 	vector<vector<string>> allAttributes = generateAttributes();
@@ -576,7 +600,7 @@ int _tmain(int argc, _TCHAR* argv[]) {
 		cout<<"\tadded `"<<tablenames.at(index)<<"` with "<< mainDB.table(tablenames.at(index))->size()<<" entries\n";
 	}
 	cout<<"Files successfully added to database\n";
-
+	/*
 	//query example	
 	Table* query_table1 = mainDB.query("*", "chefmozaccepts", "placeID >= '133000'");
 	Record query_table1_rec = query_table1->at(0);
@@ -585,7 +609,7 @@ int _tmain(int argc, _TCHAR* argv[]) {
 	cout << "Entry: " << query_table1_rec.get<string>("Rpayment") << "\n";
 
 	//menu
-
+	*/
 
 	bool mainMenu = true;
 	string mode = "main";
@@ -608,16 +632,12 @@ int _tmain(int argc, _TCHAR* argv[]) {
 				mainMenu=false;
 				break;
 			case 1:
-				//run a function thatse &db) -> string (userid)
-				//lookupUser(mainDB); returns user with query?
 				lastUser = lookupUser(mainDB);
 				if (lastUser != ""){
 					mode="user";
 				}
 				break;
 			case 2:
-				//run a function that returns user with query?
-				//run lookupUser(database &db)
 				lookupRes(mainDB);
 				break;
 			case 3:
