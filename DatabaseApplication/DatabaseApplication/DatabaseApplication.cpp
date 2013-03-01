@@ -387,10 +387,10 @@ void readIn(string path, vector<Table::RecordType> types, vector<string> attribu
 
 				std::istringstream ss(line);
 				std::string token;
-				int i = 0;
+				unsigned i = 0;
 				vector<pair<string, string>> pears;
 				while(std::getline(ss, token, ',')) {
-					if (i < attributes.size()){
+					if (i <  attributes.size()){
 						pair<string, string> pear (attributes.at(i), token); 
 						pears.push_back(pear);
 					}
@@ -427,16 +427,43 @@ void printUserSimple(string username, Database &db){
 	std::system("pause");
 
 }
-void printUserAdvanced(string username, Database &db){
 
+void printUserAdvanced(string username, Database &db){
+	cout<<"General user information: \n";
+	Table* query_table1 = db.query("*", "userprofile", "userID = '" + username + "'");
+	printTable(*query_table1, db);	
+	cout<<"User payment information: \n";	
+	Table* query_table2 = db.query("*", "userpayment", "userID = '" + username + "'");
+	printTable(*query_table2, db);	
+	cout<<"User cuisine information: \n";	
+	Table* query_table3 = db.query("*", "usercuisine", "userID = '" + username + "'");
+	printTable(*query_table3, db);	
+	cout<<"User rating information: \n";	
+	Table* query_table4 = db.query("*", "rating_final", "userID = '" + username + "'");
+	printTable(*query_table4, db);	
+	std::system("pause");
 }
+
 string lookupUser(Database &db){
 	//returns username
 	string uID;
 	std::system("CLS");
 	cout << "Input the user ID you would like to view:\n";
 	cin >> uID;
-	printUserSimple(uID, db);
+	cout << "Enter 0 for simple information or 1 for advanced: \n";
+	int simAdvSwitch;
+	cin >> simAdvSwitch;
+	switch (simAdvSwitch){
+	case 0:
+		printUserSimple(uID, db);
+		break;
+	case 1:
+		printUserAdvanced(uID, db);
+		break;
+	default:
+		cout<<"Invalid input\n";
+		break;
+	}
 	//    printUser(uID);
 	return uID;
 
