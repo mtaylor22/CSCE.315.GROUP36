@@ -419,6 +419,11 @@ string getResID(string resname, Database &db){
 	string resID = query_table->at(0).get<string>("placeID");
 	return resID;
 }
+string getResName(string resname, Database &db){
+	Table* query_table = db.query("*", "geoplaces2", "placeID = '" + resname + "'"); 
+	string resID = query_table->at(0).get<string>("name");
+	return resID;
+}
 void printTable(Table workBench, Database &db){
 	for( Table::TableIterator tabit = workBench.begin(); tabit != workBench.end(); ++tabit) {
 		for( Record::RecordIterator recit = tabit->begin(); recit != tabit->end(); ++recit) {
@@ -632,6 +637,81 @@ void findUserRating(string username, Database &db){
 	cout<<"The average service rating that this user gives is "<<((float)(query_table->sum<int>("service_rating"))/query_table->count("service_rating"))<<"\n";
 	std::system("pause");
 }
+void findHighestRated(Database &db){
+	string j = db.table("rating_final")->max<string>("rating");
+	Table* query_table = db.query("*", "rating_final", "rating = '"+j+"'");
+	cout<<"The highest rated restaurant is "<<getResName(query_table->at(0).get<string>("placeID"), db)<<"\n";
+	std::system("pause");
+}
+void findLowestRated(Database &db){
+	string j = db.table("rating_final")->min<string>("rating");
+	Table* query_table = db.query("*", "rating_final", "rating = '"+j+"'");
+	cout<<"The lowest rated restaurant is "<<getResName(query_table->at(0).get<string>("placeID"), db)<<"\n";
+	std::system("pause");
+}
+void findSmoking(Database &db){
+	Table* query_table = db.query("name", "geoplaces2", "smoking_area != 'none'");
+	cout<<"Smoking restuarants: \n";
+	printTable(*query_table, db);
+	std::system("pause");
+}
+void findByCity(Database &db){
+	std::string cityName;
+	std::system("CLS");
+	cout << "Input the city name you would like to view:\n";
+	std::getline(cin, cityName);
+	std::getline(cin, cityName);
+	Table* query_table = db.query("name", "geoplaces2", "city = '"+cityName+"'");
+	cout<<cityName<<" restuarants: \n";
+	printTable(*query_table, db);
+	std::system("pause");
+
+}
+void findByPayment(Database &db){
+	std::string payName;
+	std::system("CLS");
+	cout << "Input the payment you would like to use:\n";
+	std::getline(cin, payName);
+	std::getline(cin, payName);
+	Table* query_table = db.query("*", "chefmozaccepts", "Rpayment = '"+payName+"'");
+	query_table->del_column("Rpayment");
+	cout<<"Your payment method is supported by the following restaurants:\n";
+	printTable(*query_table, db);
+	std::system("pause");
+}
+void findResPriceRange(string resname, Database &db){
+	string range;
+	cout<<"Enter price range(low, medium, high)\n";
+	cin>>range;
+	Table* query_table = db.query("name", "geoplaces2", "price = '" + range + "'");
+	printTable(*query_table, db);
+	std::system("pause");
+}
+void findResAccess(string resname, Database &db){
+	string access;
+	cout<<"Enter accessibility options(no_accessibility, partially, completely)\n";
+	cin>>access;
+	Table* query_table = db.query("name", "geoplaces2", "accessibility = '" + access + "'");
+	printTable(*query_table, db);
+	std::system("pause");
+}
+void findDressCode(string resname, Database &db){
+	string dress;
+	cout<<"Enter dress code options(casual, informal, formal)\n";
+	cin>>dress;
+	Table* query_table = db.query("name", "geoplaces2", "dress_code = '" + dress + "'");
+	printTable(*query_table, db);
+	std::system("pause");
+}
+void findParking(string resname, Database &db){
+	string parking;
+	cout<<"Enter parking options(none, public, yes, 'valet parking')\n";
+	cin>>parking;
+	Table* query_table = db.query("placeID", "chefmozparking", "parking_lot = '" + parking + "'");
+	printTable(*query_table, db);
+	std::system("pause");
+}
+
 
 int _tmain(int argc, _TCHAR* argv[]) {
 	vector<vector<string>> allAttributes = generateAttributes();
@@ -646,16 +726,6 @@ int _tmain(int argc, _TCHAR* argv[]) {
 		cout<<"\tadded `"<<tablenames.at(index)<<"` with "<< mainDB.table(tablenames.at(index))->size()<<" entries\n";
 	}
 	cout<<"Files successfully added to database\n";
-	/*
-	//query example	
-	Table* query_table1 = mainDB.query("*", "chefmozaccepts", "placeID >= '133000'");
-	Record query_table1_rec = query_table1->at(0);
-	cout << "Size: "<< query_table1->size() <<"\n";
-	cout << "Column Size: " << query_table1->count("placeID") << "\n";
-	cout << "Entry: " << query_table1_rec.get<string>("Rpayment") << "\n";
-
-	//menu
-	*/
 
 	bool mainMenu = true;
 	string mode = "main";
@@ -670,6 +740,7 @@ int _tmain(int argc, _TCHAR* argv[]) {
 			cout << "OPTION 1: Look up by User ID\n";
 			cout << "OPTION 2: Look up by Restaurant name\n";
 			cout << "OPTION 3: Look up by Restaurant ID\n";
+			cout << "OPTION 4: Perform Restaurant operations\n";
 			cin>>option;
 			switch (atoi(option.c_str())){
 
@@ -683,12 +754,20 @@ int _tmain(int argc, _TCHAR* argv[]) {
 				}
 				break;
 			case 2:
-				lookupRes(mainDB);
+				lastRes = lookupRes(mainDB);
+				if (lastRes != ""){
+					mode="res";
+				}
 				break;
 			case 3:
-				lookupResID(mainDB);
+				lastRes = lookupResID(mainDB);
+				if (lastRes != ""){
+					mode="res";
+				}
 				break;
-
+			case 4:
+				mode="res";
+				break;
 
 			default:
 				cout<<"Unexpected input\n";
@@ -716,7 +795,6 @@ int _tmain(int argc, _TCHAR* argv[]) {
 			case 3:
 				findUserRating(lastUser, mainDB);
 				break;
-
 			default:
 				cout<<"Unexpected input\n";
 				std::system("pause");
@@ -739,20 +817,35 @@ int _tmain(int argc, _TCHAR* argv[]) {
 			cout << "OPTION 9: Find restaurants  by price range\n";
 			cin>>option;
 			switch (atoi(option.c_str())){
-			case 0:
-				mode="main";
-				break;
 			case 1:
-				findUserPayment(lastUser, mainDB);
+				findHighestRated(mainDB);
 				break;
 			case 2:
-				findUserCuisine(lastUser, mainDB);
+				findLowestRated(mainDB);
 				break;
 			case 3:
-				findUserRating(lastUser, mainDB);
+				findSmoking(mainDB);
 				break;
 			case 4:
-
+				findByCity(mainDB);
+				break;
+			case 5:
+				findByPayment(mainDB);
+				break;
+			case 9:
+				findResPriceRange(lastRes, mainDB);
+				break;
+			case 8:
+				findResAccess(lastRes, mainDB);
+				break;
+			case 7:
+				findDressCode(lastRes, mainDB);
+				break;
+			case 6:
+				findParking(lastRes, mainDB);
+				break;
+			case 0:
+				mode="main";
 				break;
 
 			default:
