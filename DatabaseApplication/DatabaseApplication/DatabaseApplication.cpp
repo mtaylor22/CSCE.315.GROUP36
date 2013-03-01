@@ -409,29 +409,60 @@ void readIn(string path, vector<Table::RecordType> types, vector<string> attribu
 	inputDB.add_table(shortpath, currentTable);
 
 }
+
+
+void printTable(Table workBench, Database &db){
+	for( Table::TableIterator tabit = workBench.begin(); tabit != workBench.end(); ++tabit) {
+		for( Record::RecordIterator recit = tabit->begin(); recit != tabit->end(); ++recit) {
+			/* std::cout << *it; ... */
+			pair<string, string> recvalue = *recit;
+			cout<<" ("<<recvalue.first<<") '"<<recvalue.second<<"'\n";
+		}
+	}
+}
+
+void printUserSimple(string username, Database &db){
+
+}
+void printUserAdvanced(string username, Database &db){
+
+}
 string lookupUser(Database &db){
 	//returns username
 	string uID;
-	std::system("CLS"); 
-	cout<<"Input the user id you would like to view:\n";
-	cin>>uID;
-//	printUser(uID);
+	std::system("CLS");
+	cout << "Input the user ID you would like to view:\n";
+	cin >> uID;
+	//    printUser(uID);
 	return uID;
 
 }
 string lookupRes(Database &db){
 	//returns resname
 	string resID;
-	return resID; 
+	std::system("CLS");
+	cout << "Input the restaurant ID you would like to view:\n";
+	cin >> resID;
+	// printUser(resID);
+	return resID;
 }
 string lookupUserAttr(Database &db){
+
 	//returns username
 	string uID;
+	std::system("CLS");
+	cout << "Input the user ID you would like to view:\n";
+	cin >> uID;
+	//  printUser(uID);
 	return uID;
 }
 string lookupResAttr(Database &db){
 	//returns resname
 	string resID;
+	std::system("CLS");
+	cout << "Input the restaurant ID you would like to view:\n";
+	cin >> resID;
+	//    printRes(resID);
 	return resID;
 }
 
@@ -458,6 +489,8 @@ int _tmain(int argc, _TCHAR* argv[]) {
 	cout << "Entry: " << query_table1_rec.get<string>("Rpayment") << "\n";
 
 	//menu
+	printTable(*query_table1, mainDB);
+	std::system("pause");
 
 
 	bool mainMenu = true;
